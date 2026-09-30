@@ -1,0 +1,180 @@
+<!-- =============================== 9. TESTS =============================== -->
+<section class="chapter">
+  <div class="eyebrow">9 · Quality</div>
+  <h1>Test plan and definition of done</h1>
+  <p class="lead">The existing 111 tests are the safety net and must pass <b>unchanged</b>. Every new behaviour gets integration tests against the real replica set, the same way the current suite works (<code>vitest</code> + <code>supertest</code> + <code>mongodb-memory-server</code>).</p>
+
+  <h2>New test files</h2>
+  <table class="tight">
+    <thead><tr><th style="width:36%">File</th><th>Covers</th><th style="width:10%" class="num">≈ tests</th></tr></thead>
+    <tbody>
+      <tr><td><code>integration/sales-capacity.test.js</code></td><td>B1: parity with create/edit for each binding limit, floor on backdated sales, <code>excludeSaleId</code>, blockers, route order, VIEWER</td><td class="num">14</td></tr>
+      <tr><td><code>integration/list-extras.test.js</code></td><td>B2 summaries on 3 lists; B4 sort on 5 lists, invalid sort, stable paging</td><td class="num">12</td></tr>
+      <tr><td><code>integration/salesPO-summary.test.js</code></td><td>B3 multi-status, <code>OPEN</code> alias, counts, filters</td><td class="num">6</td></tr>
+      <tr><td><code>integration/purchases-last-rate.test.js</code></td><td>B5 exact, fallback, none, backdated ordering</td><td class="num">4</td></tr>
+      <tr><td><code>integration/search.test.js</code></td><td>B6 every new searchable field, vehicle code-form fix, regex escaping</td><td class="num">10</td></tr>
+      <tr><td><code>integration/reports-extended.test.js</code></td><td>B7 position = dashboard row; B8 totals/counts/parties; B9 company stats vs source-stock; B11 buckets, zero-fill, clipping, 400-bucket cap; B12 weighted averages, null difference</td><td class="num">18</td></tr>
+      <tr><td><code>integration/activity.test.js</code></td><td>B10 ordering by <code>createdAt</code>, cursor paging with equal timestamps, <code>types</code> filter, PO status now</td><td class="num">5</td></tr>
+      <tr><td><code>integration/export.test.js</code></td><td>B14 headers, BOM, rows = list total, filters, injection guard, size cap</td><td class="num">6</td></tr>
+      <tr><td><code>integration/auth-cookie.test.js</code></td><td>B16 all three transport modes, rotation, CSRF header, logout clears cookie</td><td class="num">8</td></tr>
+      <tr><td><code>integration/idempotency.test.js</code></td><td>B17 replay, reused key, concurrent, retry after failure, TTL index present</td><td class="num">6</td></tr>
+      <tr><td><code>unit/ledger-floor.test.js</code></td><td><code>ledgerFloor()</code>: flat, dip on a later day, same-day in/out, empty ledger</td><td class="num">5</td></tr>
+      <tr><td><code>unit/csv.test.js</code></td><td>Escaping, quotes, newlines, injection prefixes</td><td class="num">4</td></tr>
+    </tbody>
+  </table>
+  <p class="small">Plus updates to <code>database.test.js</code> (migration 002 indexes, idempotent re-run) and a seed smoke test that runs <code>seed</code> against the memory server and asserts the dashboard shows one "buy needed" material. Expected total: <b>111 existing + about 100 new</b>.</p>
+
+  <h2>The one test that matters most</h2>
+  <div class="callout good">
+    <p><b>Capacity parity, randomised.</b> Build a random ledger (purchases, POs and deliveries on random past dates across 3 suppliers). Then, for 50 random (PO, supplier, date) picks, call <code>/sales/capacity</code> and assert that a delivery of exactly <code>maxAllowedTons</code> is accepted and <code>maxAllowedTons + 0.001</code> is rejected. Roll back between picks. If this passes, the panel and the server can never disagree.</p>
+  </div>
+
+  <h2>Frontend checks per item</h2>
+  <ul>
+    <li>MSW handlers for every new endpoint, with fixtures copied from the response examples in this document.</li>
+    <li>F1: typing above max shows the meter over 100% and the save button still works (the server decides); a 409 refetches capacity.</li>
+    <li>F9: a unit test asserting every code in the backend list has a dictionary entry (the list is exported from a generated <code>error-codes.json</code>).</li>
+    <li>F10: after each save type, assert the listed query keys were invalidated and no others.</li>
+    <li>Accessibility per UI doc page 24: meters have text equivalents, sort headers use <code>aria-sort</code>, green/red differences also carry a sign and a word.</li>
+  </ul>
+
+  <h2>Definition of done (per phase)</h2>
+  <ol>
+    <li><code>npm run check</code> green: lint plus all tests, old and new.</li>
+    <li>README: API table, new env vars and "deviations from spec" (D1–D6 answers) updated.</li>
+    <li><code>npm run reconcile</code> on a copy of the Atlas data reports no new findings.</li>
+    <li>Phase report to the owner: what shipped, what changed for users, what is next.</li>
+  </ol>
+</section>
+
+<!-- =============================== 10. ROLLOUT =============================== -->
+<section class="chapter">
+  <div class="eyebrow">10 · Rollout</div>
+  <h1>Rollout, configuration and file changes</h1>
+
+  <h2>Deploy order</h2>
+  <table class="tight">
+    <thead><tr><th style="width:12%">Phase</th><th>Steps</th><th style="width:22%">Rollback</th></tr></thead>
+    <tbody>
+      <tr><td><b>A</b></td><td>Deploy backend (no migration). Deploy frontend F1, F2, F9, F10, F13. The old frontend keeps working because every change is additive.</td><td>Redeploy the previous build.</td></tr>
+      <tr><td><b>B</b></td><td><code>npm run migrate</code> (002: indexes only; it runs online on Atlas), then deploy backend, then frontend F3–F8.</td><td>Redeploy the previous build; extra indexes are harmless.</td></tr>
+      <tr><td><b>C</b></td><td>Deploy backend with B14/B15; the seed script is used on staging only.</td><td>Redeploy.</td></tr>
+      <tr><td><b>D</b></td><td>1. Deploy backend with <code>AUTH_REFRESH_TRANSPORT=both</code>. 2. Deploy the frontend with F14. 3. After <code>REFRESH_TOKEN_TTL_DAYS</code>, when every old session has rotated, switch to <code>cookie</code>. Idempotency needs no flag; the header is optional.</td><td>Set transport back to <code>body</code>/<code>both</code>.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>New environment variables</h2>
+  <p>Add each one to the Zod schema in <code>src/config/env.js</code> (with the defaults below) and to <code>.env.example</code>.</p>
+  <table class="tight">
+    <thead><tr><th style="width:32%">Variable</th><th style="width:16%">Default</th><th>Used by</th></tr></thead>
+    <tbody>
+      <tr><td><code>AUTH_REFRESH_TRANSPORT</code></td><td><code>body</code></td><td>B16: <code>body</code> | <code>cookie</code> | <code>both</code></td></tr>
+      <tr><td><code>REFRESH_COOKIE_NAME</code></td><td><code>msm_rt</code></td><td>B16</td></tr>
+      <tr><td><code>COOKIE_SECURE</code></td><td><code>true</code></td><td>B16; forced true when <code>NODE_ENV=production</code></td></tr>
+      <tr><td><code>COOKIE_SAMESITE</code></td><td><code>strict</code></td><td>B16: <code>strict</code> | <code>lax</code> | <code>none</code> (none requires secure)</td></tr>
+      <tr><td><code>COOKIE_DOMAIN</code></td><td><i>unset</i></td><td>B16</td></tr>
+      <tr><td><code>EXPORT_MAX_ROWS</code></td><td><code>50000</code></td><td>B14</td></tr>
+      <tr><td><code>IDEMPOTENCY_TTL_HOURS</code></td><td><code>24</code></td><td>B17</td></tr>
+      <tr><td><code>ALLOW_DB_RESET</code></td><td><code>false</code></td><td>B15 <code>--reset</code>; ignored when <code>NODE_ENV=production</code></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Files touched</h2>
+  <div class="grid2">
+    <div class="box">
+      <h4>New files</h4>
+      <ul class="small">
+        <li><code>src/utils/search.js</code> (B6), <code>src/utils/csv.js</code> (B14)</li>
+        <li><code>src/middleware/idempotency.js</code>, <code>src/models/IdempotencyKey.js</code> (B17)</li>
+        <li><code>src/middleware/csrf.js</code> (B16)</li>
+        <li><code>src/db/migrations/002-activity-and-idempotency.js</code> (B13)</li>
+        <li><code>scripts/seed.js</code> (B15)</li>
+        <li>12 test files listed in chapter 9</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h4>Modified files</h4>
+      <ul class="small">
+        <li><b>services:</b> stock (floor), sale (capacity), purchase / salesPO / company / material (summary, sort, search, include), report (helpers + 4 new reports), auth (cookie)</li>
+        <li><b>repositories:</b> base (<code>summarize</code>), salesPO (multi-status, summary facet, sort branch)</li>
+        <li><b>validations:</b> common (<code>sortQuery</code>), every list schema, sale (capacity), report (4 schemas)</li>
+        <li><b>routes/controllers:</b> sale, purchase, salesPO, report, company, material, auth</li>
+        <li><b>models:</b> Purchase, SalesPO, Sale (<code>createdAt</code> index)</li>
+        <li><code>app.js</code> (CORS headers/credentials), <code>config/env.js</code>, <code>migrations/index.js</code>, <code>package.json</code> (<code>seed</code> script, <code>cookie-parser</code>), <code>README.md</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>New endpoints at a glance</h2>
+  <table class="tight">
+    <thead><tr><th style="width:9%"></th><th>Path</th><th style="width:8%">Item</th><th style="width:14%">Role</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag get">GET</span></td><td><code>/api/v1/sales/capacity</code></td><td>B1</td><td>OWNER, VIEWER</td></tr>
+      <tr><td><span class="tag get">GET</span></td><td><code>/api/v1/sales-pos/summary</code></td><td>B3</td><td>OWNER, VIEWER</td></tr>
+      <tr><td><span class="tag get">GET</span></td><td><code>/api/v1/purchases/last-rate</code></td><td>B5</td><td>OWNER, VIEWER</td></tr>
+      <tr><td><span class="tag get">GET</span></td><td><code>/api/v1/reports/companies</code></td><td>B9</td><td>OWNER, VIEWER</td></tr>
+      <tr><td><span class="tag get">GET</span></td><td><code>/api/v1/reports/activity</code></td><td>B10</td><td>OWNER, VIEWER</td></tr>
+      <tr><td><span class="tag get">GET</span></td><td><code>/api/v1/reports/trend</code></td><td>B11</td><td>OWNER, VIEWER</td></tr>
+      <tr><td><span class="tag get">GET</span></td><td><code>/api/v1/reports/rates</code></td><td>B12</td><td>OWNER, VIEWER</td></tr>
+      <tr><td><span class="tag get">GET</span></td><td><code>/api/v1/{purchases|sales-pos|sales}/export.csv</code></td><td>B14</td><td>OWNER, VIEWER</td></tr>
+    </tbody>
+  </table>
+  <p class="small">Plus new optional parameters on existing endpoints: <code>sort</code> (all lists), multi-value <code>status</code> (sales-pos), <code>include=position</code> + <code>asOf</code> (materials), <code>include=stats</code> + <code>from</code>/<code>to</code> (companies), <code>include=parties</code> (dashboard), and the <code>Idempotency-Key</code> header on the five create routes.</p>
+</section>
+
+<!-- =============================== APPENDIX =============================== -->
+<section class="chapter">
+  <div class="eyebrow">Appendix</div>
+  <h1>Every POC feature, and where it lives now</h1>
+  <p class="lead">A check that nothing from <code>metal-scrap-management-poc-v8</code> is lost. "Existing" means the current backend already does it; the UI/UX doc covers the screen unless an F-item is named.</p>
+
+  <table class="tight">
+    <thead><tr><th style="width:36%">POC feature</th><th style="width:16%">Status</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr><td>Global from/to date filter on every view</td><td>Existing</td><td><code>from</code>/<code>to</code> on all lists and reports; URL-held (F11)</td></tr>
+      <tr><td>Dashboard KPI cards (6)</td><td>Added</td><td>4 cards + "More figures" strip · B8, F7, D5</td></tr>
+      <tr><td>View one material (cards)</td><td>Added</td><td>F7 via <code>dashboard?materialId</code></td></tr>
+      <tr><td>Material-wise business position table (with supplier / PO-customer names)</td><td>Added</td><td>B8 <code>include=parties</code>, F7</td></tr>
+      <tr><td>Company-wise purchases / sales panels</td><td>Added</td><td>B9, F7</td></tr>
+      <tr><td>Pending POs with material position</td><td>Added</td><td>B3 + B4 + B7, F4, F7 "Orders waiting"</td></tr>
+      <tr><td>Recent activity (purchase, sale, PO)</td><td>Added</td><td>B10, F7</td></tr>
+      <tr><td>Companies: create, edit, type, GST, address, duplicate name check</td><td>Existing</td><td><code>/companies</code> (plus per-GST uniqueness)</td></tr>
+      <tr><td>Company search by name / contact / GST, type filter</td><td>Added</td><td>B6 (contact, address), existing type filter</td></tr>
+      <tr><td>Companies table: purchases, stock used, stock available, POs, sales</td><td>Added</td><td>B9 <code>include=stats</code>, F6</td></tr>
+      <tr><td>Company overview panel</td><td>Existing</td><td><code>/reports/companies/:id</code>, UI company detail</td></tr>
+      <tr><td>"Stock used from this purchase company" table</td><td>Existing API</td><td><code>/sales?sourceCompanyId</code>; new tab F6</td></tr>
+      <tr><td>Materials: create, edit, notes, duplicate name check</td><td>Existing</td><td><code>/materials</code></td></tr>
+      <tr><td>Material unit (Tons / Kg / Pieces)</td><td>Dropped</td><td>Decision D4: tons only, kg typed and converted in the input</td></tr>
+      <tr><td>Material cards with full position</td><td>Added</td><td>B7, F5</td></tr>
+      <tr><td>Rate analysis page (overall + per material, difference ₹ / %)</td><td>Added</td><td>B12, F8, D3</td></tr>
+      <tr><td>Purchases: create, edit, auto total, vehicle, invoice, notes</td><td>Existing</td><td><code>/purchases</code> (amount computed server-side)</td></tr>
+      <tr><td>Purchase search by material / supplier / invoice / vehicle</td><td>Added</td><td>B6</td></tr>
+      <tr><td>"Current supplier stock" column</td><td>Added</td><td>F3 via <code>/reports/source-stock</code></td></tr>
+      <tr><td>Sales POs: create, edit, qty ≥ delivered, unique PO no., cancel</td><td>Existing</td><td><code>/sales-pos</code> (unique per customer, D2)</td></tr>
+      <tr><td>PO status (Pending / Partly / Completed / Cancelled) and filter</td><td>Existing + added</td><td>Derived <code>displayStatus</code>; multi-status B3</td></tr>
+      <tr><td>"Purchase balance" column on POs</td><td>Added</td><td>F4 via B7</td></tr>
+      <tr><td>PO edit cascades customer / material to deliveries</td><td>Existing</td><td><code>salesPOService.update</code> with ledger re-checks</td></tr>
+      <tr><td>PO rate edit reprices old deliveries</td><td>Changed</td><td>Decision D1: rate snapshot kept (<code>poRateAtSale</code>)</td></tr>
+      <tr><td>Deliveries: PO locked rate, customer from PO, vehicle, challan</td><td>Existing</td><td><code>/sales</code></td></tr>
+      <tr><td>Customer → only POs with quantity left</td><td>Added</td><td>B3 <code>status=OPEN</code> + <code>companyId</code>, F1</td></tr>
+      <tr><td>"Stock from" list with available tons per supplier</td><td>Added</td><td>B1 <code>sources</code>, F1</td></tr>
+      <tr><td>Max delivery = min(PO left, supplier stock)</td><td>Improved</td><td>B1 also includes the yard limit and later-day floors (the server already enforced them)</td></tr>
+      <tr><td>Editing a delivery does not count itself</td><td>Existing + exposed</td><td><code>excludeSaleId</code> in B1</td></tr>
+      <tr><td>Sale search by customer / supplier / PO / material / challan / vehicle</td><td>Added</td><td>B6</td></tr>
+      <tr><td>Reset demo data</td><td>Replaced</td><td>B15 <code>npm run seed -- --demo --reset</code> (never in production)</td></tr>
+      <tr><td>Browser localStorage storage, float maths</td><td>Replaced</td><td>MongoDB Atlas, Decimal128, transactions, ledger replay (existing)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>UI/UX doc page 30 "backend additions": all covered</h2>
+  <table class="tight">
+    <thead><tr><th>UI doc request</th><th style="width:18%">Item</th></tr></thead>
+    <tbody>
+      <tr><td><code>GET /sales/capacity?poId&amp;sourceCompanyId&amp;saleDate&amp;excludeSaleId</code></td><td>B1</td></tr>
+      <tr><td>Last rate for a supplier + material</td><td>B5</td></tr>
+      <tr><td><code>GET /reports/rates</code> (day / week / month buckets)</td><td>B12 (+ B11 for the volume trend)</td></tr>
+      <tr><td>Refresh token in an httpOnly cookie</td><td>B16</td></tr>
+      <tr><td>Idempotency key on create endpoints</td><td>B17</td></tr>
+    </tbody>
+  </table>
+</section>

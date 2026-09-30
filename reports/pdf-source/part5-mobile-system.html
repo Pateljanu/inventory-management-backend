@@ -1,0 +1,535 @@
+<!-- =============================== 21. RESPONSIVE RULES =============================== -->
+<section class="page">
+  <div class="eyebrow">Mobile and access</div>
+  <h1 class="title">Responsive rules and breakpoints</h1>
+  <p class="lead">One codebase, three shapes. The main switch is 768 px (shadcn's mobile breakpoint): below it, navigation moves to the bottom, tables become cards and dialogs become bottom drawers.</p>
+
+  <svg viewBox="0 0 700 120" width="100%">
+    <g font-size="11">
+      <rect x="0" y="30" width="146" height="40" fill="oklch(0.93 0.04 235)"/><rect x="146" y="30" width="72" height="40" fill="oklch(0.88 0.05 235)"/><rect x="218" y="30" width="146" height="40" fill="oklch(0.80 0.07 235)"/><rect x="364" y="30" width="146" height="40" fill="oklch(0.68 0.09 235)"/><rect x="510" y="30" width="190" height="40" fill="oklch(0.52 0.10 235)"/>
+      <g font-weight="700"><text x="73" y="54" text-anchor="middle">Phones</text><text x="182" y="54" text-anchor="middle">Large</text><text x="291" y="54" text-anchor="middle">Tablets</text><text x="437" y="54" text-anchor="middle" fill="#fff">Laptops</text><text x="605" y="54" text-anchor="middle" fill="#fff">Desktops</text></g>
+      <g fill="#5b6270"><text x="146" y="22" text-anchor="middle">640</text><text x="218" y="22" text-anchor="middle" font-weight="700" fill="oklch(0.62 0.21 30)">768 ◆ main switch</text><text x="364" y="22" text-anchor="middle">1024</text><text x="510" y="22" text-anchor="middle">1280</text></g>
+      <g fill="#17191c" font-size="10"><text x="73" y="88" text-anchor="middle">bottom nav · cards</text><text x="73" y="101" text-anchor="middle">drawers · sticky Save</text>
+      <text x="291" y="88" text-anchor="middle">icon-rail sidebar · table</text><text x="291" y="101" text-anchor="middle">scrolls, first column pinned</text>
+      <text x="437" y="88" text-anchor="middle">full sidebar · sheets</text><text x="437" y="101" text-anchor="middle">detail 2/3 + 1/3</text>
+      <text x="605" y="88" text-anchor="middle">4-up KPI grid</text><text x="605" y="101" text-anchor="middle">full-width lists</text></g>
+    </g>
+  </svg>
+
+  <table class="doc compact">
+    <tr><th>Element</th><th>Desktop</th><th>Phone (&lt; 768 px)</th></tr>
+    <tr><td>Navigation</td><td>Sidebar (256 px, collapsible)</td><td>Bottom bar: Home · Purchases · <b>+</b> · Orders · More</td></tr>
+    <tr><td>Lists</td><td>DataTable, numbered pages</td><td>Tappable cards, "Load more"</td></tr>
+    <tr><td>Create / edit</td><td>Right Sheet</td><td>Full-height bottom Drawer, Save bar pinned above the keyboard</td></tr>
+    <tr><td>Dialogs, confirmations</td><td>Centred Dialog</td><td>Bottom Drawer, 48 px buttons, safe option on the left</td></tr>
+    <tr><td>Filters</td><td>Toolbar, instant</td><td>"Filters (2)" drawer with Apply / Reset</td></tr>
+    <tr><td>Dashboard</td><td>4 KPI cards in a row, charts beside lists</td><td>KPIs 2 × 2, then Needs attention, then charts</td></tr>
+    <tr><td>Charts</td><td>Hover tooltips</td><td>Values printed on bars (no tap tooltips)</td></tr>
+  </table>
+
+  <h2>Touch and typing on phones</h2>
+  <div class="grid2">
+    <ul class="clean small" style="color:var(--doc-fg)">
+      <li><b>Targets:</b> WCAG minimum 24 px; the app uses <b>44 px</b> buttons and inputs, 48 px list rows and 64 px bottom-bar items on touch (<code>pointer-coarse:</code> variant); desktop keeps shadcn's density.</li>
+      <li><b>16 px</b> input text so iPhones don't zoom.</li>
+      <li>Numbers: <code>inputmode="decimal"</code>; phones: <code>type="tel"</code>; vehicle and GSTIN: capitals automatically.</li>
+      <li>Keyboard "Next" key moves between fields; "Done" on the last one.</li>
+    </ul>
+    <ul class="clean small" style="color:var(--doc-fg)">
+      <li>Primary action in a sticky bottom bar, clear of the phone's gesture area (<code>safe-area-inset</code>).</li>
+      <li>Destructive actions live in ⋯ menus, never next to Save.</li>
+      <li>Things used most in the yard (the "+" button, Save) sit in the thumb zone at the bottom.</li>
+      <li>No pull-to-refresh, no swipe-only actions: every gesture has a button alternative.</li>
+    </ul>
+  </div>
+
+  <h2>"Sunlight" theme for outdoor use</h2>
+  <div class="row" style="align-items:center; gap:6mm">
+    <div class="ui card" style="zoom:.68; flex:none; width:230px; padding:14px; white-space:nowrap"><div class="t-xs t-muted">Standard</div><div class="stat"><div class="label">Stock in yard</div><div class="value" style="font-size:26px">286.5 t</div><div class="delta t-muted">▲ 31.520 t since 01/09</div></div><div class="input" style="margin-top:8px"><span class="ph">Tons</span></div></div>
+    <div class="ui" style="zoom:.68; flex:none; width:230px; white-space:nowrap; padding:14px; border:2px solid #000; border-radius:12px; background:#fff; color:#000"><div class="t-xs fw6">Sunlight</div><div class="stat"><div class="label" style="color:#1a1a1a;font-weight:600">Stock in yard</div><div class="value" style="font-size:28px;font-weight:800">286.5 t</div><div class="delta" style="color:#222;font-weight:600">▲ 31.520 t since 01/09</div></div><div class="input" style="margin-top:8px;border:2px solid #333"><span style="color:#333">Tons</span></div></div>
+    <p class="small" style="margin:0">Pure white background, near-black text at 7:1 or better, 2 px input borders, no faint greys, bold key figures, 16 px base font. Switched from the user menu; also follows the phone's "increase contrast" setting.</p>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Mobile and access</div>
+</section>
+
+<!-- =============================== 22. PHONE SCREENS (landscape) =============================== -->
+<section class="page landscape">
+  <div class="eyebrow">Mobile · Mockup S7</div>
+  <h1 class="title">Phone screens (360 × 800, a typical mid-range Android)</h1>
+  <div class="row" style="gap:7mm; margin-top:3mm; align-items:flex-start">
+    <!-- Phone 1: dashboard -->
+    <div class="phone" style="zoom:.7; flex:none">
+      <div class="status"><span>10:42</span><span>▮▮▮ 4G 78%</span></div>
+      <div class="ui mobile" style="height:740px; position:relative; overflow:hidden">
+        <div class="m-head"><div class="logo" style="width:28px;height:28px;border-radius:7px;font-size:13px">M</div><span class="fw6 t-lg grow">Dashboard</span><span class="btn ghost icon" style="width:44px;height:44px"><svg class="i lg"><use href="#i-search"/></svg></span><div class="avatar">RP</div></div>
+        <div style="padding:12px 16px">
+          <span class="btn outline" style="height:36px"><svg class="i"><use href="#i-cal"/></svg>This month<svg class="i"><use href="#i-down"/></svg></span>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+            <div class="card" style="padding:12px"><div class="t-xs t-muted fw5">Stock in yard</div><div style="font-size:24px;font-weight:600;margin-top:4px">286.5 t</div><div class="t-xs">▲ 31.520 t</div></div>
+            <div class="card" style="padding:12px;border-color:color-mix(in oklch,var(--warning) 70%,transparent)"><div class="t-xs t-muted fw5 flex between">Buy needed <svg class="i sm t-warn"><use href="#i-alert"/></svg></div><div style="font-size:24px;font-weight:600;margin-top:4px">38.8 t</div><div class="t-xs t-warn">3 materials short</div></div>
+            <div class="card" style="padding:12px"><div class="t-xs t-muted fw5">Open orders</div><div style="font-size:24px;font-weight:600;margin-top:4px">14</div><div class="t-xs">212.300 t left</div></div>
+            <div class="card" style="padding:12px"><div class="t-xs t-muted fw5">Delivered</div><div style="font-size:24px;font-weight:600;margin-top:4px">₹1.96 Cr</div><div class="t-xs t-success">▲ 8% vs Aug</div></div>
+          </div>
+          <div class="card" style="padding:12px 14px;margin-top:12px">
+            <div class="fw6">Needs attention</div>
+            <div class="flex gap2" style="height:56px;border-bottom:1px solid var(--border)"><svg class="i t-warn"><use href="#i-alert"/></svg><div class="grow"><div class="fw5">HMS 1</div><div class="t-xs t-muted">short 24.500 t</div></div><span class="btn outline" style="height:44px">+ Purchase</span></div>
+            <div class="flex gap2" style="height:56px;border-bottom:1px solid var(--border)"><svg class="i t-warn"><use href="#i-alert"/></svg><div class="grow"><div class="fw5">Brass honey</div><div class="t-xs t-muted">short 13.000 t</div></div><span class="btn outline" style="height:44px">+ Purchase</span></div>
+            <div class="flex gap2" style="height:56px"><svg class="i t-info"><use href="#i-truck"/></svg><div class="grow"><div class="fw5">PO-0142</div><div class="t-xs t-muted">Bharat Castings · 11.750 t left</div></div><span class="btn outline" style="height:44px">Deliver</span></div>
+          </div>
+        </div>
+        <div class="bnav" style="position:absolute;left:0;right:0;bottom:0">
+          <div class="it on"><span class="pill"><svg class="i lg"><use href="#i-home"/></svg></span>Home</div>
+          <div class="it"><span class="pill"><svg class="i lg"><use href="#i-in"/></svg></span>Purchases</div>
+          <div class="it"><span class="fab"><svg class="i lg"><use href="#i-plus"/></svg></span>New</div>
+          <div class="it"><span class="pill"><svg class="i lg"><use href="#i-clip"/></svg></span>Orders</div>
+          <div class="it"><span class="pill"><svg class="i lg"><use href="#i-more"/></svg></span>More</div>
+        </div>
+      </div>
+    </div>
+    <!-- Phone 2: list -->
+    <div class="phone" style="zoom:.7; flex:none">
+      <div class="status"><span>10:43</span><span>▮▮▮ 4G 78%</span></div>
+      <div class="ui mobile" style="height:740px; position:relative; overflow:hidden">
+        <div class="m-head"><div class="logo" style="width:28px;height:28px;border-radius:7px;font-size:13px">M</div><span class="fw6 t-lg grow">Purchases</span><span class="btn ghost icon" style="width:44px;height:44px"><svg class="i lg"><use href="#i-search"/></svg></span><div class="avatar">RP</div></div>
+        <div style="padding:12px 16px">
+          <div class="input" style="height:44px;font-size:16px"><svg class="i t-muted"><use href="#i-search"/></svg><span class="ph">Supplier, vehicle, invoice…</span></div>
+          <div class="flex gap2" style="margin-top:10px"><span class="btn outline" style="height:44px"><svg class="i"><use href="#i-filter"/></svg>Filters (1)</span><span class="chip" style="height:32px">This month <svg class="i sm"><use href="#i-x"/></svg></span></div>
+          <div style="margin-top:12px" class="t-sm"><b>46 purchases</b> · 412.380 t<br>₹1,84,62,310.00</div>
+          <div class="mcard" style="margin-top:12px"><div class="flex between"><span class="fw6" style="font-size:16px">Shree Ganesh Metals</span><svg class="i t-muted"><use href="#i-more"/></svg></div><div class="t-sm t-muted">HMS 1 · 27/09/2026</div><dl class="dl"><dt>Tons</dt><dt>Amount</dt><dd>12.450 t</dd><dd>₹4,29,525.00</dd></dl><div class="t-sm t-muted" style="margin-top:6px">₹34,500.00/t · GJ 03 AX 4521</div></div>
+          <div class="mcard" style="margin-top:12px"><div class="flex between"><span class="fw6" style="font-size:16px">Sharma Traders</span><svg class="i t-muted"><use href="#i-more"/></svg></div><div class="t-sm t-muted">Copper wire (Berry) · 27/09/2026</div><dl class="dl"><dt>Tons</dt><dt>Amount</dt><dd>1.275 t</dd><dd>₹10,00,875.00</dd></dl><div class="t-sm t-muted" style="margin-top:6px">₹7,85,000.00/t · GJ 01 BT 9087</div></div>
+          <span class="btn outline" style="width:100%;height:44px;margin-top:12px">Load more (21 more)</span>
+        </div>
+        <div class="bnav" style="position:absolute;left:0;right:0;bottom:0">
+          <div class="it"><span class="pill"><svg class="i lg"><use href="#i-home"/></svg></span>Home</div>
+          <div class="it on"><span class="pill"><svg class="i lg"><use href="#i-in"/></svg></span>Purchases</div>
+          <div class="it"><span class="fab"><svg class="i lg"><use href="#i-plus"/></svg></span>New</div>
+          <div class="it"><span class="pill"><svg class="i lg"><use href="#i-clip"/></svg></span>Orders</div>
+          <div class="it"><span class="pill"><svg class="i lg"><use href="#i-more"/></svg></span>More</div>
+        </div>
+      </div>
+    </div>
+    <!-- Phone 3: new delivery drawer -->
+    <div class="phone" style="zoom:.7; flex:none">
+      <div class="status"><span>10:45</span><span>▮▮▮ 4G 77%</span></div>
+      <div class="ui mobile" style="height:740px; position:relative; overflow:hidden; background:#4a4f57">
+        <div style="position:absolute;left:0;right:0;top:24px;bottom:0;background:#fff;border-radius:16px 16px 0 0">
+          <div class="handle"></div>
+          <div class="flex between" style="padding:4px 16px 10px;border-bottom:1px solid var(--border)"><div><div class="fw6 t-lg">Record delivery</div><div class="t-xs t-muted">PO-0142 · Bharat Castings</div></div><span class="btn ghost icon" style="width:44px;height:44px"><svg class="i lg"><use href="#i-x"/></svg></span></div>
+          <div style="padding:12px 16px;display:flex;flex-direction:column;gap:12px">
+            <div style="background:color-mix(in oklch,var(--muted) 70%,white);border-radius:12px;padding:12px;font-size:14px"><div class="flex gap2"><svg class="i t-muted"><use href="#i-lock"/></svg><b>PO-0142</b> · HMS 1</div><div class="t-sm t-muted" style="margin-top:4px">₹38,500.00/t · 11.750 t left</div></div>
+            <div class="field"><span class="flabel">Date</span><div class="input" style="height:44px;font-size:16px">27/09/2026</div></div>
+            <div class="field"><span class="flabel">Stock from</span><div class="input" style="height:44px;font-size:16px"><span class="grow">Shree Ganesh Metals</span><span class="t-sm t-muted">9.200 t</span></div></div>
+            <div class="field"><span class="flabel">Tons</span><div class="input focus" style="height:44px;font-size:16px"><span class="grow num">6.000</span><span class="addon">t</span><span class="btn ghost sm t-primary" style="margin-right:-6px">Use max</span></div></div>
+            <div class="field"><span class="flabel">Vehicle no.</span><div class="input" style="height:44px;font-size:16px">GJ 03 BW 7810</div></div>
+          </div>
+          <div style="position:absolute;left:0;right:0;bottom:0;border-top:1px solid var(--border);background:#fff">
+            <div class="flex between" style="height:48px;padding:0 16px;background:color-mix(in oklch,var(--accent) 70%,white)"><span class="t-sm">Max <b>9.200 t</b> · limited by Shree Ganesh</span><span class="t-sm t-primary fw5">Details ▴</span></div>
+            <div style="padding:10px 16px 14px"><span class="btn primary" style="width:100%;height:48px;font-size:16px">Save delivery</span><div style="text-align:center;margin-top:8px" class="t-sm t-primary">Save &amp; add another</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="legend" style="grid-template-columns:1fr; margin-top:0; font-size:8.6pt">
+      <div><span class="dot">1</span><span><b>Dashboard:</b> KPIs as a 2 × 2 grid; "Needs attention" right under them with 44 px action buttons.</span></div>
+      <div><span class="dot">2</span><span><b>Bottom bar:</b> 4 destinations + a raised centre "+" in thumb reach. Active item: tinted pill, blue icon and bold label.</span></div>
+      <div><span class="dot">3</span><span><b>Lists:</b> sticky 44 px search, a "Filters (1)" button, the summary, then cards: identifier, 2 key numbers, secondary line.</span></div>
+      <div><span class="dot">4</span><span><b>Forms:</b> full-height drawer, 44 px fields with 16 px text, "Use max" inside the Tons field.</span></div>
+      <div><span class="dot">5</span><span><b>Limits strip</b> pinned above the Save button; "Details" expands the full panel.</span></div>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Mobile</div>
+</section>
+
+<!-- =============================== 23. PHONE DRAWERS (landscape) =============================== -->
+<section class="page landscape">
+  <div class="eyebrow">Mobile · Mockup S7</div>
+  <h1 class="title">Phone drawers: create, filter, confirm</h1>
+  <div class="row" style="gap:7mm; margin-top:3mm; align-items:flex-start">
+    <div class="phone" style="zoom:.7; flex:none">
+      <div class="status"><span>10:46</span><span>▮▮▮ 4G 77%</span></div>
+      <div class="ui mobile" style="height:740px; position:relative; overflow:hidden; background:#4a4f57">
+        <div style="position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:16px 16px 0 0;padding-bottom:12px">
+          <div class="handle"></div>
+          <div class="fw6 t-lg" style="padding:6px 20px 10px">What are you recording?</div>
+          <div class="flex gap3" style="height:64px;padding:0 20px;border-top:1px solid var(--border)"><div style="width:40px;height:40px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center" class="t-primary"><svg class="i xl"><use href="#i-in"/></svg></div><div><div class="fw6">Purchase</div><div class="t-sm t-muted">Scrap coming in from a supplier</div></div></div>
+          <div class="flex gap3" style="height:64px;padding:0 20px;border-top:1px solid var(--border)"><div style="width:40px;height:40px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center" class="t-primary"><svg class="i xl"><use href="#i-truck"/></svg></div><div><div class="fw6">Delivery</div><div class="t-sm t-muted">Scrap going out against an order</div></div></div>
+          <div class="flex gap3" style="height:64px;padding:0 20px;border-top:1px solid var(--border)"><div style="width:40px;height:40px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center" class="t-primary"><svg class="i xl"><use href="#i-clip"/></svg></div><div><div class="fw6">Sales order</div><div class="t-sm t-muted">A new order from a buyer</div></div></div>
+          <div style="text-align:center;padding-top:10px" class="t-primary fw5">Cancel</div>
+        </div>
+      </div>
+    </div>
+    <div class="phone" style="zoom:.7; flex:none">
+      <div class="status"><span>10:47</span><span>▮▮▮ 4G 77%</span></div>
+      <div class="ui mobile" style="height:740px; position:relative; overflow:hidden; background:#4a4f57">
+        <div style="position:absolute;left:0;right:0;bottom:0;top:110px;background:#fff;border-radius:16px 16px 0 0">
+          <div class="handle"></div>
+          <div class="fw6 t-lg" style="padding:4px 16px 8px">Filters</div>
+          <div style="padding:0 16px">
+            <div class="t-xs t-muted fw6" style="margin:6px 0">DATE</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <span class="btn outline" style="height:44px">Today</span><span class="btn outline" style="height:44px">Yesterday</span>
+              <span class="btn outline" style="height:44px">This week</span><span class="btn outline" style="height:44px;border-color:var(--primary);background:var(--accent)"><svg class="i t-primary"><use href="#i-check"/></svg>This month</span>
+              <span class="btn outline" style="height:44px">Last month</span><span class="btn outline" style="height:44px">This quarter</span>
+              <span class="btn outline" style="height:44px">This FY</span><span class="btn outline" style="height:44px">Custom…</span>
+            </div>
+            <div class="t-xs t-muted fw6" style="margin:14px 0 6px">SUPPLIER</div>
+            <div class="input" style="height:44px;font-size:16px"><span class="ph grow">All suppliers</span><svg class="i t-muted"><use href="#i-updown"/></svg></div>
+            <div class="t-xs t-muted fw6" style="margin:14px 0 6px">MATERIAL</div>
+            <div class="input" style="height:44px;font-size:16px"><span class="ph grow">All materials</span><svg class="i t-muted"><use href="#i-down"/></svg></div>
+          </div>
+          <div class="flex gap2" style="position:absolute;left:0;right:0;bottom:0;padding:12px 16px 16px;border-top:1px solid var(--border)"><span class="btn outline" style="height:48px;flex:1">Reset</span><span class="btn primary" style="height:48px;flex:2">Show 46 purchases</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="phone" style="zoom:.7; flex:none">
+      <div class="status"><span>10:48</span><span>▮▮▮ 4G 77%</span></div>
+      <div class="ui mobile" style="height:740px; position:relative; overflow:hidden; background:#4a4f57">
+        <div style="position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:16px 16px 0 0;padding:0 20px 18px">
+          <div class="handle"></div>
+          <div style="width:44px;height:44px;border-radius:50%;background:color-mix(in oklch,var(--destructive) 12%,white);color:var(--destructive);display:flex;align-items:center;justify-content:center;margin:10px 0"><svg class="i xl"><use href="#i-ban"/></svg></div>
+          <div class="fw6 t-lg">Cancel order PO-0151?</div>
+          <div class="t-sm t-muted" style="margin-top:6px">Kutch Foundry Works ordered 20.000 t of Brass honey. Nothing has been delivered yet. After cancelling, no deliveries can be recorded against this order.</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px"><span class="btn outline" style="height:48px">Keep order</span><span class="btn destructive" style="height:48px">Cancel order</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="legend" style="grid-template-columns:1fr; margin-top:0; font-size:8.6pt">
+      <div><span class="dot">1</span><span><b>"+" drawer</b> asks one plain question. Three 64 px rows, each with an icon, a name and what it means.</span></div>
+      <div><span class="dot">2</span><span><b>Filter drawer</b> (batch filtering): preset chips in a 2-column grid, then pickers. The main button shows the live result count.</span></div>
+      <div><span class="dot">3</span><span><b>Confirmations</b> become bottom drawers with two 48 px buttons: the safe option on the left, the destructive one on the right.</span></div>
+      <div class="callout" style="display:block;margin-top:2mm;font-size:8.3pt">Drawers slide up in 300 ms with a decelerating curve and leave in 200 ms. A visible handle and a close button: swipe-down is never the only way to dismiss.</div>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Mobile</div>
+</section>
+
+<!-- =============================== 24. ACCESSIBILITY =============================== -->
+<section class="page">
+  <div class="eyebrow">Mobile and access</div>
+  <h1 class="title">Accessibility checklist (WCAG 2.2 AA)</h1>
+  <p class="lead">Base UI gives keyboard support, focus trapping and ARIA roles for free. The items below are the app's own responsibility; most are token and wiring work, done once in shared components.</p>
+  <table class="doc compact" style="font-size:8.5pt">
+    <tr><th style="width:26%">Criterion</th><th>What the app must do</th><th style="width:13%">Where</th></tr>
+    <tr><td>1.4.3 Text contrast</td><td>≥ 4.5:1 for all text; darken muted text so it passes on grey panels; dark text on amber badges</td><td>Tokens</td></tr>
+    <tr><td>1.4.11 Non-text contrast</td><td>Input borders, checkboxes, focus ring and chart marks ≥ 3:1</td><td>Tokens</td></tr>
+    <tr><td>1.4.1 Use of colour</td><td>Badges, deltas, meters and chart series always carry text or an icon too</td><td>Components</td></tr>
+    <tr><td>2.1.1 Keyboard</td><td>Every action reachable with Tab / Enter / Space / Esc; rows focusable; skip link</td><td>Components</td></tr>
+    <tr><td>2.4.7 / 2.4.11 Focus visible, not hidden</td><td>Solid 2 px ring; scroll padding so sticky header, Save bar and bottom nav never cover the focused field</td><td>Global CSS</td></tr>
+    <tr><td>2.4.3 Focus order</td><td>Focus returns to the trigger after overlays close; moves to the new row after save</td><td>Components</td></tr>
+    <tr><td>2.5.8 Target size</td><td>≥ 24 px everywhere; 44–48 px on touch</td><td>Tokens</td></tr>
+    <tr><td>2.5.7 Dragging</td><td>Any drag (reorder, upload) has a button alternative</td><td>Features</td></tr>
+    <tr><td>3.3.1 / 3.3.3 Errors</td><td>Text errors with a fix, <code>aria-invalid</code>, <code>aria-describedby</code>, focused summary, hidden "Error:" prefix</td><td>Forms</td></tr>
+    <tr><td>3.3.4 Error prevention</td><td>Limits panel before submit; confirm or undo for cancel, deactivate, backdated edits</td><td>Features</td></tr>
+    <tr><td>4.1.3 Status messages</td><td>Toasts, "Saved", "Copied", "Showing 24 purchases" in polite live regions; errors as alerts</td><td>Components</td></tr>
+    <tr><td>3.2.6 Consistent help</td><td>Help, shortcuts and WhatsApp support in the same place on every page</td><td>Shell</td></tr>
+    <tr><td>3.3.7 Redundant entry</td><td>Pre-fill supplier, material, rate, PO data and vehicle from earlier steps</td><td>Forms</td></tr>
+    <tr><td>3.3.8 Accessible login</td><td>Allow paste and password managers; <code>autocomplete</code> on login fields</td><td>Login</td></tr>
+    <tr><td>1.3.1 Structure</td><td>Real tables with header cells and <code>aria-sort</code>; cards use description lists; every input has a label</td><td>Components</td></tr>
+    <tr><td>1.1.1 Non-text content</td><td>Charts have a text summary and "View as table"; icon-only buttons have labels</td><td>Components</td></tr>
+    <tr><td>1.4.4 / 1.4.10 Zoom and reflow</td><td>Usable at 320 px width and 200% zoom; never block pinch-zoom</td><td>Global</td></tr>
+    <tr><td>3.1.1 Language</td><td><code>&lt;html lang="en-IN"&gt;</code>; <code>lang="hi"</code> / <code>"gu"</code> on translated text later</td><td>Shell</td></tr>
+    <tr><td>2.3.3 Motion (AAA, cheap)</td><td>Reduced-motion rule covers all animation; in-app "Reduce animations" switch</td><td>Global CSS</td></tr>
+  </table>
+  <div class="callout"><h4>Keep it enforced</h4><p>Check every colour pair in tweakcn's contrast checker before use, run <code>eslint-plugin-jsx-a11y</code> in CI, and test once with a keyboard only and once with Android TalkBack before each release.</p></div>
+  <div class="runhead">Metalix UI/UX System · Accessibility</div>
+</section>
+
+<!-- =============================== 25. USER FLOWS =============================== -->
+<section class="page">
+  <div class="eyebrow">Flows</div>
+  <h1 class="title">User flows and click counts</h1>
+  <p class="lead">Target: three clicks per core task, with defaults doing the rest. A "click" includes choosing an option; typing is not counted.</p>
+
+  <h3 class="mt0">Record a delivery against an order: 3 clicks</h3>
+  <svg viewBox="0 0 700 92" width="100%">
+    <g font-size="10.5">
+      <rect x="0" y="16" width="118" height="54" rx="8" fill="#f5f7f9" stroke="#cfd4db"/><text x="59" y="38" text-anchor="middle" font-weight="700">Open order row</text><text x="59" y="54" text-anchor="middle" fill="#5b6270">list or dashboard</text>
+      <path d="M118 43 H140" stroke="#9aa3ae" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="144" y="16" width="118" height="54" rx="8" fill="oklch(0.95 0.02 235)" stroke="oklch(0.45 0.10 235)"/><text x="203" y="38" text-anchor="middle" font-weight="700">① "Deliver"</text><text x="203" y="54" text-anchor="middle" fill="#5b6270">sheet opens, PO locked</text>
+      <path d="M262 43 H284" stroke="#9aa3ae" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="288" y="16" width="130" height="54" rx="8" fill="oklch(0.95 0.02 235)" stroke="oklch(0.45 0.10 235)"/><text x="353" y="38" text-anchor="middle" font-weight="700">② Pick "Stock from"</text><text x="353" y="54" text-anchor="middle" fill="#5b6270">sorted by stock</text>
+      <path d="M418 43 H440" stroke="#9aa3ae" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="444" y="16" width="118" height="54" rx="8" fill="#f5f7f9" stroke="#cfd4db"/><text x="503" y="38" text-anchor="middle" font-weight="700">Tons pre-filled</text><text x="503" y="54" text-anchor="middle" fill="#5b6270">= max allowed (or type)</text>
+      <path d="M562 43 H584" stroke="#9aa3ae" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="588" y="16" width="112" height="54" rx="8" fill="oklch(0.45 0.10 235)"/><text x="644" y="38" text-anchor="middle" font-weight="700" fill="#fff">③ Save</text><text x="644" y="54" text-anchor="middle" fill="#dbe7f3">row highlights, toast</text>
+      <text x="0" y="88" fill="#5b6270">Keyboard: Alt+D → pick PO → pick supplier → Ctrl+Enter · Phone: 4 taps</text>
+    </g>
+  </svg>
+
+  <h3>Record a purchase: 4 clicks (2 when defaults match)</h3>
+  <svg viewBox="0 0 700 92" width="100%">
+    <g font-size="10.5">
+      <rect x="0" y="16" width="130" height="54" rx="8" fill="oklch(0.95 0.02 235)" stroke="oklch(0.45 0.10 235)"/><text x="65" y="38" text-anchor="middle" font-weight="700">① New purchase</text><text x="65" y="54" text-anchor="middle" fill="#5b6270">button, + New, Alt+P</text>
+      <path d="M130 43 H152" stroke="#9aa3ae" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="156" y="16" width="140" height="54" rx="8" fill="#f5f7f9" stroke="#cfd4db"/><text x="226" y="34" text-anchor="middle" font-weight="700">Defaults filled</text><text x="226" y="49" text-anchor="middle" fill="#5b6270">today · last supplier</text><text x="226" y="62" text-anchor="middle" fill="#5b6270">last material · last rate</text>
+      <path d="M296 43 H318" stroke="#9aa3ae" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="322" y="16" width="120" height="54" rx="8" fill="oklch(0.95 0.02 235)" stroke="oklch(0.45 0.10 235)" stroke-dasharray="4 3"/><text x="382" y="38" text-anchor="middle" font-weight="700">②③ Change</text><text x="382" y="54" text-anchor="middle" fill="#5b6270">only if different</text>
+      <path d="M442 43 H464" stroke="#9aa3ae" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="468" y="16" width="100" height="54" rx="8" fill="#f5f7f9" stroke="#cfd4db"/><text x="518" y="38" text-anchor="middle" font-weight="700">Type tons</text><text x="518" y="54" text-anchor="middle" fill="#5b6270">vehicle, invoice</text>
+      <path d="M568 43 H590" stroke="#9aa3ae" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="594" y="16" width="106" height="54" rx="8" fill="oklch(0.45 0.10 235)"/><text x="647" y="38" text-anchor="middle" font-weight="700" fill="#fff">④ Save</text><text x="647" y="54" text-anchor="middle" fill="#dbe7f3">or Save &amp; next</text>
+    </g>
+  </svg>
+
+  <table class="doc compact">
+    <tr><th>Flow</th><th>Fastest start</th><th class="num">Desktop clicks</th><th class="num">Phone taps</th></tr>
+    <tr><td>Record a purchase</td><td>+ New › Purchase, or "+ Purchase" beside a shortage</td><td class="num">4 (2)</td><td class="num">5</td></tr>
+    <tr><td>Create a sales order</td><td>Sales Orders button, customer page, Alt+O</td><td class="num">4</td><td class="num">5</td></tr>
+    <tr><td>Record a delivery</td><td>"Deliver" on the order row</td><td class="num">3</td><td class="num">4</td></tr>
+    <tr><td>Check what to buy</td><td>Dashboard "Buy needed"</td><td class="num">0–1</td><td class="num">0–1</td></tr>
+    <tr><td>Look up a company's history</td><td>Ctrl+K → name → Enter</td><td class="num">2</td><td class="num">3</td></tr>
+    <tr><td>See a supplier's stock</td><td>Sidebar › Supplier stock</td><td class="num">2</td><td class="num">3</td></tr>
+  </table>
+
+  <h3>The click reducers, by impact</h3>
+  <div class="grid2" style="gap:3mm">
+    <ul class="clean small" style="color:var(--doc-fg)">
+      <li><b>"Deliver" where the decision is made</b>: no PO picking</li>
+      <li><b>Quantity defaults to the maximum</b>; "Use max" in every limit error</li>
+      <li><b>Predictable defaults</b>, tagged "Last used", always editable</li>
+      <li><b>Inline "+ Add '…'"</b> in every picker (Alt+C, as in Tally)</li>
+      <li><b>"Save &amp; add another"</b> keeps date and supplier for the next truck</li>
+    </ul>
+    <ul class="clean small" style="color:var(--doc-fg)">
+      <li><b>"Repeat purchase"</b> in the row menu for regular suppliers</li>
+      <li><b>Filters in the URL</b>: no re-filtering after Back</li>
+      <li><b>Sales Orders opens on "Open"</b></li>
+      <li><b>Keyboard-first</b>: Enter to next field, Ctrl+Enter to save</li>
+      <li><b>Centre "+" on phones</b>: any transaction in two taps</li>
+    </ul>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Flows</div>
+</section>
+
+<!-- =============================== 26. SHADCN COMPONENT MAP =============================== -->
+<section class="page">
+  <div class="eyebrow">Build system</div>
+  <h1 class="title">Which shadcn/ui component for which job</h1>
+  <p class="lead">Decide once at <code>shadcn init</code>: <b>Base UI</b> (the default since July 2026, with native Combobox and Drawer), compact Nova style. Never mix Radix and Base UI. Borrow layout ideas from shadcn-admin; don't fork it (it is Radix-based).</p>
+  <table class="doc compact" style="font-size:8.2pt">
+    <tr><th style="width:24%">Need</th><th>shadcn/ui components</th><th style="width:22%">Wrapped as</th></tr>
+    <tr><td>App shell</td><td>Sidebar (icon-collapsible, inset), SidebarTrigger, SidebarMenuBadge, Breadcrumb, DropdownMenu, Avatar</td><td>AppShell, AppSidebar</td></tr>
+    <tr><td>Mobile navigation</td><td>Button + router links, Sheet ("More"), Drawer ("+")</td><td>BottomNav</td></tr>
+    <tr><td>Command palette</td><td>Command in CommandDialog, CommandShortcut, Kbd</td><td>CommandPalette</td></tr>
+    <tr><td>Page header</td><td>Breadcrumb, Button, ButtonGroup, DropdownMenu</td><td>PageHeader</td></tr>
+    <tr><td>KPI tiles</td><td>Card (Header/Title/Action/Content/Footer), Badge, Tooltip, Skeleton</td><td>StatCard</td></tr>
+    <tr><td>Charts</td><td>Chart (ChartContainer, ChartTooltip, accessibilityLayer), ToggleGroup</td><td>—</td></tr>
+    <tr><td>Data tables</td><td>Table + TanStack Table v9 guide, DropdownMenu, Pagination, Select, ScrollArea</td><td>DataTable</td></tr>
+    <tr><td>Mobile lists</td><td>Item / ItemGroup or Card</td><td>DataTable renderMobileCard</td></tr>
+    <tr><td>Filters and search</td><td>InputGroup, Popover + Calendar (range), Combobox, Select, Tabs, Badge, Drawer</td><td>FilterBar, DateRangePicker</td></tr>
+    <tr><td>Forms</td><td>Field, FieldLabel, FieldDescription, FieldError, FieldSet, FieldLegend, Input, InputGroup, Textarea, RadioGroup, Switch</td><td>FormField, FormSection, ErrorSummary</td></tr>
+    <tr><td>Company / material pickers</td><td>Combobox (Base UI) with async search + Dialog</td><td>EntityCombobox</td></tr>
+    <tr><td>Money and tons inputs</td><td>InputGroup + react-number-format (lakh grouping)</td><td>MoneyInput, TonsInput</td></tr>
+    <tr><td>Delivery limits</td><td>Card, Progress, Alert, Button</td><td>LimitMeter, DeliveryLimitsPanel</td></tr>
+    <tr><td>Status</td><td>Badge with added success / warning / info variants</td><td>StatusBadge</td></tr>
+    <tr><td>Create / edit containers</td><td>Sheet (desktop), Drawer (phone), Dialog (inline create)</td><td>FormSheet, ResponsiveDialog</td></tr>
+    <tr><td>Confirmation</td><td>AlertDialog</td><td>ConfirmDialog</td></tr>
+    <tr><td>Loading</td><td>Skeleton, Spinner, Progress</td><td>—</td></tr>
+    <tr><td>Empty states</td><td>Empty (EmptyMedia, EmptyTitle, EmptyDescription, EmptyContent)</td><td>EmptyState</td></tr>
+    <tr><td>Messages</td><td>Alert (+ variants); Sonner behind one wrapper</td><td>lib/notify.ts</td></tr>
+    <tr><td>Help</td><td>Tooltip (icon buttons only), Popover (info "i"), Kbd</td><td>—</td></tr>
+    <tr><td>Detail pages</td><td>Card, Tabs, Item, Separator, Badge, Progress</td><td>DetailHeader, KeyValueList</td></tr>
+    <tr><td>Login</td><td>login-03 block (Card + Field + Input)</td><td>—</td></tr>
+  </table>
+  <div class="callout warn"><h4>Pin these to avoid known breakages</h4><p><code>react-day-picker</code> (shadcn's Calendar breaks on DayPicker v10 until regenerated), <code>recharts@3</code>, <code>@base-ui/react</code>. Run <code>shadcn add --diff</code> before every component update.</p></div>
+  <div class="runhead">Metalix UI/UX System · Build system</div>
+</section>
+
+<!-- =============================== 27. TOKENS =============================== -->
+<section class="page">
+  <div class="eyebrow">Build system</div>
+  <h1 class="title">Design tokens: colour, type, spacing</h1>
+  <p class="lead">Components use only semantic tokens (<code>bg-success</code>, never <code>bg-green-500</code>). Base colour is Neutral; only the primary steel blue carries a hue. <b>Values are proposals</b>: check each pair's contrast in tweakcn before use.</p>
+
+  <div class="grid4" style="gap:3mm">
+    <div><div style="height:16mm;border-radius:2mm;background:oklch(0.45 0.10 235)"></div><div class="small"><b style="color:var(--doc-fg)">primary</b><br>oklch(0.45 0.10 235)<br>buttons, active nav, focus</div></div>
+    <div><div style="height:16mm;border-radius:2mm;background:oklch(0.95 0.02 235);border:1px solid #e3e6ea"></div><div class="small"><b style="color:var(--doc-fg)">accent</b><br>oklch(0.95 0.02 235)<br>hover, selected rows</div></div>
+    <div><div style="height:16mm;border-radius:2mm;background:oklch(0.967 0 0);border:1px solid #e3e6ea"></div><div class="small"><b style="color:var(--doc-fg)">muted / muted-fg</b><br>0.967 / 0.48 (darkened)<br>panels, secondary text</div></div>
+    <div><div style="height:16mm;border-radius:2mm;background:#fff;border:2px solid oklch(0.62 0 0)"></div><div class="small"><b style="color:var(--doc-fg)">input border</b><br>oklch(0.62 0 0)<br>≥ 3:1 on white</div></div>
+    <div><div style="height:16mm;border-radius:2mm;background:oklch(0.50 0.12 150)"></div><div class="small"><b style="color:var(--doc-fg)">success</b><br>oklch(0.50 0.12 150)<br>completed, saved</div></div>
+    <div><div style="height:16mm;border-radius:2mm;background:oklch(0.84 0.16 84)"></div><div class="small"><b style="color:var(--doc-fg)">warning</b><br>oklch(0.84 0.16 84)<br>pending, near limit, offline</div></div>
+    <div><div style="height:16mm;border-radius:2mm;background:oklch(0.52 0.15 255)"></div><div class="small"><b style="color:var(--doc-fg)">info</b><br>oklch(0.52 0.15 255)<br>partly delivered, tips</div></div>
+    <div><div style="height:16mm;border-radius:2mm;background:oklch(0.577 0.245 27.3)"></div><div class="small"><b style="color:var(--doc-fg)">destructive</b><br>oklch(0.577 0.245 27.3)<br>over limit, errors, cancel</div></div>
+  </div>
+  <div class="row mt2" style="gap:2mm; align-items:center">
+    <span class="small" style="width:22mm">Chart series</span>
+    <span style="width:16mm;height:6mm;border-radius:1mm;background:oklch(0.55 0.13 240)"></span><span style="width:16mm;height:6mm;border-radius:1mm;background:oklch(0.70 0.16 55)"></span><span style="width:16mm;height:6mm;border-radius:1mm;background:oklch(0.60 0.11 170)"></span><span style="width:16mm;height:6mm;border-radius:1mm;background:oklch(0.55 0.15 300)"></span><span style="width:16mm;height:6mm;border-radius:1mm;background:oklch(0.60 0 0)"></span>
+    <span class="small">blue / orange for two-series charts; ≤ 4 series per chart</span>
+  </div>
+
+  <div class="grid2 mt4">
+    <div>
+      <h3 class="mt0">Type scale (Inter + Noto Sans Devanagari/Gujarati)</h3>
+      <div style="font-variant-numeric:tabular-nums">
+        <div style="font-size:21pt;font-weight:600;line-height:1.2">286.5 t <span class="small">KPI 30/36</span></div>
+        <div style="font-size:16.5pt;font-weight:600">Sales Orders <span class="small">Title 24/32</span></div>
+        <div style="font-size:13pt;font-weight:500">Needs attention <span class="small">Section 18/28</span></div>
+        <div style="font-size:10.5pt;font-weight:500">Stock in yard <span class="small">Label 14/20 · 500</span></div>
+        <div style="font-size:10.5pt">Bharat Castings Pvt Ltd <span class="small">Body / cell 14/20</span></div>
+        <div style="font-size:8.5pt;color:var(--doc-muted)">Updated 2 min ago · Meta 12/16</div>
+      </div>
+      <p class="small mt2">Phones: body and inputs 16 px. Devanagari/Gujarati need looser leading (≈ 1.6). <code>tabular-nums</code> on every number.</p>
+    </div>
+    <div>
+      <h3 class="mt0">Spacing (4 px base) and shape</h3>
+      <table class="doc compact" style="font-size:8.6pt">
+        <tr><td>Page gutter</td><td class="num">16 / 24 px</td><td><span style="display:inline-block;width:12mm;height:2.5mm;background:var(--doc-accent)"></span></td></tr>
+        <tr><td>Between sections</td><td class="num">24 px</td><td><span style="display:inline-block;width:12mm;height:2.5mm;background:var(--doc-accent)"></span></td></tr>
+        <tr><td>Card padding</td><td class="num">16 / 24 px</td><td><span style="display:inline-block;width:8mm;height:2.5mm;background:var(--doc-accent)"></span></td></tr>
+        <tr><td>Between form fields</td><td class="num">16 px</td><td><span style="display:inline-block;width:8mm;height:2.5mm;background:var(--doc-accent)"></span></td></tr>
+        <tr><td>Label → input</td><td class="num">8 px</td><td><span style="display:inline-block;width:4mm;height:2.5mm;background:var(--doc-accent)"></span></td></tr>
+        <tr><td>Table row</td><td class="num">40 / 48 px</td><td></td></tr>
+        <tr><td>Radius</td><td class="num">0.5rem</td><td>controls 8 px · cards 11 px</td></tr>
+        <tr><td>Elevation</td><td class="num">flat</td><td>1 px borders; shadows only on menus/dialogs</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Build system</div>
+</section>
+
+<!-- =============================== 28. COMPONENTS & FOLDERS =============================== -->
+<section class="page">
+  <div class="eyebrow">Build system</div>
+  <h1 class="title">Reusable components and folder structure</h1>
+  <p class="lead">Three layers: shadcn output (treated as vendored code), the app's own composite components, and feature screens. Feature code never imports Base UI or the toast library directly.</p>
+  <div class="g-1-2">
+    <pre style="font-family:var(--mono);font-size:7.3pt;line-height:1.45;background:var(--doc-soft);border:1px solid var(--doc-line);border-radius:2mm;padding:3mm;margin:0;white-space:pre">src/
+  components/
+    ui/          shadcn CLI output only
+    layout/
+      app-shell  app-sidebar
+      site-header  bottom-nav
+      command-palette  shortcuts
+    common/
+      page-header  detail-header
+      data-table/  (table, toolbar,
+        pagination, skeleton,
+        summary-strip)
+      filter-bar/  (filter-bar,
+        date-range-picker, chips)
+      form/  (form-sheet, form-section,
+        form-field, error-summary,
+        entity-combobox, money-input,
+        tons-input, date-input,
+        vehicle-input)
+      stat-card  status-badge
+      limit-meter  empty-state
+      error-state  confirm-dialog
+      responsive-dialog
+      key-value-list  freshness
+      offline-banner
+  features/
+    dashboard  purchases
+    sales-orders  deliveries
+    companies  materials
+    reports  auth
+     └ api/ schemas/ components/
+  lib/
+    api-client  errors  format
+    decimal  fy  notify
+    permissions  timing
+  hooks/  styles/</pre>
+    <div>
+      <table class="doc compact" style="font-size:8.4pt">
+        <tr><th>Composite</th><th>Key props</th></tr>
+        <tr><td><b>PageHeader</b></td><td>title, description, primaryAction, secondaryActions (≤ 3), breadcrumbs</td></tr>
+        <tr><td><b>DataTable</b></td><td>columns, data, rowCount, state, renderMobileCard, emptyState, isLoading, isPlaceholderData, error, getRowHref, highlightRowId</td></tr>
+        <tr><td><b>FilterBar</b></td><td>typed filter config; reads/writes URL search params</td></tr>
+        <tr><td><b>DateRangePicker</b></td><td>value, onChange, presets (Indian FY)</td></tr>
+        <tr><td><b>EntityCombobox</b></td><td>fetcher, filter (e.g. SALE/BOTH), onCreate ("+ Add"), renderOption</td></tr>
+        <tr><td><b>MoneyInput / TonsInput</b></td><td>string in, string out ("30.250"); max + "Use max"</td></tr>
+        <tr><td><b>StatCard</b></td><td>label, value, exactValue, delta, footnote, href, loading</td></tr>
+        <tr><td><b>StatusBadge</b></td><td>PENDING · PARTIALLY_SUPPLIED · COMPLETED · CANCELLED · ACTIVE · INACTIVE</td></tr>
+        <tr><td><b>LimitMeter</b></td><td>label, value, limit, isBinding, state</td></tr>
+        <tr><td><b>EmptyState</b></td><td>kind: first-use · no-results · all-done</td></tr>
+        <tr><td><b>ConfirmDialog</b></td><td><code>await confirm({ title, body, confirmLabel, cancelLabel, destructive })</code></td></tr>
+        <tr><td><b>FormSheet / ResponsiveDialog</b></td><td>Sheet or Dialog on desktop, Drawer on phones; unsaved-changes guard</td></tr>
+      </table>
+      <h3>Consistency guard-rails</h3>
+      <ul class="clean small" style="color:var(--doc-fg)">
+        <li>Edits to <code>components/ui</code> are limited to added variants and accessibility fixes, logged in <code>CHANGES.md</code>; updates via <code>shadcn add --diff</code>.</li>
+        <li>Lint bans raw colour classes (<code>bg-red-500</code>) and direct imports of <code>@base-ui/react</code> / <code>sonner</code> in features.</li>
+        <li>A dev-only <code>/dev/components</code> page shows every composite in every state: cheaper than Storybook for a small team.</li>
+        <li>All numbers through <code>lib/format.ts</code>; all toasts through <code>lib/notify.ts</code>; all permissions through <code>can('write')</code>.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Build system</div>
+</section>
+
+<!-- =============================== 29. PRIORITIES =============================== -->
+<section class="page">
+  <div class="eyebrow">Build plan</div>
+  <h1 class="title">What to build first: 20 priorities</h1>
+  <p class="lead">Ranked by how much friction each removes. P0 items make the core daily tasks safe and fast; P1 makes them pleasant; P2 adds polish and insight.</p>
+  <table class="doc compact" style="font-size:8.4pt">
+    <tr><th style="width:8%">Rank</th><th>Change</th><th style="width:34%">Why it matters</th><th style="width:7%">Effort</th></tr>
+    <tr><td><b>P0-1</b></td><td>Live delivery limits panel with "Use max" and the binding-limit sentence</td><td>Turns the strictest rejections into guidance (needs capacity endpoint)</td><td>M</td></tr>
+    <tr><td><b>P0-2</b></td><td>"Deliver" on open order rows, order page and dashboard, order pre-locked</td><td>Delivery in 3 clicks; no wrong-PO errors</td><td>S</td></tr>
+    <tr><td><b>P0-3</b></td><td>Smart defaults: today, last supplier / material / rate, max quantity</td><td>Most users keep defaults; purchase in 2 clicks</td><td>S</td></tr>
+    <tr><td><b>P0-4</b></td><td>One <code>lib/format.ts</code>: exact en-IN values, custom lakh/crore compact</td><td>No misread rupee figures, no "1.2KCr"</td><td>S</td></tr>
+    <tr><td><b>P0-5</b></td><td>Plain-language error dictionary with one-tap fixes; 422 → field + summary</td><td>Users fix errors without help</td><td>S</td></tr>
+    <tr><td><b>P0-6</b></td><td>Keep previous rows while loading; skeleton only on first load after 500 ms</td><td>Screen never blanks on weak data</td><td>S</td></tr>
+    <tr><td><b>P0-7</b></td><td>URL-held filters with Indian FY presets</td><td>Shareable views, working Back</td><td>M</td></tr>
+    <tr><td><b>P0-8</b></td><td>Hide write actions for VIEWER; "View only" badge</td><td>No dead ends or 403s</td><td>S</td></tr>
+    <tr><td><b>P0-9</b></td><td>Wait-for-server saves on stock/money, then highlight row + short toast</td><td>No numbers that roll back after the user saw them</td><td>S</td></tr>
+    <tr><td>P1-10</td><td>EntityCombobox with inline "+ Add" (Alt+C)</td><td>No leaving the form to create masters</td><td>M</td></tr>
+    <tr><td>P1-11</td><td>"Save &amp; add another" and "Repeat purchase"</td><td>Fast batch entry at the weighbridge</td><td>S</td></tr>
+    <tr><td>P1-12</td><td>Ctrl+K palette, Alt shortcuts, Enter-to-next, Ctrl+Enter save</td><td>Tally-speed entry for accountants</td><td>M</td></tr>
+    <tr><td>P1-13</td><td>Bottom nav with centre "+", drawer forms, sticky Save, 44–48 px targets</td><td>One-handed use outdoors</td><td>M</td></tr>
+    <tr><td>P1-14</td><td>Sunlight theme, stronger input borders, darker muted text</td><td>Outdoor readability, AA contrast</td><td>S</td></tr>
+    <tr><td>P1-15</td><td>Form drafts saved locally + re-login dialog that keeps entries</td><td>No lost work on dropped connections</td><td>S</td></tr>
+    <tr><td>P1-16</td><td>Dashboard "Needs attention" with inline actions and drill-downs</td><td>"What to buy / deliver" at a glance</td><td>M</td></tr>
+    <tr><td>P2-17</td><td>Column visibility and density remembered per user</td><td>Power users see more</td><td>S</td></tr>
+    <tr><td>P2-18</td><td>Recent items in the palette and sidebar</td><td>Faster return to working records</td><td>S</td></tr>
+    <tr><td>P2-19</td><td>Rate trend and margin charts</td><td>Pricing insight (needs rates endpoint)</td><td>M</td></tr>
+    <tr><td>P2-20</td><td>Component showcase page, lint guard-rails, Hindi/Gujarati</td><td>Keeps the system consistent as it grows</td><td>M</td></tr>
+  </table>
+  <h3>Suggested order of work</h3>
+  <svg viewBox="0 0 700 60" width="100%">
+    <g font-size="10.5">
+      <rect x="0" y="6" width="170" height="44" rx="8" fill="oklch(0.95 0.02 235)" stroke="oklch(0.80 0.05 235)"/><text x="85" y="24" text-anchor="middle" font-weight="700">1 · Foundation</text><text x="85" y="40" text-anchor="middle" fill="#5b6270">init, tokens, shell, api-client</text>
+      <rect x="176" y="6" width="170" height="44" rx="8" fill="oklch(0.95 0.02 235)" stroke="oklch(0.80 0.05 235)"/><text x="261" y="24" text-anchor="middle" font-weight="700">2 · Composites</text><text x="261" y="40" text-anchor="middle" fill="#5b6270">DataTable, FilterBar, form kit</text>
+      <rect x="352" y="6" width="170" height="44" rx="8" fill="oklch(0.45 0.10 235)"/><text x="437" y="24" text-anchor="middle" font-weight="700" fill="#fff">3 · Delivery + one list</text><text x="437" y="40" text-anchor="middle" fill="#dbe7f3">test with 3–5 real users</text>
+      <rect x="528" y="6" width="172" height="44" rx="8" fill="oklch(0.95 0.02 235)" stroke="oklch(0.80 0.05 235)"/><text x="614" y="24" text-anchor="middle" font-weight="700">4 · Remaining screens</text><text x="614" y="40" text-anchor="middle" fill="#5b6270">dashboard, reports, masters</text>
+    </g>
+  </svg>
+  <div class="runhead">Metalix UI/UX System · Build plan</div>
+</section>
+
+<!-- =============================== 30. NEXT STEPS =============================== -->
+<section class="page">
+  <div class="eyebrow">Build plan</div>
+  <h1 class="title">Open questions and next steps</h1>
+  <p class="lead">Most of this guide rests on established research and design-system guidance. A few choices are reasoned rather than tested, and a few need small backend additions.</p>
+
+  <h2 class="mt0">Backend additions the UI depends on</h2>
+  <table class="doc compact">
+    <tr><th>Endpoint</th><th>Unlocks</th><th>Priority</th></tr>
+    <tr><td><code>GET /sales/capacity?poId&amp;sourceCompanyId&amp;saleDate&amp;excludeSaleId</code></td><td>The live limits panel with the same numbers the server enforces</td><td><b>Highest</b></td></tr>
+    <tr><td>Last rate for a supplier + material</td><td>The "last rate" default on purchases</td><td>High</td></tr>
+    <tr><td><code>GET /reports/rates</code> (day / week / month buckets)</td><td>Rate trend chart; KPI comparisons with the previous period</td><td>Medium</td></tr>
+    <tr><td>Refresh token in an httpOnly cookie</td><td>Safer sessions (token never readable by page scripts)</td><td>Medium</td></tr>
+    <tr><td>Idempotency key on create endpoints</td><td>Safe "Try again" on flaky yard connections without duplicates</td><td>Medium</td></tr>
+  </table>
+
+  <h2>Validate with real users before building everything</h2>
+  <ul class="clean">
+    <li>Run a short session with <b>3–5 people</b> (owner, accountant, yard staff) on a <b>mid-range Android phone in daylight</b>, using the delivery form and one filtered list.</li>
+    <li>Check: click counts, whether hiding (rather than disabling) buttons for VIEWERs confuses anyone, and whether the trade words ("Left to deliver", "Stock from") read naturally.</li>
+    <li>Confirm the Sunlight theme is readable outdoors and the 44 px targets are comfortable with work gloves.</li>
+  </ul>
+
+  <h2>Still to verify</h2>
+  <ul class="clean">
+    <li>Contrast of every proposed colour pair (tweakcn) in light, dark and Sunlight themes.</li>
+    <li>Vehicle-number and GSTIN patterns against official formats.</li>
+    <li>That the shadcn data-table guide and chosen community table code work with TanStack Table v9.</li>
+  </ul>
+
+  <h2>Main sources behind this guide</h2>
+  <p class="small">Nielsen Norman Group · GOV.UK Design System · Baymard Institute · Shopify Polaris · IBM Carbon · GitHub Primer · Material 3 · Microsoft Fluent 2 · W3C WCAG 2.2 · web.dev · MDN · shadcn/ui, Base UI, TanStack and React 19.3 docs · Stephen Few · UK Government Analysis Function · Tally, Vyapar and Khatabook patterns. Full citations: companion report <i>shadcn UI UX design system.md</i>.</p>
+
+  <div class="callout good"><h4>In one sentence</h4><p>Build one calm, number-first interface where the three limits behind every delivery are visible before the user acts, every screen follows the same patterns, and every interaction gives quick, plain feedback, on a desk PC and on a phone in the yard.</p></div>
+  <div class="runhead">Metalix UI/UX System · Build plan</div>
+</section>

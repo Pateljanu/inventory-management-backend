@@ -1,0 +1,236 @@
+<!-- =============================== COVER =============================== -->
+<div class="cover">
+  <div class="brand"><div class="m">M</div> Metalix · Scrap Management</div>
+  <h1>Feature additions and<br>integration spec</h1>
+  <p class="sub">Everything the finished production app still needs, drawn from the backend review, the UI/UX system and the v8 POC, with the exact API contracts, business rules, file-by-file changes and tests needed to fit into the existing backend without breaking it.</p>
+  <div class="facts">
+    <div class="fact"><b>17</b><span>backend items (B1–B17)</span></div>
+    <div class="fact"><b>14</b><span>frontend items (F1–F14)</span></div>
+    <div class="fact"><b>6</b><span>decisions to confirm first</span></div>
+    <div class="fact"><b>4</b><span>delivery phases</span></div>
+  </div>
+  <div class="sources">
+    <div><b>Built against:</b> the existing backend in <code style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);color:#fff">D:\Metalix inventory\Backend</code> (Node 22 · Express 5 · Mongoose 8 · Zod 3 · Decimal128 · JWT/Argon2)</div>
+    <div><b>Sources compared:</b> Metal Scrap Backend &amp; Database Production Guide · Metalix UI/UX System v1.0 · metal-scrap-management-poc-v8 (source purchase company)</div>
+  </div>
+  <div class="meta"><span>Version 1.0</span><span>27 September 2026</span></div>
+</div>
+
+<!-- =============================== CONTENTS =============================== -->
+<section class="chapter first">
+  <div class="eyebrow">Contents</div>
+  <h1>What is inside</h1>
+  <p class="lead">Read chapters 1–3 before writing any code: they fix the rules and the decisions. Chapters 4–6 are the backend work, one spec card per item. Chapters 7–8 are the frontend work. Chapters 9–10 cover testing, rollout and how every POC feature maps to an item.</p>
+  <div class="toc">
+    <div class="part"><h4>Plan</h4>
+      <div class="item"><span>1 · Summary and delivery phases</span><span>3</span></div>
+      <div class="item"><span>2 · Rules every addition must follow</span><span>4</span></div>
+      <div class="item"><span>3 · Decisions to confirm first (D1–D6)</span><span>6</span></div>
+      <div class="item"><span>Master list of all 31 items</span><span>7</span></div>
+    </div>
+    <div class="part"><h4>Backend: phase A (P0)</h4>
+      <div class="item"><span>B1 · Delivery capacity endpoint</span><span>9</span></div>
+      <div class="item"><span>B2 · Totals for the filtered list</span><span>10</span></div>
+      <div class="item"><span>B3 · Multi-status filter and status summary</span><span>11</span></div>
+      <div class="item"><span>B4 · Server-side sorting</span><span>12</span></div>
+      <div class="item"><span>B5 · Last purchase rate</span><span>12</span></div>
+    </div>
+    <div class="part"><h4>Backend: phase B (P1)</h4>
+      <div class="item"><span>B6 · Wider search</span><span>13</span></div>
+      <div class="item"><span>B7 · Materials with stock position</span><span>13</span></div>
+      <div class="item"><span>B8 · Dashboard extensions</span><span>14</span></div>
+      <div class="item"><span>B9 · Company statistics</span><span>14</span></div>
+      <div class="item"><span>B10 · Activity feed</span><span>15</span></div>
+      <div class="item"><span>B11 · Bought vs delivered trend</span><span>15</span></div>
+      <div class="item"><span>B12 · Rate analysis and rate trend</span><span>16</span></div>
+      <div class="item"><span>B13 · Migration 002</span><span>16</span></div>
+    </div>
+    <div class="part"><h4>Backend: phases C and D (P2)</h4>
+      <div class="item"><span>B14 · CSV export</span><span>17</span></div>
+      <div class="item"><span>B15 · Demo / seed data script</span><span>17</span></div>
+      <div class="item"><span>B16 · Refresh token in httpOnly cookie</span><span>18</span></div>
+      <div class="item"><span>B17 · Idempotency keys on create</span><span>18</span></div>
+    </div>
+    <div class="part"><h4>Frontend</h4>
+      <div class="item"><span>7 · Screen changes F1–F8</span><span>20</span></div>
+      <div class="item"><span>Rate analysis page (wireframe)</span><span>23</span></div>
+      <div class="item"><span>8 · API client F10–F14, error dictionary</span><span>24</span></div>
+    </div>
+    <div class="part"><h4>Quality and rollout</h4>
+      <div class="item"><span>9 · Test plan and definition of done</span><span>27</span></div>
+      <div class="item"><span>10 · Rollout, env vars, README changes</span><span>29</span></div>
+      <div class="item"><span>Appendix · POC feature → item map</span><span>31</span></div>
+    </div>
+  </div>
+  <p class="small muted" style="margin-top:4mm">Page numbers are approximate; use the item IDs (B1, F3, D2…) to cross-reference. They are stable and are also meant as ticket names.</p>
+</section>
+
+<!-- =============================== 1. SUMMARY =============================== -->
+<section class="chapter">
+  <div class="eyebrow">1 · Summary</div>
+  <h1>Where the project stands and what is left</h1>
+  <p class="lead">The backend implements every endpoint in the production guide and passes 111 tests. What is missing are the endpoints the new frontend needs and the POC features that neither the backend nor the UI/UX doc carried over.</p>
+
+  <h2>Three reviews, one list</h2>
+  <table>
+    <thead><tr><th style="width:34%">Review</th><th>Finding</th><th style="width:22%">Items</th></tr></thead>
+    <tbody>
+      <tr><td><b>Backend vs production guide</b></td><td>All 20 endpoints present and correctly guarded. Only <code>tests/business-rules.test.js</code> was renamed (its cases live in <code>tests/unit/utils.test.js</code>). Nothing to add.</td><td>none</td></tr>
+      <tr><td><b>Backend vs UI/UX system</b></td><td>Every backend API is used by a screen. The UI needs 5 endpoints it lists on its own page 30 plus 9 gaps found by comparing mockups with the code.</td><td>B1–B5, B11, B12, B14, B16, B17, F9, F10</td></tr>
+      <tr><td><b>POC v8 vs backend + UI/UX</b></td><td>15 POC features are missing or only partly planned: rate analysis, company-wise figures, material position everywhere, activity feed, wider search, and more.</td><td>B6–B10, B12, B15, F2–F8</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Delivery phases</h2>
+  <p>Each phase ends with <code>npm run check</code> green (lint and all tests), an updated README and a short report, the same way the first six phases were done.</p>
+  <div class="phases">
+    <div class="phase"><b>A · Safe daily work</b><span class="tag p0">P0</span>
+      <ul><li>B1 capacity</li><li>B2 list totals</li><li>B3 multi-status</li><li>B4 sorting</li><li>B5 last rate</li><li>F1, F2, F9, F10, F13</li></ul></div>
+    <div class="phase" style="border-top-color:var(--amber)"><b>B · POC parity</b><span class="tag p1">P1</span>
+      <ul><li>B6 search</li><li>B7 material position</li><li>B8 dashboard</li><li>B9 company stats</li><li>B10 activity</li><li>B11 trend, B12 rates</li><li>B13 migration</li><li>F3–F8</li></ul></div>
+    <div class="phase" style="border-top-color:var(--accent)"><b>C · Convenience</b><span class="tag p2">P2</span>
+      <ul><li>B14 CSV export</li><li>B15 seed script</li><li>F12 export button</li></ul></div>
+    <div class="phase" style="border-top-color:var(--violet)"><b>D · Hardening</b><span class="tag p2">P2</span>
+      <ul><li>B16 cookie session</li><li>B17 idempotency</li><li>F14 client support</li></ul></div>
+  </div>
+
+  <h2>What does not change</h2>
+  <ul>
+    <li><b>No breaking changes.</b> Every existing endpoint keeps its path, request and response. New data is added as new fields, new optional query parameters or new endpoints. The current 111 tests must keep passing unmodified.</li>
+    <li><b>Business rules stay where they are.</b> The three delivery limits, ledger replay, PO invariants and rate snapshot are not duplicated. New read endpoints call the same service functions the write paths use.</li>
+    <li><b>Stored data is unchanged.</b> No existing collection gets a new required field. Migration 002 only adds indexes and one new collection.</li>
+  </ul>
+
+  <div class="callout">
+    <h4>Effort at a glance</h4>
+    <p>Phase A ≈ 4–5 dev-days backend + 5 frontend. Phase B ≈ 6 backend + 6 frontend. Phases C and D ≈ 4 backend + 2 frontend. Estimates assume one developer who knows this codebase and include tests.</p>
+  </div>
+</section>
+
+<!-- =============================== 2. RULES =============================== -->
+<section class="chapter">
+  <div class="eyebrow">2 · Rules</div>
+  <h1>Rules every addition must follow</h1>
+  <p class="lead">These are the conventions the existing backend already uses. New code that breaks one of them is a bug, even if its own tests pass.</p>
+
+  <div class="grid2">
+    <div class="box">
+      <h4>1 · Layering</h4>
+      <p class="small">Route → <code>validate(schema)</code> → controller → service → repository. Controllers stay thin and only call <code>ok()</code>/<code>created()</code> from <code>utils/apiResponse.js</code>. Business decisions live in services. Queries live in repositories.</p>
+    </div>
+    <div class="box">
+      <h4>2 · Response envelope</h4>
+      <p class="small">Success: <code>{ success: true, data, meta? }</code>. Error: <code>{ success: false, error: { code, message, details?, requestId } }</code> through <code>AppError</code>. List meta always comes from <code>pageMeta()</code>; new list extras go <i>inside</i> <code>meta</code> (for example <code>meta.summary</code>).</p>
+    </div>
+    <div class="box">
+      <h4>3 · Exact decimals</h4>
+      <p class="small">Quantities (3 dp), rates (2 dp) and money (2 dp) are Decimal128 in MongoDB, Decimal.js in code and <b>strings</b> in JSON, using <code>QTY_SCALE</code>, <code>RATE_SCALE</code> and <code>MONEY_SCALE</code>. Never <code>Number()</code> a quantity. Weighted averages are value ÷ quantity, as in <code>avgRate()</code>.</p>
+    </div>
+    <div class="box">
+      <h4>4 · ObjectIds in aggregations</h4>
+      <p class="small">Mongoose casts ids in <code>find()</code> but <b>not</b> in <code>aggregate()</code>. Every <code>$match</code> built from query input must use <code>toObjectId()</code>. This was a known bug in the guide's reference code; B2, B6, B9 and B10 all hit it.</p>
+    </div>
+    <div class="box">
+      <h4>5 · Activity vs position</h4>
+      <p class="small">Activity (bought, sold, values, averages) uses the period <code>[from, to]</code> on business dates. Position (stock, PO remaining, supplier pools, buy needed) is the balance <b>as of</b> <code>to</code>. Never mix the two in one number. Default <code>to</code> is <code>businessToday(BUSINESS_TIMEZONE)</code>, not UTC.</p>
+    </div>
+    <div class="box">
+      <h4>6 · Business dates</h4>
+      <p class="small">Dates are <code>YYYY-MM-DD</code> strings validated by <code>businessDate</code> and stored at UTC midnight. "As of a day" includes that whole day (<code>endOfDayUTC</code>). Technical time (<code>createdAt</code>) is only for ordering activity, never for accounting.</p>
+    </div>
+    <div class="box">
+      <h4>7 · Roles</h4>
+      <p class="small">All <code>GET</code> routes are open to OWNER and VIEWER. Every write (<code>POST</code>/<code>PATCH</code>) uses <code>authorize(ROLES.OWNER)</code>. Read-only helper endpoints (capacity, last rate) are <code>GET</code> and open to both roles.</p>
+    </div>
+    <div class="box">
+      <h4>8 · Route order</h4>
+      <p class="small">Fixed sub-paths (<code>/capacity</code>, <code>/summary</code>, <code>/last-rate</code>, <code>/export.csv</code>) must be registered <b>before</b> <code>/:id</code>. Otherwise <code>idParams</code> rejects them with 422 <code>VALIDATION_ERROR</code>.</p>
+    </div>
+    <div class="box">
+      <h4>9 · Writes</h4>
+      <p class="small">Any write that affects stock runs in <code>withTransaction</code>, locks POs/materials through <code>LockableRepository.lock()</code> in sorted order, and replays the affected ledgers. None of the items here adds a new stock write; B17 wraps existing writes without changing them.</p>
+    </div>
+    <div class="box">
+      <h4>10 · Validation</h4>
+      <p class="small">Every query parameter is declared in Zod, with unknown keys rejected as today. Booleans use <code>queryBoolean</code>, never <code>z.coerce.boolean</code> (it turns <code>"false"</code> into true). Enumerations use <code>z.enum</code>. Lists (comma-separated) are parsed and each value validated.</p>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <h4>Definition of done for every B-item</h4>
+    <ul class="small">
+      <li>Zod schema, route, controller, service and repository code in the existing files named in the spec card.</li>
+      <li>Integration tests in <code>tests/integration/</code> using the real replica set (<code>mongodb-memory-server</code>): happy path, validation, VIEWER access, and one edge case per rule.</li>
+      <li>README API table and "deviations" section updated; <code>npm run check</code> green.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- =============================== 3. DECISIONS =============================== -->
+<section class="chapter">
+  <div class="eyebrow">3 · Decisions</div>
+  <h1>Decisions to confirm before coding</h1>
+  <p class="lead">The POC, the UI/UX doc and the backend disagree in six places. Each has a recommendation; confirm or change it, and record the answer in the README's "deviations from spec" section.</p>
+
+  <table>
+    <thead><tr><th style="width:7%">ID</th><th style="width:22%">Question</th><th style="width:26%">POC / UI doc / backend</th><th>Recommendation</th><th style="width:10%">Affects</th></tr></thead>
+    <tbody>
+      <tr><td><b>D1</b></td><td>When a PO rate is edited, do old deliveries change price?</td><td>POC reprices all deliveries at the live PO rate. Backend keeps <code>poRateAtSale</code>.</td><td><b>Keep the backend rule.</b> Invoiced deliveries must not change value after the fact. The PO edit form shows: "New rate applies to future deliveries only. 3 existing deliveries keep ₹38,500.00/t."</td><td>F1, F7</td></tr>
+      <tr><td><b>D2</b></td><td>Must PO numbers be unique across all customers?</td><td>POC: globally unique. Backend: unique per customer.</td><td><b>Keep per customer.</b> PO numbers are issued by the buyer, so two buyers can both send "PO-1001". The UI always shows PO number with the customer name.</td><td>none</td></tr>
+      <tr><td><b>D3</b></td><td>Show an overall average rate difference across all materials?</td><td>POC shows overall spread ₹ and %. UI doc forbids averaging margin across copper and HMS.</td><td><b>Show per-material spread as the main view.</b> Keep the overall buy/sell averages, but label the overall difference "Blended (mixed materials)" with an info tooltip and no colour. B12 returns both.</td><td>B12, F8</td></tr>
+      <tr><td><b>D4</b></td><td>Support units other than tons (kg, pieces)?</td><td>POC offers Tons / Kg / Pieces. Backend and UI are tons-only.</td><td><b>Tons only.</b> All maths, fields (<code>quantityTons</code>, <code>ratePerTon</code>) and limits assume tons. Kg can be typed and converted in the input (<code>TonsInput</code> accepts "1250 kg" → 1.250 t) without a data change.</td><td>F5</td></tr>
+      <tr><td><b>D5</b></td><td>Dashboard: 4 KPI cards (UI doc) or 6 (POC)?</td><td>POC adds purchase qty/value, sales qty, total PO qty, extra stock.</td><td><b>Keep 4 cards</b>, and add a compact "More figures" strip under them with Bought, Sold, Total PO, Extra stock and Buy needed. Nothing from the POC is lost and the hierarchy stays.</td><td>B8, F7</td></tr>
+      <tr><td><b>D6</b></td><td>Where does the frontend keep the refresh token?</td><td>Today: JSON body, so the SPA must store it in memory or storage.</td><td><b>httpOnly cookie</b> (B16), switched on by an env flag. Until B16 ships, keep it in memory plus <code>sessionStorage</code>, never <code>localStorage</code>.</td><td>B16, F14</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Two smaller choices already made in this spec</h2>
+  <ul>
+    <li><b>URL filters use ids, not slugs.</b> The UI doc shows <code>?supplier=shree-ganesh</code>, but backend filters take ObjectIds and names can change. URLs use <code>?companyId=66f…</code> and the filter chip shows the name from the cached master list. No backend slug field is added (F11).</li>
+    <li><b>Export is a backend endpoint (B14),</b> not client-side paging, so large exports do not hit the 100-row page limit or the rate limiter.</li>
+  </ul>
+</section>
+
+<!-- =============================== MASTER LIST =============================== -->
+<section class="chapter">
+  <div class="eyebrow">Master list</div>
+  <h1>All 31 items</h1>
+  <p class="lead"><span class="tag be">BE</span> backend, <span class="tag fe">FE</span> frontend. Source: <b>G</b> production guide, <b>U</b> UI/UX doc, <b>P</b> POC v8, <b>R</b> code review.</p>
+
+  <table class="tight">
+    <thead><tr><th style="width:6%">ID</th><th>Item</th><th style="width:8%">Src</th><th style="width:8%">Pri</th><th style="width:8%">Size</th><th style="width:30%">Where</th></tr></thead>
+    <tbody>
+      <tr><td><b>B1</b></td><td>Delivery capacity endpoint <code>GET /sales/capacity</code></td><td>U</td><td><span class="tag p0">P0</span></td><td>M</td><td>stock.service, sale.service, sale routes</td></tr>
+      <tr><td><b>B2</b></td><td>Totals of the whole filtered set in <code>meta.summary</code></td><td>U</td><td><span class="tag p0">P0</span></td><td>S</td><td>purchase, sale, salesPO services + repos</td></tr>
+      <tr><td><b>B3</b></td><td>Multi-status filter + <code>GET /sales-pos/summary</code> counts</td><td>U P</td><td><span class="tag p0">P0</span></td><td>S</td><td>salesPO validation, repo, routes</td></tr>
+      <tr><td><b>B4</b></td><td>Whitelisted <code>sort</code> parameter on all lists</td><td>U</td><td><span class="tag p0">P0</span></td><td>S</td><td>validations/common, all list services</td></tr>
+      <tr><td><b>B5</b></td><td>Last purchase rate <code>GET /purchases/last-rate</code></td><td>U</td><td><span class="tag p0">P0</span></td><td>S</td><td>purchase service, routes</td></tr>
+      <tr><td><b>B6</b></td><td>Wider search (names of supplier, customer, material, PO no.)</td><td>U P</td><td><span class="tag p1">P1</span></td><td>S</td><td>new utils/search.js, list services</td></tr>
+      <tr><td><b>B7</b></td><td>Materials list with stock position (<code>include=position</code>)</td><td>U P</td><td><span class="tag p1">P1</span></td><td>S</td><td>report.service helper, material service</td></tr>
+      <tr><td><b>B8</b></td><td>Dashboard: counts, totals, total PO per material, parties</td><td>P U</td><td><span class="tag p1">P1</span></td><td>M</td><td>report.service dashboard</td></tr>
+      <tr><td><b>B9</b></td><td>Company statistics <code>GET /reports/companies</code> + <code>include=stats</code></td><td>P</td><td><span class="tag p1">P1</span></td><td>M</td><td>report.service, company service</td></tr>
+      <tr><td><b>B10</b></td><td>Activity feed <code>GET /reports/activity</code></td><td>P U</td><td><span class="tag p1">P1</span></td><td>M</td><td>report.service, migration 002</td></tr>
+      <tr><td><b>B11</b></td><td>Bought vs delivered trend <code>GET /reports/trend</code></td><td>U</td><td><span class="tag p1">P1</span></td><td>S</td><td>report.service</td></tr>
+      <tr><td><b>B12</b></td><td>Rate analysis + rate trend <code>GET /reports/rates</code></td><td>P U</td><td><span class="tag p1">P1</span></td><td>M</td><td>report.service</td></tr>
+      <tr><td><b>B13</b></td><td>Migration 002: <code>createdAt</code> indexes, idempotency collection</td><td>R</td><td><span class="tag p1">P1</span></td><td>S</td><td>db/migrations</td></tr>
+      <tr><td><b>B14</b></td><td>CSV export for purchases, sales POs, sales</td><td>U</td><td><span class="tag p2">P2</span></td><td>M</td><td>new utils/csv.js, controllers</td></tr>
+      <tr><td><b>B15</b></td><td>Demo / seed data script (replaces POC "Reset demo data")</td><td>P</td><td><span class="tag p2">P2</span></td><td>S</td><td>scripts/seed.js</td></tr>
+      <tr><td><b>B16</b></td><td>Refresh token in httpOnly cookie (env-switched)</td><td>U</td><td><span class="tag p2">P2</span></td><td>M</td><td>auth controller/service, app.js, env</td></tr>
+      <tr><td><b>B17</b></td><td>Idempotency-Key on create endpoints</td><td>U</td><td><span class="tag p2">P2</span></td><td>M</td><td>new middleware + model</td></tr>
+      <tr><td><b>F1</b></td><td>Delivery form live limits panel</td><td>U</td><td><span class="tag p0">P0</span></td><td>M</td><td>features/sales</td></tr>
+      <tr><td><b>F2</b></td><td>Lists: summary strip, sortable headers, status tabs with counts</td><td>U P</td><td><span class="tag p0">P0</span></td><td>M</td><td>DataTable, FilterBar</td></tr>
+      <tr><td><b>F3</b></td><td>Purchases list "With supplier now" column</td><td>P</td><td><span class="tag p1">P1</span></td><td>S</td><td>features/purchases</td></tr>
+      <tr><td><b>F4</b></td><td>Sales Orders "Material position" column</td><td>P</td><td><span class="tag p1">P1</span></td><td>S</td><td>features/sales-orders</td></tr>
+      <tr><td><b>F5</b></td><td>Materials page with full position</td><td>P U</td><td><span class="tag p1">P1</span></td><td>S</td><td>features/materials</td></tr>
+      <tr><td><b>F6</b></td><td>Companies list stats + company "Stock used" tab</td><td>P</td><td><span class="tag p1">P1</span></td><td>M</td><td>features/companies</td></tr>
+      <tr><td><b>F7</b></td><td>Dashboard: more figures, company-wise, one material, activity, trend</td><td>P U</td><td><span class="tag p1">P1</span></td><td>L</td><td>features/dashboard</td></tr>
+      <tr><td><b>F8</b></td><td>Rate analysis page (new navigation item)</td><td>P</td><td><span class="tag p1">P1</span></td><td>M</td><td>features/rates</td></tr>
+      <tr><td><b>F9</b></td><td>Complete error dictionary (33 existing API codes + 4 new)</td><td>R</td><td><span class="tag p0">P0</span></td><td>S</td><td>lib/errors</td></tr>
+      <tr><td><b>F10</b></td><td>Query keys and invalidation map</td><td>R</td><td><span class="tag p0">P0</span></td><td>S</td><td>lib/api-client, hooks</td></tr>
+      <tr><td><b>F11</b></td><td>URL filters with ids + name chips</td><td>R</td><td><span class="tag p1">P1</span></td><td>S</td><td>FilterBar</td></tr>
+      <tr><td><b>F12</b></td><td>Export button wired to B14</td><td>U</td><td><span class="tag p2">P2</span></td><td>S</td><td>PageHeader</td></tr>
+      <tr><td><b>F13</b></td><td>Purchase form "last rate" default</td><td>U</td><td><span class="tag p0">P0</span></td><td>S</td><td>features/purchases</td></tr>
+      <tr><td><b>F14</b></td><td>Cookie session + Idempotency-Key in the API client</td><td>U</td><td><span class="tag p2">P2</span></td><td>S</td><td>lib/api-client</td></tr>
+    </tbody>
+  </table>
+</section>

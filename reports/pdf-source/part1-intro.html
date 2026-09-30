@@ -1,0 +1,189 @@
+<!-- =============================== 1. COVER =============================== -->
+<section class="page cover">
+  <div class="brand"><div class="m">M</div> Metalix · Scrap Management</div>
+  <h1>UI / UX System<br>for the Metalix frontend</h1>
+  <p class="sub">How every screen, component and interaction should look and behave: a practical, illustrated guide for building the shadcn/ui frontend so that owners, accountants and yard staff understand it at first sight.</p>
+
+  <div class="preview">
+    <div class="ui" style="zoom:.62; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,.5); padding:22px; background:#fff;">
+      <div class="flex between" style="margin-bottom:16px">
+        <div><div style="font-size:24px;font-weight:600">Dashboard</div><div class="t-muted">Good afternoon, Rajesh. Here's September so far.</div></div>
+        <div class="toggle"><span>Today</span><span>This week</span><span class="on">This month</span><span>This FY</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+        <div class="card card-p stat"><div class="label">Stock in yard</div><div class="value">286.5 t</div><div class="delta">▲ 31.520 t since 01/09/2026</div></div>
+        <div class="card card-p stat"><div class="label">Buy needed <svg class="i t-warn"><use href="#i-alert"/></svg></div><div class="value">38.8 t</div><div class="delta t-warn">3 materials are short</div></div>
+        <div class="card card-p stat"><div class="label">Open sales orders</div><div class="value">14</div><div class="delta">212.300 t left to deliver</div></div>
+        <div class="card card-p stat"><div class="label">Delivered this month</div><div class="value">₹1.96 Cr</div><div class="delta t-success">▲ 8% vs Aug</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="meta"><span>Stack: Vite · React 19 · shadcn/ui (Base UI) · Tailwind v4 · TanStack</span><span>Version 1.0 · 27 September 2026</span></div>
+</section>
+
+<!-- =============================== 2. CONTENTS =============================== -->
+<section class="page">
+  <div class="eyebrow">Contents</div>
+  <h1 class="title">What is inside</h1>
+  <p class="lead">Each topic has a rules page, and every important screen has a mockup drawn with the real proposed colours, sizes and sample data. Red numbered markers on mockups point to the notes underneath.</p>
+  <div class="toc">
+    <div class="part"><h4>Foundations</h4>
+      <div class="item"><span>The system on one page: 8 principles</span><span>3</span></div>
+      <div class="item"><span>Information architecture and navigation</span><span>4</span></div>
+      <div class="item"><span>App shell (mockup)</span><span>5</span></div>
+      <div class="item"><span>Page anatomy, containers and shortcuts</span><span>6</span></div>
+    </div>
+    <div class="part"><h4>Dashboard</h4>
+      <div class="item"><span>Dashboard (mockup)</span><span>7</span></div>
+      <div class="item"><span>Dashboard rules and data visualisation</span><span>8</span></div>
+    </div>
+    <div class="part"><h4>Lists, filters and forms</h4>
+      <div class="item"><span>Purchases list (mockup)</span><span>9</span></div>
+      <div class="item"><span>Table, filter and search rules</span><span>10</span></div>
+      <div class="item"><span>Forms: layout, validation, errors</span><span>11</span></div>
+      <div class="item"><span>New delivery with live limits (mockup)</span><span>12</span></div>
+      <div class="item"><span>Limits panel states</span><span>13</span></div>
+      <div class="item"><span>Sales order detail (mockup)</span><span>14</span></div>
+      <div class="item"><span>Numbers, dates and complex data</span><span>15</span></div>
+    </div>
+    <div class="part"><h4>States and feedback</h4>
+      <div class="item"><span>Loading and empty states (gallery)</span><span>16</span></div>
+      <div class="item"><span>Errors, success and confirmations (gallery)</span><span>17</span></div>
+      <div class="item"><span>Every API error mapped to the screen</span><span>18</span></div>
+    </div>
+    <div class="part"><h4>Interaction</h4>
+      <div class="item"><span>Micro-interactions and motion</span><span>19</span></div>
+      <div class="item"><span>Hover, focus, active, disabled and other states</span><span>20</span></div>
+    </div>
+    <div class="part"><h4>Mobile and access</h4>
+      <div class="item"><span>Responsive rules and breakpoints</span><span>21</span></div>
+      <div class="item"><span>Phone screens (mockups)</span><span>22</span></div>
+      <div class="item"><span>Phone drawers and touch rules (mockups)</span><span>23</span></div>
+      <div class="item"><span>Accessibility checklist (WCAG 2.2 AA)</span><span>24</span></div>
+    </div>
+    <div class="part"><h4>Flows and build system</h4>
+      <div class="item"><span>User flows and click counts</span><span>25</span></div>
+      <div class="item"><span>Which shadcn/ui component for which job</span><span>26</span></div>
+      <div class="item"><span>Design tokens: colour, type, spacing</span><span>27</span></div>
+      <div class="item"><span>Reusable components and folder structure</span><span>28</span></div>
+      <div class="item"><span>What to build first: 20 priorities</span><span>29</span></div>
+      <div class="item"><span>Open questions and next steps</span><span>30</span></div>
+    </div>
+  </div>
+  <div class="callout mt4">
+    <h4>Sample data used throughout</h4>
+    <p>Business "Metalix", today = 27/09/2026. Suppliers: Shree Ganesh Metals, Sharma Traders, Patel Scrap Co., Jai Ambe Steel, Noor Metal Mart. Buyers: Bharat Castings Pvt Ltd, Rajkot Alloys, Kutch Foundry Works. Materials: HMS 1, MS turnings, CRC bundle, Aluminium extrusion, Brass honey, Copper wire (Berry). All numbers are consistent with each other: stock sums to 286.450 t, every amount = tons × rate.</p>
+  </div>
+  <div class="runhead">Metalix UI/UX System</div>
+</section>
+
+<!-- =============================== 3. PRINCIPLES =============================== -->
+<section class="page">
+  <div class="eyebrow">Foundations</div>
+  <h1 class="title">The system on one page</h1>
+  <p class="lead">Every screen answers one of the owner's two daily questions: <b style="color:var(--doc-fg)">"What do I need to buy?"</b> and <b style="color:var(--doc-fg)">"What can I deliver?"</b>. The rest of this guide is these eight principles applied to each part of the app.</p>
+
+  <div class="grid2" style="gap:4mm">
+    <div class="principle"><div class="n">1</div><h4>Numbers first, calm around them</h4><p>Neutral greys plus one steel-blue accent. Colour appears only when something needs attention (amber = close to a limit, red = over a limit). Big, aligned, exact numbers.</p></div>
+    <div class="principle"><div class="n">2</div><h4>One way to do each thing</h4><p>One sidebar, one page layout, one table (that becomes cards on phones), one form pattern, one number formatter. Learn it once, use it everywhere.</p></div>
+    <div class="principle"><div class="n">3</div><h4>Prevent errors, don't report them</h4><p>The delivery form shows PO remaining, yard stock and supplier stock <i>before</i> saving, names the tightest limit and offers "Use max". Mistakes are hard to make.</p></div>
+    <div class="principle"><div class="n">4</div><h4>Three clicks per core task</h4><p>Smart defaults (today, last supplier, last rate), "Deliver" buttons right on the order row, inline "+ Add" in pickers, "Save &amp; add another".</p></div>
+    <div class="principle"><div class="n">5</div><h4>Plain trade words</h4><p>"Left to deliver", "Stock with supplier", "Rate per ton". Sales POs are "Sales Orders"; statuses are Pending, Partly delivered, Completed, Cancelled.</p></div>
+    <div class="principle"><div class="n">6</div><h4>Never a blank screen</h4><p>Old rows stay visible while new data loads; skeletons only on the first load and only after 0.5 s; forms keep what users typed through every error.</p></div>
+    <div class="principle"><div class="n">7</div><h4>Motion only as feedback</h4><p>100–300 ms, never more than 400 ms. Animations confirm a press, a save or a change. No count-ups, shakes, confetti or parallax.</p></div>
+    <div class="principle"><div class="n">8</div><h4>Built for the yard too</h4><p>44–48 px touch targets, bottom navigation, drawers instead of dialogs, cards instead of tables, and a high-contrast "Sunlight" theme for outdoors.</p></div>
+  </div>
+
+  <h2>The signature interaction</h2>
+  <div class="row" style="align-items:center">
+    <div class="ui card" style="width:92mm; padding:16px; flex:none">
+      <div class="flex between"><span class="fw6">Delivery limits</span><svg class="i t-muted"><use href="#i-info"/></svg></div>
+      <div style="margin-top:10px" class="t-xs t-muted fw5">Shree Ganesh Metals stock</div>
+      <div class="flex between"><span class="t-lg fw6">9.200 t</span><span class="badge b-outline" style="height:20px">Tightest limit</span></div>
+      <div class="bar tall" style="margin-top:4px"><i style="width:65%"></i></div>
+      <div style="margin-top:12px; padding-top:10px; border-top:1px solid var(--border)"><div class="t-sm">You can deliver up to</div><div class="t-lg fw7">9.200 t</div><div class="t-xs t-muted">Limited by Shree Ganesh Metals stock</div></div>
+    </div>
+    <p style="margin:0">The backend already refuses any delivery bigger than the PO remaining, the yard stock or the chosen supplier's stock. The UI turns those three hidden rules into a visible panel that updates as the user types. Most "failed save" moments disappear. See pages 12–13.</p>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Foundations</div>
+</section>
+
+<!-- =============================== 4. INFORMATION ARCHITECTURE =============================== -->
+<section class="page">
+  <div class="eyebrow">Foundations</div>
+  <h1 class="title">Information architecture and navigation</h1>
+  <p class="lead">Eight modules in four labelled groups, ordered by how often people use them. The sidebar is always visible on desktop: hidden menus made desktop users at least 39% slower in NN/g testing.</p>
+
+  <svg viewBox="0 0 700 330" width="100%" style="display:block">
+    <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 10 5 0 10z" fill="#9aa3ae"/></marker></defs>
+    <rect x="290" y="6" width="120" height="34" rx="8" fill="oklch(0.45 0.10 235)"/>
+    <text x="350" y="28" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">Metalix app</text>
+    <path d="M350 40 V58 H90 V74 M350 58 H265 V74 M350 58 H435 V74 M350 58 H610 V74" fill="none" stroke="#9aa3ae" stroke-width="1.5"/>
+    <!-- group boxes -->
+    <g font-size="11.5">
+      <rect x="20" y="74" width="140" height="30" rx="7" fill="oklch(0.95 0.02 235)" stroke="oklch(0.80 0.05 235)"/><text x="90" y="93" text-anchor="middle" font-weight="700" fill="oklch(0.30 0.07 235)">OVERVIEW</text>
+      <rect x="185" y="74" width="160" height="30" rx="7" fill="oklch(0.95 0.02 235)" stroke="oklch(0.80 0.05 235)"/><text x="265" y="93" text-anchor="middle" font-weight="700" fill="oklch(0.30 0.07 235)">DAILY WORK</text>
+      <rect x="360" y="74" width="150" height="30" rx="7" fill="oklch(0.95 0.02 235)" stroke="oklch(0.80 0.05 235)"/><text x="435" y="93" text-anchor="middle" font-weight="700" fill="oklch(0.30 0.07 235)">STOCK &amp; REPORTS</text>
+      <rect x="530" y="74" width="160" height="30" rx="7" fill="oklch(0.95 0.02 235)" stroke="oklch(0.80 0.05 235)"/><text x="610" y="93" text-anchor="middle" font-weight="700" fill="oklch(0.30 0.07 235)">SETUP</text>
+    </g>
+    <g font-size="12" fill="#17191c">
+      <!-- overview -->
+      <rect x="30" y="118" width="120" height="30" rx="6" fill="#fff" stroke="#cfd4db"/><text x="90" y="137" text-anchor="middle">Dashboard</text>
+      <text x="90" y="166" text-anchor="middle" font-size="10" fill="#5b6270">home, KPIs, needs</text><text x="90" y="179" text-anchor="middle" font-size="10" fill="#5b6270">attention, charts</text>
+      <!-- daily -->
+      <rect x="195" y="118" width="140" height="30" rx="6" fill="#fff" stroke="#cfd4db"/><text x="265" y="137" text-anchor="middle">Purchases</text>
+      <rect x="195" y="156" width="140" height="30" rx="6" fill="#fff" stroke="#cfd4db"/><text x="258" y="175" text-anchor="middle">Sales Orders</text><rect x="306" y="163" width="22" height="16" rx="4" fill="oklch(0.45 0.10 235)"/><text x="317" y="175" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">14</text>
+      <rect x="195" y="194" width="140" height="30" rx="6" fill="#fff" stroke="#cfd4db"/><text x="265" y="213" text-anchor="middle">Deliveries</text>
+      <!-- stock -->
+      <rect x="370" y="118" width="130" height="30" rx="6" fill="#fff" stroke="#cfd4db"/><text x="435" y="137" text-anchor="middle">Supplier stock</text>
+      <rect x="370" y="156" width="130" height="30" rx="6" fill="#fff" stroke="#cfd4db"/><text x="435" y="175" text-anchor="middle">Company report</text>
+      <!-- setup -->
+      <rect x="540" y="118" width="140" height="30" rx="6" fill="#fff" stroke="#cfd4db"/><text x="610" y="137" text-anchor="middle">Companies</text>
+      <rect x="540" y="156" width="140" height="30" rx="6" fill="#fff" stroke="#cfd4db"/><text x="610" y="175" text-anchor="middle">Materials</text>
+    </g>
+    <!-- detail level -->
+    <g font-size="11" fill="#5b6270">
+      <path d="M265 224 V252" stroke="#c3c9d1" stroke-dasharray="3 3"/>
+      <path d="M600 186 V252" stroke="#c3c9d1" stroke-dasharray="3 3"/>
+      <rect x="170" y="252" width="190" height="62" rx="8" fill="#f5f7f9" stroke="#dfe3e8"/>
+      <text x="265" y="270" text-anchor="middle" font-weight="600" fill="#17191c">Detail pages (own URL)</text>
+      <text x="265" y="287" text-anchor="middle">/sales-orders/0142 → deliveries</text>
+      <text x="265" y="302" text-anchor="middle">purchase "peek" sheet → full page</text>
+      <rect x="505" y="252" width="190" height="62" rx="8" fill="#f5f7f9" stroke="#dfe3e8"/>
+      <text x="600" y="270" text-anchor="middle" font-weight="600" fill="#17191c">Company detail</text>
+      <text x="600" y="287" text-anchor="middle">tabs: Purchases · Orders ·</text>
+      <text x="600" y="302" text-anchor="middle">Deliveries · Stock (in URL)</text>
+      <rect x="20" y="252" width="130" height="62" rx="8" fill="#fff" stroke="oklch(0.45 0.10 235)" stroke-dasharray="4 3"/>
+      <text x="85" y="270" text-anchor="middle" font-weight="600" fill="oklch(0.45 0.10 235)">Everywhere</text>
+      <text x="85" y="287" text-anchor="middle">Ctrl+K palette</text>
+      <text x="85" y="302" text-anchor="middle">+ New menu (Alt P/O/D)</text>
+    </g>
+  </svg>
+
+  <div class="grid2 mt2">
+    <div>
+      <h3 class="mt0">Say it the way the trade says it</h3>
+      <table class="doc compact">
+        <tr><th>System word</th><th>Use instead</th></tr>
+        <tr><td>Sales PO</td><td><b>Sales Order</b> (numbers stay PO-0142)</td></tr>
+        <tr><td>PARTIALLY_SUPPLIED</td><td><b>Partly delivered</b></td></tr>
+        <tr><td>Balance qty</td><td><b>Left to deliver</b></td></tr>
+        <tr><td>Source company stock</td><td><b>Stock with supplier</b></td></tr>
+        <tr><td>Unit price</td><td><b>Rate per ton</b> (₹/t)</td></tr>
+        <tr><td>Source company</td><td><b>Stock from</b> (on the delivery form)</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3 class="mt0">Rules</h3>
+      <ul class="clean">
+        <li>Every item has an icon <b>and</b> a text label, never an icon alone.</li>
+        <li>Sales Orders shows a count badge of open orders (14).</li>
+        <li><b>VIEWER role:</b> write buttons are hidden, not greyed out. A small "View only" badge in the user menu explains why. The server still enforces 403.</li>
+        <li>Every filter, tab, sort and page lives in the URL, so Back works and a filtered view can be shared on WhatsApp.</li>
+        <li>Help, shortcuts and a WhatsApp support link always sit in the same place (sidebar footer).</li>
+      </ul>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Foundations</div>
+</section>

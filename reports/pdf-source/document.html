@@ -1,0 +1,1910 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<title>Metalix UI/UX System</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-dash" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></symbol>
+    <symbol id="i-in" viewBox="0 0 24 24"><path d="M12 17V3"/><path d="m6 11 6 6 6-6"/><path d="M19 21H5"/></symbol>
+    <symbol id="i-clip" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62L18.3 9.38A1 1 0 0 0 17.52 9H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></symbol>
+    <symbol id="i-ware" viewBox="0 0 24 24"><path d="M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35A2 2 0 0 1 3.26 6.5l8-3.2a2 2 0 0 1 1.48 0l8 3.2A2 2 0 0 1 22 8.35Z"/><path d="M6 18h12"/><path d="M6 14h12"/><rect x="6" y="10" width="12" height="12"/></symbol>
+    <symbol id="i-report" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 16v-3"/><path d="M12 16V8"/><path d="M16 16v-5"/></symbol>
+    <symbol id="i-bldg" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 2 22 7 12 12 2 7Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-updown" viewBox="0 0 24 24"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.7 18-8-14a2 2 0 0 0-3.5 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-ok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-xc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></symbol>
+    <symbol id="i-errc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+    <symbol id="i-cols" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+    <symbol id="i-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></symbol>
+    <symbol id="i-wifioff" viewBox="0 0 24 24"><path d="M12 20h.01"/><path d="M8.5 16.4a5 5 0 0 1 7 0"/><path d="M2 8.8a15 15 0 0 1 4.2-2.6"/><path d="M10.7 5c4-.4 8.1.9 11.3 3.8"/><path d="M16.9 11.3a10 10 0 0 1 2.2 1.6"/><path d="M5 12.9a10 10 0 0 1 5.2-2.7"/><path d="m2 2 20 20"/></symbol>
+    <symbol id="i-cloudoff" viewBox="0 0 24 24"><path d="m2 2 20 20"/><path d="M5.8 5.8A7 7 0 0 0 9 19h8.5a4.5 4.5 0 0 0 1.3-.2"/><path d="M21.5 16.5A4.5 4.5 0 0 0 17.5 10h-1.8A7 7 0 0 0 9.2 5.6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="14" height="14" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M22 3H2l8 9.5V19l4 2v-8.5z"/></symbol>
+    <symbol id="i-trend" viewBox="0 0 24 24"><path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></symbol>
+    <symbol id="i-fileq" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><path d="M9.5 11a2.5 2.5 0 0 1 5 .5c0 1.5-2.5 2-2.5 2.5"/><path d="M12 17.5h.01"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-dl" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10 12 3l9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-loader" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.2-8.6"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  </defs>
+</svg>
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<title>Metalix UI/UX System</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-dash" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></symbol>
+    <symbol id="i-in" viewBox="0 0 24 24"><path d="M12 17V3"/><path d="m6 11 6 6 6-6"/><path d="M19 21H5"/></symbol>
+    <symbol id="i-clip" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62L18.3 9.38A1 1 0 0 0 17.52 9H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></symbol>
+    <symbol id="i-ware" viewBox="0 0 24 24"><path d="M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35A2 2 0 0 1 3.26 6.5l8-3.2a2 2 0 0 1 1.48 0l8 3.2A2 2 0 0 1 22 8.35Z"/><path d="M6 18h12"/><path d="M6 14h12"/><rect x="6" y="10" width="12" height="12"/></symbol>
+    <symbol id="i-report" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 16v-3"/><path d="M12 16V8"/><path d="M16 16v-5"/></symbol>
+    <symbol id="i-bldg" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 2 22 7 12 12 2 7Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-updown" viewBox="0 0 24 24"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.7 18-8-14a2 2 0 0 0-3.5 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-ok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-xc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></symbol>
+    <symbol id="i-errc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+    <symbol id="i-cols" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+    <symbol id="i-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></symbol>
+    <symbol id="i-wifioff" viewBox="0 0 24 24"><path d="M12 20h.01"/><path d="M8.5 16.4a5 5 0 0 1 7 0"/><path d="M2 8.8a15 15 0 0 1 4.2-2.6"/><path d="M10.7 5c4-.4 8.1.9 11.3 3.8"/><path d="M16.9 11.3a10 10 0 0 1 2.2 1.6"/><path d="M5 12.9a10 10 0 0 1 5.2-2.7"/><path d="m2 2 20 20"/></symbol>
+    <symbol id="i-cloudoff" viewBox="0 0 24 24"><path d="m2 2 20 20"/><path d="M5.8 5.8A7 7 0 0 0 9 19h8.5a4.5 4.5 0 0 0 1.3-.2"/><path d="M21.5 16.5A4.5 4.5 0 0 0 17.5 10h-1.8A7 7 0 0 0 9.2 5.6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="14" height="14" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M22 3H2l8 9.5V19l4 2v-8.5z"/></symbol>
+    <symbol id="i-trend" viewBox="0 0 24 24"><path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></symbol>
+    <symbol id="i-fileq" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><path d="M9.5 11a2.5 2.5 0 0 1 5 .5c0 1.5-2.5 2-2.5 2.5"/><path d="M12 17.5h.01"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-dl" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10 12 3l9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-loader" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.2-8.6"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  </defs>
+</svg>
+<!-- =============================== 1. COVER =============================== -->
+<section class="page cover">
+  <div class="brand"><div class="m">M</div> Metalix · Scrap Management</div>
+  <h1>UI / UX System<br>for the Metalix frontend</h1>
+  <p class="sub">How every screen, component and interaction should look and behave: a practical, illustrated guide for building the shadcn/ui frontend so that owners, accountants and yard staff understand it at first sight.</p>
+
+  <div class="preview">
+    <div class="ui" style="zoom:.62; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,.5); padding:22px; background:#fff;">
+      <div class="flex between" style="margin-bottom:16px">
+        <div><div style="font-size:24px;font-weight:600">Dashboard</div><div class="t-muted">Good afternoon, Rajesh. Here's September so far.</div></div>
+        <div class="toggle"><span>Today</span><span>This week</span><span class="on">This month</span><span>This FY</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+        <div class="card card-p stat"><div class="label">Stock in yard</div><div class="value">286.5 t</div><div class="delta">▲ 31.520 t since 01/09/2026</div></div>
+        <div class="card card-p stat"><div class="label">Buy needed <svg class="i t-warn"><use href="#i-alert"/></svg></div><div class="value">38.8 t</div><div class="delta t-warn">3 materials are short</div></div>
+        <div class="card card-p stat"><div class="label">Open sales orders</div><div class="value">14</div><div class="delta">212.300 t left to deliver</div></div>
+        <div class="card card-p stat"><div class="label">Delivered this month</div><div class="value">₹1.96 Cr</div><div class="delta t-success">▲ 8% vs Aug</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="meta"><span>Stack: Vite · React 19 · shadcn/ui (Base UI) · Tailwind v4 · TanStack</span><span>Version 1.0 · 27 September 2026</span></div>
+</section>
+
+<!-- =============================== 2. CONTENTS =============================== -->
+<section class="page">
+  <div class="eyebrow">Contents</div>
+  <h1 class="title">What is inside</h1>
+  <p class="lead">Each topic has a rules page, and every important screen has a mockup drawn with the real proposed colours, sizes and sample data. Red numbered markers on mockups point to the notes underneath.</p>
+  <div class="toc">
+    <div class="part"><h4>Foundations</h4>
+      <div class="item"><span>The system on one page: 8 principles</span><span>3</span></div>
+      <div class="item"><span>Information architecture and navigation</span><span>4</span></div>
+      <div class="item"><span>App shell (mockup)</span><span>5</span></div>
+      <div class="item"><span>Page anatomy, containers and shortcuts</span><span>6</span></div>
+    </div>
+    <div class="part"><h4>Dashboard</h4>
+      <div class="item"><span>Dashboard (mockup)</span><span>7</span></div>
+      <div class="item"><span>Dashboard rules and data visualisation</span><span>8</span></div>
+    </div>
+    <div class="part"><h4>Lists, filters and forms</h4>
+      <div class="item"><span>Purchases list (mockup)</span><span>9</span></div>
+      <div class="item"><span>Table, filter and search rules</span><span>10</span></div>
+      <div class="item"><span>Forms: layout, validation, errors</span><span>11</span></div>
+      <div class="item"><span>New delivery with live limits (mockup)</span><span>12</span></div>
+      <div class="item"><span>Limits panel states</span><span>13</span></div>
+      <div class="item"><span>Sales order detail (mockup)</span><span>14</span></div>
+      <div class="item"><span>Numbers, dates and complex data</span><span>15</span></div>
+    </div>
+    <div class="part"><h4>States and feedback</h4>
+      <div class="item"><span>Loading and empty states (gallery)</span><span>16</span></div>
+      <div class="item"><span>Errors, success and confirmations (gallery)</span><span>17</span></div>
+      <div class="item"><span>Every API error mapped to the screen</span><span>18</span></div>
+    </div>
+    <div class="part"><h4>Interaction</h4>
+      <div class="item"><span>Micro-interactions and motion</span><span>19</span></div>
+      <div class="item"><span>Hover, focus, active, disabled and other states</span><span>20</span></div>
+    </div>
+    <div class="part"><h4>Mobile and access</h4>
+      <div class="item"><span>Responsive rules and breakpoints</span><span>21</span></div>
+      <div class="item"><span>Phone screens (mockups)</span><span>22</span></div>
+      <div class="item"><span>Phone drawers and touch rules (mockups)</span><span>23</span></div>
+      <div class="item"><span>Accessibility checklist (WCAG 2.2 AA)</span><span>24</span></div>
+    </div>
+    <div class="part"><h4>Flows and build system</h4>
+      <div class="item"><span>User flows and click counts</span><span>25</span></div>
+      <div class="item"><span>Which shadcn/ui component for which job</span><span>26</span></div>
+      <div class="item"><span>Design tokens: colour, type, spacing</span><span>27</span></div>
+      <div class="item"><span>Reusable components and folder structure</span><span>28</span></div>
+      <div class="item"><span>What to build first: 20 priorities</span><span>29</span></div>
+      <div class="item"><span>Open questions and next steps</span><span>30</span></div>
+    </div>
+  </div>
+  <div class="callout mt4">
+    <h4>Sample data used throughout</h4>
+    <p>Business "Metalix", today = 27/09/2026. Suppliers: Shree Ganesh Metals, Sharma Traders, Patel Scrap Co., Jai Ambe Steel, Noor Metal Mart. Buyers: Bharat Castings Pvt Ltd, Rajkot Alloys, Kutch Foundry Works. Materials: HMS 1, MS turnings, CRC bundle, Aluminium extrusion, Brass honey, Copper wire (Berry). All numbers are consistent with each other: stock sums to 286.450 t, every amount = tons × rate.</p>
+  </div>
+  <div class="runhead">Metalix UI/UX System</div>
+</section>
+
+<!-- =============================== 3. PRINCIPLES =============================== -->
+<section class="page">
+  <div class="eyebrow">Foundations</div>
+  <h1 class="title">The system on one page</h1>
+  <p class="lead">Every screen answers one of the owner's two daily questions: <b style="color:var(--doc-fg)">"What do I need to buy?"</b> and <b style="color:var(--doc-fg)">"What can I deliver?"</b>. The rest of this guide is these eight principles applied to each part of the app.</p>
+
+  <div class="grid2" style="gap:4mm">
+    <div class="principle"><div class="n">1</div><h4>Numbers first, calm around them</h4><p>Neutral greys plus one steel-blue accent. Colour appears only when something needs attention (amber = close to a limit, red = over a limit). Big, aligned, exact numbers.</p></div>
+    <div class="principle"><div class="n">2</div><h4>One way to do each thing</h4><p>One sidebar, one page layout, one table (that becomes cards on phones), one form pattern, one number formatter. Learn it once, use it everywhere.</p></div>
+    <div class="principle"><div class="n">3</div><h4>Prevent errors, don't report them</h4><p>The delivery form shows PO remaining, yard stock and supplier stock <i>before</i> saving, names the tightest limit and offers "Use max". Mistakes are hard to make.</p></div>
+    <div class="principle"><div class="n">4</div><h4>Three clicks per core task</h4><p>Smart defaults (today, last supplier, last rate), "Deliver" buttons right on the order row, inline "+ Add" in pickers, "Save &amp; add another".</p></div>
+    <div class="principle"><div class="n">5</div><h4>Plain trade words</h4><p>"Left to deliver", "Stock with supplier", "Rate per ton". Sales POs are "Sales Orders"; statuses are Pending, Partly delivered, Completed, Cancelled.</p></div>
+    <div class="principle"><div class="n">6</div><h4>Never a blank screen</h4><p>Old rows stay visible while new data loads; skeletons only on the first load and only after 0.5 s; forms keep what users typed through every error.</p></div>
+    <div class="principle"><div class="n">7</div><h4>Motion only as feedback</h4><p>100–300 ms, never more than 400 ms. Animations confirm a press, a save or a change. No count-ups, shakes, confetti or parallax.</p></div>
+    <div class="principle"><div class="n">8</div><h4>Built for the yard too</h4><p>44–48 px touch targets, bottom navigation, drawers instead of dialogs, cards instead of tables, and a high-contrast "Sunlight" theme for outdoors.</p></div>
+  </div>
+
+  <h2>The signature interaction</h2>
+  <div class="row" style="align-items:center">
+    <div class="ui card" style="width:92mm; padding:16px; flex:none">
+      <div class="flex between"><span class="fw6">Delivery limits</span><svg class="i t-muted"><use href="#i-info"/></svg></div>
+      <div style="margin-top:10px" class="t-xs t-muted fw5">Shree Ganesh Metals stock</div>
+      <div class="flex between"><span class="t-lg fw6">9.200 t</span><span class="badge b-outline" style="height:20px">Tightest limit</span></div>
+      <div class="bar tall" style="margin-top:4px"><i style="width:65%"></i></div>
+      <div style="margin-top:12px; padding-top:10px; border-top:1px solid var(--border)"><div class="t-sm">You can deliver up to</div><div class="t-lg fw7">9.200 t</div><div class="t-xs t-muted">Limited by Shree Ganesh Metals stock</div></div>
+    </div>
+    <p style="margin:0">The backend already refuses any delivery bigger than the PO remaining, the yard stock or the chosen supplier's stock. The UI turns those three hidden rules into a visible panel that updates as the user types. Most "failed save" moments disappear. See pages 12–13.</p>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Foundations</div>
+</section>
+
+<!-- =============================== 4. INFORMATION ARCHITECTURE =============================== -->
+<section class="page">
+  <div class="eyebrow">Foundations</div>
+  <h1 class="title">Information architecture and navigation</h1>
+  <p class="lead">Eight modules in four labelled groups, ordered by how often people use them. The sidebar is always visible on desktop: hidden menus made desktop users at least 39% slower in NN/g testing.</p>
+
+  <svg viewBox="0 0 700 330" width="100%" style="display:block">
+    <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 10 5 0 10z" fill="#9aa3ae"/></marker></defs>
+    <rect x="290" y="6" width="120" height="34" rx="8" fill="oklch(0.45 0.10 235)"/>
+    <text x="350" y="28" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">Metalix app</text>
+    <path d="M350 40 V58 H90 V74 M350 58 H265 V74 M350 58 H435 V74 M350 58 H610 V74" fill="none" stroke="#9aa3ae" stroke-width="1.5"/>
+    <!-- group boxes -->
+    <g font-size="11.5">
+      <rect x="20" y="74" width="140" height="30" rx="7" fill="oklch(0.95 0.02 235)" stroke="oklch(0.80 0.05 235)"/><text x="90" y="93" text-anchor="middle" font-weight="700" fill="oklch(0.30 0.07 235)">OVERVIEW</text>
+      <rect x="185" y="74" width="160" height="30" rx="7" fill="oklch(0.95 0.02 235)" stroke="oklch(0.80 0.05 235)"/><text x="265" y="93" text-anchor="middle" font-weight="700" fill="oklch(0.30 0.07 235)">DAILY WORK</text>
+      <rect x="360" y="74" width="150" height="30" rx="7" fill="oklch(0.95 0.02 235)" stroke="oklch(0.80 0.05 235)"/><text x="435" y="93" text-anchor="middle" font-weight="700" fill="oklch(0.30 0.07 235)">STOCK &amp; REPORTS</text>
+      <rect x="530" y="74" width="160" height="30" rx="7" fill="oklch(0.95 0.02 235)" stroke="oklch(0.80 0.05 235)"/><text x="610" y="93" text-anchor="middle" font-weight="700" fill="oklch(0.30 0.07 235)">SETUP</text>
+    </g>
+    <g font-size="12" fill="#17191c">
+      <!-- overview -->
+      <rect x="30" y="118" width="120" height="30" rx="6" fill="#fff" stroke="#cfd4db"/><text x="90" y="137" text-anchor="middle">Dashboard</text>
+      <text x="90" y="166" text-anchor="middle" font-size="10" fill="#5b6270">home, KPIs, needs</text><text x="90" y="179" text-anchor="middle" font-size="10" fill="#5b6270">attention, charts</text>
+      <!-- daily -->
+      <rect x="195" y="118" width="140" height="30" rx="6" fill="#fff" stroke="#cfd4db"/><text x="265" y="137" text-anchor="middle">Purchases</text>
+      <rect x="195" y="156" width="140" height="30" rx="6" fill="#fff" stroke="#cfd4db"/><text x="258" y="175" text-anchor="middle">Sales Orders</text><rect x="306" y="163" width="22" height="16" rx="4" fill="oklch(0.45 0.10 235)"/><text x="317" y="175" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">14</text>
+      <rect x="195" y="194" width="140" height="30" rx="6" fill="#fff" stroke="#cfd4db"/><text x="265" y="213" text-anchor="middle">Deliveries</text>
+      <!-- stock -->
+      <rect x="370" y="118" width="130" height="30" rx="6" fill="#fff" stroke="#cfd4db"/><text x="435" y="137" text-anchor="middle">Supplier stock</text>
+      <rect x="370" y="156" width="130" height="30" rx="6" fill="#fff" stroke="#cfd4db"/><text x="435" y="175" text-anchor="middle">Company report</text>
+      <!-- setup -->
+      <rect x="540" y="118" width="140" height="30" rx="6" fill="#fff" stroke="#cfd4db"/><text x="610" y="137" text-anchor="middle">Companies</text>
+      <rect x="540" y="156" width="140" height="30" rx="6" fill="#fff" stroke="#cfd4db"/><text x="610" y="175" text-anchor="middle">Materials</text>
+    </g>
+    <!-- detail level -->
+    <g font-size="11" fill="#5b6270">
+      <path d="M265 224 V252" stroke="#c3c9d1" stroke-dasharray="3 3"/>
+      <path d="M600 186 V252" stroke="#c3c9d1" stroke-dasharray="3 3"/>
+      <rect x="170" y="252" width="190" height="62" rx="8" fill="#f5f7f9" stroke="#dfe3e8"/>
+      <text x="265" y="270" text-anchor="middle" font-weight="600" fill="#17191c">Detail pages (own URL)</text>
+      <text x="265" y="287" text-anchor="middle">/sales-orders/0142 → deliveries</text>
+      <text x="265" y="302" text-anchor="middle">purchase "peek" sheet → full page</text>
+      <rect x="505" y="252" width="190" height="62" rx="8" fill="#f5f7f9" stroke="#dfe3e8"/>
+      <text x="600" y="270" text-anchor="middle" font-weight="600" fill="#17191c">Company detail</text>
+      <text x="600" y="287" text-anchor="middle">tabs: Purchases · Orders ·</text>
+      <text x="600" y="302" text-anchor="middle">Deliveries · Stock (in URL)</text>
+      <rect x="20" y="252" width="130" height="62" rx="8" fill="#fff" stroke="oklch(0.45 0.10 235)" stroke-dasharray="4 3"/>
+      <text x="85" y="270" text-anchor="middle" font-weight="600" fill="oklch(0.45 0.10 235)">Everywhere</text>
+      <text x="85" y="287" text-anchor="middle">Ctrl+K palette</text>
+      <text x="85" y="302" text-anchor="middle">+ New menu (Alt P/O/D)</text>
+    </g>
+  </svg>
+
+  <div class="grid2 mt2">
+    <div>
+      <h3 class="mt0">Say it the way the trade says it</h3>
+      <table class="doc compact">
+        <tr><th>System word</th><th>Use instead</th></tr>
+        <tr><td>Sales PO</td><td><b>Sales Order</b> (numbers stay PO-0142)</td></tr>
+        <tr><td>PARTIALLY_SUPPLIED</td><td><b>Partly delivered</b></td></tr>
+        <tr><td>Balance qty</td><td><b>Left to deliver</b></td></tr>
+        <tr><td>Source company stock</td><td><b>Stock with supplier</b></td></tr>
+        <tr><td>Unit price</td><td><b>Rate per ton</b> (₹/t)</td></tr>
+        <tr><td>Source company</td><td><b>Stock from</b> (on the delivery form)</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3 class="mt0">Rules</h3>
+      <ul class="clean">
+        <li>Every item has an icon <b>and</b> a text label, never an icon alone.</li>
+        <li>Sales Orders shows a count badge of open orders (14).</li>
+        <li><b>VIEWER role:</b> write buttons are hidden, not greyed out. A small "View only" badge in the user menu explains why. The server still enforces 403.</li>
+        <li>Every filter, tab, sort and page lives in the URL, so Back works and a filtered view can be shared on WhatsApp.</li>
+        <li>Help, shortcuts and a WhatsApp support link always sit in the same place (sidebar footer).</li>
+      </ul>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Foundations</div>
+</section>
+<!-- =============================== 5. APP SHELL (landscape) =============================== -->
+<section class="page landscape">
+  <div class="eyebrow">Foundations · Mockup S1</div>
+  <h1 class="title">App shell: the frame around every page</h1>
+  <p class="lead">shadcn <code>Sidebar</code> (collapsible to a 48 px icon rail, Ctrl+B, state remembered 7 days). Below 768 px it becomes a bottom bar (page 22).</p>
+  <div class="fig" style="width:872px">
+    <div class="browser">
+      <div class="bar"><i></i><i></i><i></i><div class="url">metalix.app/sales-orders?status=open</div></div>
+      <div class="ui shell" style="zoom:.68; width:1280px; height:700px">
+        <aside class="sidebar">
+          <div class="sb-head"><div class="logo">M</div><div><div class="fw6">Metalix</div><div class="t-xs t-muted">Scrap management</div></div></div>
+          <div class="sb-group"><div class="sb-label">Overview</div>
+            <div class="sb-item"><svg class="i"><use href="#i-dash"/></svg>Dashboard</div></div>
+          <div class="sb-group"><div class="sb-label">Daily work</div>
+            <div class="sb-item"><svg class="i"><use href="#i-in"/></svg>Purchases</div>
+            <div class="sb-item active"><svg class="i"><use href="#i-clip"/></svg>Sales Orders<span class="sb-badge">14</span></div>
+            <div class="sb-item"><svg class="i"><use href="#i-truck"/></svg>Deliveries</div></div>
+          <div class="sb-group"><div class="sb-label">Stock &amp; reports</div>
+            <div class="sb-item"><svg class="i"><use href="#i-ware"/></svg>Supplier stock</div>
+            <div class="sb-item"><svg class="i"><use href="#i-report"/></svg>Company report</div></div>
+          <div class="sb-group"><div class="sb-label">Setup</div>
+            <div class="sb-item"><svg class="i"><use href="#i-bldg"/></svg>Companies</div>
+            <div class="sb-item"><svg class="i"><use href="#i-layers"/></svg>Materials</div></div>
+          <div class="sb-foot">
+            <div class="sb-item"><svg class="i"><use href="#i-help"/></svg>Help &amp; shortcuts</div>
+            <div class="flex gap2" style="padding:8px"><div class="avatar">RP</div><div class="grow"><div class="fw5">Rajesh Patel</div><span class="badge b-outline" style="height:18px;font-size:11px;padding:0 6px">Owner</span></div><svg class="i t-muted"><use href="#i-updown"/></svg></div>
+          </div>
+        </aside>
+        <main class="inset" style="position:relative">
+          <div class="topbar">
+            <span class="btn ghost icon"><svg class="i"><use href="#i-panel"/></svg></span><span class="vsep"></span>
+            <div class="crumbs"><b>Sales Orders</b></div>
+            <span class="grow"></span>
+            <div class="searchbtn"><svg class="i"><use href="#i-search"/></svg><span class="grow">Search or jump to…</span><span class="kb">Ctrl K</span></div>
+            <span class="btn primary"><svg class="i"><use href="#i-plus"/></svg>New<svg class="i"><use href="#i-down"/></svg></span>
+          </div>
+          <!-- New menu open -->
+          <div class="card elevated" style="position:absolute; right:16px; top:52px; width:230px; padding:4px; box-shadow:0 8px 24px rgba(0,0,0,.12); z-index:3">
+            <div class="flex gap2" style="height:34px;padding:0 8px;border-radius:6px;background:var(--accent)"><svg class="i"><use href="#i-in"/></svg><span class="grow">Purchase</span><span class="kb">Alt P</span></div>
+            <div class="flex gap2" style="height:34px;padding:0 8px"><svg class="i"><use href="#i-clip"/></svg><span class="grow">Sales order</span><span class="kb">Alt O</span></div>
+            <div class="flex gap2" style="height:34px;padding:0 8px"><svg class="i"><use href="#i-truck"/></svg><span class="grow">Delivery</span><span class="kb">Alt D</span></div>
+            <div style="height:1px;background:var(--border);margin:4px 0"></div>
+            <div class="flex gap2" style="height:34px;padding:0 8px"><svg class="i"><use href="#i-bldg"/></svg>Company</div>
+            <div class="flex gap2" style="height:34px;padding:0 8px"><svg class="i"><use href="#i-layers"/></svg>Material</div>
+          </div>
+          <div class="content">
+            <div class="flex between">
+              <div><div style="font-size:24px;line-height:32px;font-weight:600">Sales Orders</div><div class="t-muted">Orders from buyers. Record deliveries against them.</div></div>
+              <span class="btn primary" style="margin-top:-40px;opacity:0">.</span>
+            </div>
+            <div class="flex between" style="margin-top:18px">
+              <div class="toggle"><span class="on">Open · 14</span><span>Partly delivered · 5</span><span>Completed</span><span>All</span></div>
+              <span class="btn primary"><svg class="i"><use href="#i-plus"/></svg>New sales order <span class="kbd-in">Alt O</span></span>
+            </div>
+            <table class="t" style="margin-top:14px">
+              <thead><tr><th>PO no.</th><th>Date</th><th>Customer</th><th>Material</th><th class="num">Ordered (t)</th><th class="num">Left (t)</th><th style="width:150px">Progress</th><th>Status</th><th></th></tr></thead>
+              <tbody>
+                <tr><td class="fw5">PO-0142</td><td>09/09/2026</td><td>Bharat Castings Pvt Ltd</td><td>HMS 1</td><td class="num">30.000</td><td class="num fw6">11.750</td><td><div class="bar info"><i style="width:61%"></i></div></td><td><span class="badge b-partial"><svg class="i"><use href="#i-truck"/></svg>Partly delivered</span></td><td><span class="btn outline sm">Deliver</span></td></tr>
+                <tr class="hover"><td class="fw5">PO-0147</td><td>15/09/2026</td><td>Rajkot Alloys</td><td>MS turnings</td><td class="num">22.000</td><td class="num fw6">22.000</td><td><div class="bar"><i style="width:0"></i></div></td><td><span class="badge b-pending"><svg class="i"><use href="#i-clock"/></svg>Pending</span></td><td><span class="btn outline sm">Deliver</span></td></tr>
+                <tr><td class="fw5">PO-0151</td><td>20/09/2026</td><td>Kutch Foundry Works</td><td>Brass honey</td><td class="num">20.000</td><td class="num fw6">20.000</td><td><div class="bar"><i style="width:0"></i></div></td><td><span class="badge b-pending"><svg class="i"><use href="#i-clock"/></svg>Pending</span></td><td><span class="btn outline sm">Deliver</span></td></tr>
+                <tr><td class="fw5">PO-0149</td><td>18/09/2026</td><td>Bharat Castings Pvt Ltd</td><td>CRC bundle</td><td class="num">40.000</td><td class="num fw6">16.140</td><td><div class="bar info"><i style="width:60%"></i></div></td><td><span class="badge b-partial"><svg class="i"><use href="#i-truck"/></svg>Partly delivered</span></td><td><span class="btn outline sm">Deliver</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </main>
+      </div>
+    </div>
+    <span class="mk" style="left:102px;top:40px">1</span>
+    <span class="mk" style="left:112px;top:118px">2</span>
+    <span class="mk" style="left:160px;top:151px">3</span>
+    <span class="mk" style="left:292px;top:40px">4</span>
+    <span class="mk" style="left:598px;top:40px">5</span>
+    <span class="mk" style="left:700px;top:64px">6</span>
+    <span class="mk" style="left:160px;top:462px">7</span>
+    <span class="mk" style="left:802px;top:252px">8</span>
+    <span class="mk" style="left:447px;top:136px">9</span>
+  </div>
+  <div class="legend c3">
+    <div><span class="dot">1</span><span>Logo + business name. In the 48 px rail only the "M" square shows.</span></div>
+    <div><span class="dot">2</span><span>Four groups by frequency of use; icon + text label on every item.</span></div>
+    <div><span class="dot">3</span><span>Active item: tinted background, 3 px blue bar, <code>aria-current="page"</code>. Badge = open orders.</span></div>
+    <div><span class="dot">4</span><span>Sidebar toggle (Ctrl+B) and breadcrumb; detail pages read "Sales Orders › PO-0142".</span></div>
+    <div><span class="dot">5</span><span>Visible search button with a "Ctrl K" chip so occasional users discover the palette.</span></div>
+    <div><span class="dot">6</span><span>"+ New" creates anything from anywhere, with Tally-style Alt shortcuts. Hidden for VIEWER.</span></div>
+    <div><span class="dot">7</span><span>User row shows the role ("Owner" / "View only"); menu holds Theme incl. Sunlight, Reduce animations, Log out.</span></div>
+    <div><span class="dot">8</span><span>One visible "Deliver" button on open orders: the most frequent action, one click away.</span></div>
+    <div><span class="dot">9</span><span>Quick-view tabs instead of a status filter; exactly one primary action per page.</span></div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Foundations</div>
+</section>
+
+<!-- =============================== 6. PAGE ANATOMY & CONTAINERS =============================== -->
+<section class="page">
+  <div class="eyebrow">Foundations</div>
+  <h1 class="title">Page anatomy, containers and shortcuts</h1>
+  <p class="lead">Every page is built the same way, and every create/edit form opens in the same kind of container. Users stop hunting for buttons after the first day.</p>
+
+  <div class="g-1-2">
+    <div>
+      <h3 class="mt0">One page anatomy</h3>
+      <svg viewBox="0 0 220 300" width="100%">
+        <rect x="1" y="1" width="218" height="298" rx="8" fill="#fff" stroke="#cfd4db"/>
+        <rect x="1" y="1" width="218" height="26" rx="8" fill="#f1f3f5"/><text x="10" y="18" font-size="9" fill="#5b6270">Header: ≡ · breadcrumb · search · + New</text>
+        <rect x="12" y="38" width="120" height="12" rx="3" fill="#17191c"/><rect x="12" y="55" width="150" height="7" rx="3" fill="#c3c9d1"/>
+        <rect x="160" y="38" width="48" height="16" rx="4" fill="oklch(0.45 0.10 235)"/><text x="184" y="49" font-size="7.5" fill="#fff" text-anchor="middle">Primary</text>
+        <text x="12" y="80" font-size="8.5" fill="oklch(0.45 0.10 235)" font-weight="700">① Title · description · 1 primary action</text>
+        <rect x="12" y="88" width="196" height="18" rx="4" fill="#f5f7f9" stroke="#dfe3e8"/><text x="18" y="100" font-size="8" fill="#5b6270">🔍 search · date · supplier · material</text>
+        <text x="12" y="120" font-size="8.5" fill="oklch(0.45 0.10 235)" font-weight="700">② Filter bar (+ chips when active)</text>
+        <rect x="12" y="127" width="196" height="12" rx="3" fill="oklch(0.95 0.02 235)"/><text x="18" y="136" font-size="7.5" fill="#17191c">46 purchases · 412.380 t · ₹1,84,62,310.00</text>
+        <text x="12" y="152" font-size="8.5" fill="oklch(0.45 0.10 235)" font-weight="700">③ Summary strip (whole filtered set)</text>
+        <g fill="#eef0f3"><rect x="12" y="160" width="196" height="12"/><rect x="12" y="175" width="196" height="12"/><rect x="12" y="190" width="196" height="12"/><rect x="12" y="205" width="196" height="12"/><rect x="12" y="220" width="196" height="12"/></g>
+        <text x="12" y="248" font-size="8.5" fill="oklch(0.45 0.10 235)" font-weight="700">④ Content: DataTable / cards / stat cards</text>
+        <rect x="12" y="258" width="196" height="16" rx="3" fill="#f5f7f9"/><text x="18" y="269" font-size="7.5" fill="#5b6270">Showing 1–25 of 46     ‹ 1 2 ›</text>
+        <text x="12" y="290" font-size="8.5" fill="oklch(0.45 0.10 235)" font-weight="700">⑤ Pagination / footer actions</text>
+      </svg>
+      <p class="small">Padding 24 px (16 px on phones). Lists use the full width; forms stay ≈ 560–640 px wide; detail pages split 2/3 + 1/3 from 1024 px.</p>
+    </div>
+    <div>
+      <h3 class="mt0">Which container for which job</h3>
+      <svg viewBox="0 0 420 150" width="100%">
+        <g font-size="10">
+          <rect x="4" y="4" width="128" height="86" rx="6" fill="#f5f7f9" stroke="#cfd4db"/><rect x="70" y="4" width="62" height="86" rx="0" fill="#fff" stroke="oklch(0.45 0.10 235)" stroke-width="1.5"/>
+          <text x="68" y="108" text-anchor="middle" font-weight="700">Right Sheet</text><text x="68" y="122" text-anchor="middle" fill="#5b6270">create / edit records</text><text x="68" y="135" text-anchor="middle" fill="#5b6270">512–576 px (768 delivery)</text>
+          <rect x="146" y="4" width="128" height="86" rx="6" fill="#f5f7f9" stroke="#cfd4db"/><rect x="176" y="28" width="68" height="40" rx="5" fill="#fff" stroke="oklch(0.45 0.10 235)" stroke-width="1.5"/>
+          <text x="210" y="108" text-anchor="middle" font-weight="700">Small Dialog</text><text x="210" y="122" text-anchor="middle" fill="#5b6270">add company from a picker;</text><text x="210" y="135" text-anchor="middle" fill="#5b6270">AlertDialog = confirm only</text>
+          <rect x="288" y="4" width="128" height="86" rx="6" fill="#fff" stroke="oklch(0.45 0.10 235)" stroke-width="1.5"/><rect x="298" y="14" width="60" height="7" rx="2" fill="#17191c"/><g fill="#e8ebef"><rect x="298" y="28" width="30" height="16" rx="2"/><rect x="332" y="28" width="30" height="16" rx="2"/><rect x="366" y="28" width="40" height="16" rx="2"/><rect x="298" y="50" width="108" height="32" rx="2"/></g>
+          <text x="352" y="108" text-anchor="middle" font-weight="700">Full page (own URL)</text><text x="352" y="122" text-anchor="middle" fill="#5b6270">details with related records:</text><text x="352" y="135" text-anchor="middle" fill="#5b6270">sales order, company, material</text>
+        </g>
+      </svg>
+      <ul class="clean small" style="color:var(--doc-fg)">
+        <li>Sheets keep the list visible behind them, so users never lose their place (NN/g: modals make people forget details they need).</li>
+        <li>Sheets have URLs (<code>/sales/new?poId=0142</code>): refreshing never loses the form, and drafts are saved locally.</li>
+        <li>On phones every Sheet and Dialog becomes a bottom <b>Drawer</b>.</li>
+      </ul>
+
+      <h3>Keyboard: Tally-speed for accountants</h3>
+      <table class="doc compact">
+        <tr><td><span class="kbd">Ctrl</span> <span class="kbd">K</span></td><td>Command palette: go to, create, search, recent</td></tr>
+        <tr><td><span class="kbd">Alt</span> <span class="kbd">P</span> / <span class="kbd">O</span> / <span class="kbd">D</span></td><td>New purchase / sales order / delivery (F9, F8 as aliases)</td></tr>
+        <tr><td><span class="kbd">Alt</span> <span class="kbd">C</span></td><td>Inside a picker: add the typed company or material</td></tr>
+        <tr><td><span class="kbd">Enter</span> · <span class="kbd">Ctrl</span> <span class="kbd">↵</span></td><td>Next field · save the form</td></tr>
+        <tr><td><span class="kbd">/</span> · <span class="kbd">Esc</span> · <span class="kbd">?</span></td><td>Focus table search · close overlay · show all shortcuts</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <h3>Command palette (Ctrl+K)</h3>
+  <div class="ui dialog" style="width:520px; padding:0; margin-top:2mm; zoom:.9">
+    <div class="flex gap2" style="height:48px; padding:0 14px; border-bottom:1px solid var(--border)"><svg class="i t-muted"><use href="#i-search"/></svg><span>shree</span><span class="grow"></span><span class="kb">Esc</span></div>
+    <div style="padding:6px">
+      <div class="t-xs t-muted fw5" style="padding:6px 8px">Companies</div>
+      <div class="flex gap2" style="height:36px;padding:0 8px;border-radius:6px;background:var(--accent)"><svg class="i"><use href="#i-bldg"/></svg><span class="grow"><b>Shree</b> Ganesh Metals</span><span class="t-xs t-muted">Supplier · Rajkot</span></div>
+      <div class="t-xs t-muted fw5" style="padding:6px 8px">Create</div>
+      <div class="flex gap2" style="height:36px;padding:0 8px"><svg class="i"><use href="#i-in"/></svg><span class="grow">New purchase from Shree Ganesh Metals</span><span class="kb">Alt P</span></div>
+      <div class="t-xs t-muted fw5" style="padding:6px 8px">Recent</div>
+      <div class="flex gap2" style="height:36px;padding:0 8px"><svg class="i"><use href="#i-clip"/></svg><span class="grow">PO-0142 · Bharat Castings Pvt Ltd</span><span class="t-xs t-muted">opened 10 min ago</span></div>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Foundations</div>
+</section>
+
+<!-- =============================== 7. DASHBOARD (landscape) =============================== -->
+<section class="page landscape">
+  <div class="eyebrow">Dashboard · Mockup S2</div>
+  <h1 class="title">Dashboard: "what do I buy, what can I deliver" on one screen</h1>
+  <div class="row" style="gap:5mm; margin-top:2mm">
+    <div class="fig" style="flex:none; width:778px">
+      <div class="browser">
+        <div class="bar"><i></i><i></i><i></i><div class="url">metalix.app/?period=this-month</div></div>
+        <div class="ui" style="zoom:.6; width:1280px; padding:24px 24px 20px">
+          <div class="flex between">
+            <div><div style="font-size:24px;line-height:32px;font-weight:600">Dashboard</div><div class="t-muted">Good afternoon, Rajesh. Here's September so far.</div></div>
+            <div style="text-align:right">
+              <div class="toggle"><span>Today</span><span>This week</span><span class="on">This month</span><span>This FY</span><span>Custom <svg class="i sm"><use href="#i-down"/></svg></span></div>
+              <div class="t-xs t-muted" style="margin-top:6px">01/09/2026 – 27/09/2026 · compared with 01/08/2026 – 27/08/2026 · Updated 2 min ago <svg class="i sm"><use href="#i-refresh"/></svg></div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:18px">
+            <div class="card card-p stat"><div class="label">Stock in yard</div><div class="value">286.5 t</div><div class="delta">▲ 31.520 t since 01/09/2026</div><div class="foot">6 materials · View stock →</div></div>
+            <div class="card card-p stat" style="border-color:color-mix(in oklch,var(--warning) 70%,transparent)"><div class="label">Buy needed <svg class="i t-warn"><use href="#i-alert"/></svg></div><div class="value">38.8 t</div><div class="delta t-warn fw5">3 materials are short of open orders</div><div class="foot">HMS 1 24.500 t · Brass honey 13.000 t · Copper 1.250 t</div></div>
+            <div class="card card-p stat"><div class="label">Open sales orders</div><div class="value">14</div><div class="delta">212.300 t left to deliver</div><div class="foot">9 pending · 5 partly delivered</div></div>
+            <div class="card card-p stat"><div class="label">Delivered this month</div><div class="value">₹1.96 Cr</div><div class="delta t-success"><svg class="i sm"><use href="#i-trend"/></svg> ▲ 8% vs Aug (₹1.82 Cr)</div><div class="foot">380.860 t in 41 deliveries</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:8fr 4fr;gap:16px;margin-top:16px">
+            <div class="card" style="padding:16px 20px">
+              <div class="card-title">Needs attention</div><div class="t-xs t-muted">Things to act on today</div>
+              <div class="t-xs t-muted fw6" style="margin-top:12px">BUY NEEDED (3)</div>
+              <div class="flex gap3" style="height:40px;border-bottom:1px solid var(--border)"><svg class="i t-warn"><use href="#i-alert"/></svg><span class="fw5" style="width:170px">HMS 1</span><span class="grow">short <b>24.500 t</b> <span class="t-muted t-xs">· Orders 96.000 t · in yard 71.500 t</span></span><span class="btn outline sm"><svg class="i sm"><use href="#i-plus"/></svg>Purchase</span></div>
+              <div class="flex gap3" style="height:40px;border-bottom:1px solid var(--border)"><svg class="i t-warn"><use href="#i-alert"/></svg><span class="fw5" style="width:170px">Brass honey</span><span class="grow">short <b>13.000 t</b> <span class="t-muted t-xs">· Orders 22.800 t · in yard 9.800 t</span></span><span class="btn outline sm"><svg class="i sm"><use href="#i-plus"/></svg>Purchase</span></div>
+              <div class="t-xs t-muted fw6" style="margin-top:12px">ORDERS WAITING (oldest first · 3 of 14)</div>
+              <div class="flex gap3" style="height:40px;border-bottom:1px solid var(--border)"><span class="fw5" style="width:70px">PO-0142</span><span style="width:190px">Bharat Castings Pvt Ltd</span><span class="grow"><b>11.750 t</b> left · <span class="t-muted">HMS 1</span></span><span class="badge b-partial">Partly delivered · 18 days</span><span class="btn outline sm">Deliver</span></div>
+              <div class="flex gap3" style="height:40px;border-bottom:1px solid var(--border)"><span class="fw5" style="width:70px">PO-0147</span><span style="width:190px">Rajkot Alloys</span><span class="grow"><b>22.000 t</b> left · <span class="t-muted">MS turnings</span></span><span class="badge b-pending">Pending · 12 days</span><span class="btn outline sm">Deliver</span></div>
+              <div class="t-xs t-muted fw6" style="margin-top:12px">LOW SUPPLIER STOCK</div>
+              <div class="flex gap3" style="height:36px"><span class="fw5">Sharma Traders</span><span class="t-muted">Copper wire (Berry)</span><span class="grow"><b>0.420 t</b> left</span><span class="btn link">View all 14 open orders →</span></div>
+            </div>
+            <div class="card" style="padding:16px 20px">
+              <div class="card-title">Stock vs open orders (t)</div>
+              <svg viewBox="0 0 380 250" width="100%" style="margin-top:6px">
+                <g font-size="11" fill="#17191c">
+                  <text x="0" y="16" font-size="10" fill="oklch(0.55 0.13 240)" font-weight="600">■ In yard</text><text x="70" y="16" font-size="10" fill="oklch(0.62 0.16 55)" font-weight="600">■ Open orders</text>
+                  <g transform="translate(0,30)">
+                    <text x="0" y="13">HMS 1</text><rect x="100" y="2" width="113" height="8" rx="2" fill="oklch(0.55 0.13 240)"/><rect x="100" y="12" width="152" height="8" rx="2" fill="oklch(0.70 0.16 55)"/><text x="258" y="16" fill="oklch(0.42 0.10 60)" font-weight="600">⚠ Short 24.5</text>
+                  </g>
+                  <g transform="translate(0,66)"><text x="0" y="13">Brass honey</text><rect x="100" y="2" width="16" height="8" rx="2" fill="oklch(0.55 0.13 240)"/><rect x="100" y="12" width="36" height="8" rx="2" fill="oklch(0.70 0.16 55)"/><text x="142" y="16" fill="oklch(0.42 0.10 60)" font-weight="600">⚠ Short 13.0</text></g>
+                  <g transform="translate(0,102)"><text x="0" y="13">Copper wire</text><rect x="100" y="2" width="4" height="8" rx="1" fill="oklch(0.55 0.13 240)"/><rect x="100" y="12" width="6" height="8" rx="1" fill="oklch(0.70 0.16 55)"/><text x="112" y="16" fill="oklch(0.42 0.10 60)" font-weight="600">⚠ Short 1.3</text></g>
+                  <g transform="translate(0,138)"><text x="0" y="13">Aluminium ext.</text><rect x="100" y="2" width="30" height="8" rx="2" fill="oklch(0.55 0.13 240)"/><rect x="100" y="12" width="19" height="8" rx="2" fill="oklch(0.70 0.16 55)"/><text x="136" y="16" fill="#5b6270">Extra 6.9</text></g>
+                  <g transform="translate(0,174)"><text x="0" y="13">MS turnings</text><rect x="100" y="2" width="102" height="8" rx="2" fill="oklch(0.55 0.13 240)"/><rect x="100" y="12" width="35" height="8" rx="2" fill="oklch(0.70 0.16 55)"/><text x="208" y="16" fill="#5b6270">Extra 42.3</text></g>
+                  <g transform="translate(0,210)"><text x="0" y="13">CRC bundle</text><rect x="100" y="2" width="190" height="8" rx="2" fill="oklch(0.55 0.13 240)"/><rect x="100" y="12" width="89" height="8" rx="2" fill="oklch(0.70 0.16 55)"/><text x="296" y="16" fill="#5b6270">Extra 63.7</text></g>
+                  <line x1="100" y1="26" x2="100" y2="248" stroke="#c3c9d1"/>
+                </g>
+              </svg>
+              <div class="t-xs t-primary" style="text-align:right">View as table</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:7fr 5fr;gap:16px;margin-top:16px">
+            <div class="card" style="padding:16px 20px">
+              <div class="card-title">Bought vs delivered per week (t)</div>
+              <svg viewBox="0 0 640 190" width="100%">
+                <g font-size="11" fill="#5b6270">
+                  <line x1="40" y1="170" x2="600" y2="170" stroke="#dfe3e8"/><line x1="40" y1="110" x2="600" y2="110" stroke="#f0f2f4"/><line x1="40" y1="50" x2="600" y2="50" stroke="#f0f2f4"/>
+                  <text x="30" y="174" text-anchor="end">80</text><text x="30" y="114" text-anchor="end">100</text><text x="30" y="54" text-anchor="end">120</text>
+                  <text x="80" y="186" text-anchor="middle">01–06 Sep</text><text x="240" y="186" text-anchor="middle">07–13 Sep</text><text x="400" y="186" text-anchor="middle">14–20 Sep</text><text x="540" y="186" text-anchor="middle">21–27 Sep</text>
+                  <polyline points="80,120.8 240,83.3 400,72.5 540,126.3" fill="none" stroke="oklch(0.55 0.13 240)" stroke-width="3"/>
+                  <polyline points="80,132.8 240,106.1 400,121.2 540,137.3" fill="none" stroke="oklch(0.70 0.16 55)" stroke-width="3" stroke-dasharray="7 5"/>
+                  <text x="548" y="122" fill="oklch(0.45 0.13 240)" font-weight="700">Bought</text><text x="548" y="146" fill="oklch(0.55 0.16 55)" font-weight="700">Delivered</text>
+                </g>
+              </svg>
+            </div>
+            <div class="card" style="padding:16px 20px">
+              <div class="card-title">Recent activity</div>
+              <div class="flex gap3" style="height:44px;border-bottom:1px solid var(--border)"><svg class="i t-muted"><use href="#i-in"/></svg><div class="grow"><div class="fw5">Shree Ganesh Metals</div><div class="t-xs t-muted">27/09 · HMS 1 · 12.450 t</div></div><span class="num">₹4,29,525.00</span></div>
+              <div class="flex gap3" style="height:44px;border-bottom:1px solid var(--border)"><svg class="i t-muted"><use href="#i-in"/></svg><div class="grow"><div class="fw5">Sharma Traders</div><div class="t-xs t-muted">27/09 · Copper wire (Berry) · 1.275 t</div></div><span class="num">₹10,00,875.00</span></div>
+              <div class="flex gap3" style="height:44px;border-bottom:1px solid var(--border)"><svg class="i t-muted"><use href="#i-truck"/></svg><div class="grow"><div class="fw5">PO-0138 · Rajkot Alloys</div><div class="t-xs t-muted">26/09 · MS turnings · 15.000 t · now Completed</div></div><span class="num">₹5,32,500.00</span></div>
+              <div class="flex gap3" style="height:44px"><svg class="i t-muted"><use href="#i-in"/></svg><div class="grow"><div class="fw5">Patel Scrap Co.</div><div class="t-xs t-muted">26/09 · Brass honey · 2.140 t</div></div><span class="num">₹10,52,880.00</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="mk" style="left:540px;top:30px">1</span>
+      <span class="mk" style="left:-8px;top:86px">2</span>
+      <span class="mk" style="left:300px;top:112px">3</span>
+      <span class="mk" style="left:-8px;top:180px">4</span>
+      <span class="mk" style="left:448px;top:228px">5</span>
+      <span class="mk" style="left:520px;top:180px">6</span>
+      <span class="mk" style="left:-8px;top:392px">7</span>
+    </div>
+    <div class="legend" style="grid-template-columns:1fr; margin-top:0; font-size:8.8pt">
+      <div><span class="dot">1</span><span><b>Period control</b> with Indian presets, resolved dates in words, comparison period and "Updated 2 min ago". Refetch every 60 s.</span></div>
+      <div><span class="dot">2</span><span><b>Four KPI cards only.</b> Each has a comparison ("▲ 8% vs Aug") and links to the filtered list behind it.</span></div>
+      <div><span class="dot">3</span><span><b>"Buy needed"</b> = open-order demand minus stock, per material. The most actionable number; the only card with colour.</span></div>
+      <div><span class="dot">4</span><span><b>Needs attention</b>: materials to buy, oldest orders waiting, low supplier stock, each with its one-click action.</span></div>
+      <div><span class="dot">5</span><span>Inline actions open the Sheet with material / PO already filled in. Hidden for VIEWER.</span></div>
+      <div><span class="dot">6</span><span><b>Horizontal bars</b> sorted by shortage, end-labelled "Short 24.5". Axis starts at zero. "View as table" for exact values.</span></div>
+      <div><span class="dot">7</span><span>Trend as two lines, <b>labelled at the line ends</b> (no colour legend), solid vs dashed as a second cue.</span></div>
+      <div class="callout warn" style="display:block;margin-top:2mm;font-size:8.5pt">No pies, donuts, gauges or 3-D. KPI numbers never "count up". A margin card waits for a per-material rate endpoint.</div>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Dashboard</div>
+</section>
+
+<!-- =============================== 8. DASHBOARD RULES =============================== -->
+<section class="page">
+  <div class="eyebrow">Dashboard</div>
+  <h1 class="title">Dashboard rules and data visualisation</h1>
+  <p class="lead">A dashboard is the most important information "arranged on a single screen so it can be monitored at a glance" (Stephen Few). Every number needs context to show whether it is good or bad, and every number should lead somewhere.</p>
+
+  <h2 class="mt0">The four KPI cards</h2>
+  <table class="doc">
+    <tr><th>Card</th><th>Value</th><th>Context line</th><th>Click goes to</th></tr>
+    <tr><td><b>Stock in yard</b></td><td class="tnum">286.5 t <span class="muted">(tooltip 286.450 t)</span></td><td>▲ 31.520 t since 01/09/2026</td><td><code>/reports/source-stock</code></td></tr>
+    <tr><td><b>Buy needed</b> ⚠</td><td class="tnum">38.8 t</td><td>3 materials are short of open orders</td><td><code>/reports/stock?view=shortfall</code></td></tr>
+    <tr><td><b>Open sales orders</b></td><td class="tnum">14</td><td>212.300 t left to deliver</td><td><code>/sales-orders?status=PENDING,PARTIALLY_SUPPLIED</code></td></tr>
+    <tr><td><b>Delivered this month</b></td><td class="tnum">₹1.96 Cr</td><td>▲ 8% vs Aug (₹1.82 Cr)</td><td><code>/sales?from=2026-09-01&amp;to=2026-09-30</code></td></tr>
+  </table>
+
+  <h2>Pick the chart by the question</h2>
+  <table class="doc">
+    <tr><th>Question</th><th>Chart</th><th>Design rule</th></tr>
+    <tr><td>Do I have enough of each material for open orders?</td><td>Horizontal grouped bars</td><td>Sorted by shortage; end labels "Short 24.500 t"; axis starts at 0</td></tr>
+    <tr><td>How far is this order delivered?</td><td>Progress / bullet bar</td><td>"18.250 of 30.000 t · 61%"</td></tr>
+    <tr><td>Are we buying faster than we deliver?</td><td>Two-line chart</td><td>Direct labels at line ends; solid vs dashed</td></tr>
+    <tr><td>Are buy and sell rates moving? <span class="muted">(later)</span></td><td>Rate trend line</td><td>Needs a per-material rates endpoint first</td></tr>
+    <tr><td>Exact values for many materials</td><td>Table with inline bars</td><td>Switch automatically when there are more than 8 materials</td></tr>
+  </table>
+
+  <div class="do-dont">
+    <div class="do"><h4>Do</h4><ul>
+      <li>Label data directly on bars and line ends</li>
+      <li>Use colour only to flag attention (amber/red) plus an icon and words</li>
+      <li>Give every number a comparison: "▲ 8% vs Aug"</li>
+      <li>Make every card, row and bar a link to its filtered list</li>
+      <li>On phones print values on the bars; tooltips don't work on touch</li>
+    </ul></div>
+    <div class="dont"><h4>Don't</h4><ul>
+      <li>Pie, donut, gauge or 3-D charts</li>
+      <li>A legend that relies on colour alone (fails WCAG 1.4.1)</li>
+      <li>Animated count-up numbers (slow to read, noisy for screen readers)</li>
+      <li>More than 4 KPI cards or more than 2 charts above the fold</li>
+      <li>An averaged margin across copper and HMS: it is meaningless</li>
+    </ul></div>
+  </div>
+
+  <p class="small">Layout order (see page 7): period control → 4 KPI cards → Needs attention + stock bars → weekly trend + recent activity. Phones: KPI cards 2 × 2, then Needs attention (most useful in the yard), then charts.</p>
+  <div class="runhead">Metalix UI/UX System · Dashboard</div>
+</section>
+<!-- =============================== 9. PURCHASES LIST (landscape) =============================== -->
+<section class="page landscape">
+  <div class="eyebrow">Lists · Mockup S3</div>
+  <h1 class="title">Purchases list: the pattern every list follows</h1>
+  <div class="fig" style="width:918px; margin-top:2mm">
+    <div class="browser">
+      <div class="bar"><i></i><i></i><i></i><div class="url">metalix.app/purchases?from=2026-09-01&amp;to=2026-09-30&amp;supplier=shree-ganesh</div></div>
+      <div class="ui" style="zoom:.7; width:1300px; padding:24px">
+        <div class="flex between">
+          <div><div style="font-size:24px;line-height:32px;font-weight:600">Purchases</div><div class="t-muted">Scrap bought from suppliers. Stock goes up when you save a purchase.</div></div>
+          <div class="flex gap2"><span class="btn outline"><svg class="i"><use href="#i-dl"/></svg>Export<svg class="i"><use href="#i-down"/></svg></span><span class="btn primary"><svg class="i"><use href="#i-plus"/></svg>New purchase <span class="kbd-in">Alt P</span></span></div>
+        </div>
+        <div class="flex gap2" style="margin-top:18px">
+          <div class="input" style="width:280px"><svg class="i t-muted"><use href="#i-search"/></svg><span class="ph">Supplier, vehicle or invoice no.</span></div>
+          <span class="btn outline"><svg class="i"><use href="#i-cal"/></svg>This month · 01/09/2026 – 30/09/2026</span>
+          <span class="btn outline" style="border-color:var(--primary);background:var(--accent)">Supplier: Shree Ganesh Metals<svg class="i"><use href="#i-down"/></svg></span>
+          <span class="btn outline">Material: All<svg class="i"><use href="#i-down"/></svg></span>
+          <span class="grow"></span>
+          <span class="btn outline"><svg class="i"><use href="#i-cols"/></svg>Columns</span>
+          <div class="toggle"><span class="on">Comfortable</span><span>Compact</span></div>
+        </div>
+        <div class="flex gap2" style="margin-top:10px"><span class="chip">Supplier: Shree Ganesh Metals <svg class="i sm"><use href="#i-x"/></svg></span><span class="btn link t-sm">Clear all</span></div>
+        <div class="flex between" style="margin-top:14px; padding:10px 12px; background:color-mix(in oklch, var(--accent) 60%, white); border-radius:8px">
+          <span><b>6 purchases</b> · 54.195 t · ₹22,15,130.00</span><span class="t-xs t-muted">Updated 1 min ago</span>
+        </div>
+        <table class="t" style="margin-top:8px">
+          <thead><tr><th style="width:112px">Date <svg class="i sm"><use href="#i-down"/></svg></th><th style="width:220px">Supplier</th><th style="width:180px">Material</th><th class="num" style="width:104px">Tons (t)</th><th class="num" style="width:128px">Rate (₹/t)</th><th class="num" style="width:144px">Amount (₹)</th><th style="width:132px">Vehicle</th><th style="width:128px">Invoice</th><th style="width:48px"></th></tr></thead>
+          <tbody>
+            <tr class="new"><td>27/09/2026</td><td><span class="linkish">Shree Ganesh Metals</span></td><td>HMS 1</td><td class="num">12.450</td><td class="num">34,500.00</td><td class="num fw5">4,29,525.00</td><td>GJ 03 AX 4521</td><td>INV-2291</td><td class="num"><svg class="i t-muted"><use href="#i-more"/></svg></td></tr>
+            <tr class="hover"><td>26/09/2026</td><td><span class="linkish">Shree Ganesh Metals</span></td><td>MS turnings</td><td class="num">8.900</td><td class="num">29,800.00</td><td class="num fw5">2,65,220.00</td><td>GJ 03 AX 4521</td><td>INV-2287</td><td class="num"><svg class="i t-muted"><use href="#i-more"/></svg></td></tr>
+            <tr><td>24/09/2026</td><td><span class="linkish">Shree Ganesh Metals</span></td><td>HMS 1</td><td class="num">9.200</td><td class="num">34,200.00</td><td class="num fw5">3,14,640.00</td><td>GJ 03 AX 4521</td><td>INV-2280</td><td class="num"><svg class="i t-muted"><use href="#i-more"/></svg></td></tr>
+            <tr><td>20/09/2026</td><td><span class="linkish">Shree Ganesh Metals</span></td><td>CRC bundle</td><td class="num">14.625</td><td class="num">41,000.00</td><td class="num fw5">5,99,625.00</td><td>GJ 03 BW 7810</td><td>INV-2266</td><td class="num"><svg class="i t-muted"><use href="#i-more"/></svg></td></tr>
+            <tr><td>12/09/2026</td><td><span class="linkish">Shree Ganesh Metals</span></td><td>HMS 1</td><td class="num">7.500</td><td class="num">34,000.00</td><td class="num fw5">2,55,000.00</td><td>GJ 03 AX 4521</td><td>INV-2241</td><td class="num"><svg class="i t-muted"><use href="#i-more"/></svg></td></tr>
+            <tr><td>05/09/2026</td><td><span class="linkish">Shree Ganesh Metals</span></td><td>Aluminium extrusion</td><td class="num">1.520</td><td class="num">2,31,000.00</td><td class="num fw5">3,51,120.00</td><td>GJ 03 BW 7810</td><td>—</td><td class="num"><svg class="i t-muted"><use href="#i-more"/></svg></td></tr>
+          </tbody>
+        </table>
+        <div class="flex between" style="height:48px; margin-top:4px"><span class="t-muted t-sm">Showing 1–6 of 6</span><div class="flex gap2"><span class="t-sm t-muted">Rows per page</span><span class="btn outline sm">25 <svg class="i sm"><use href="#i-down"/></svg></span><span class="btn ghost sm t-muted"><svg class="i sm"><use href="#i-left"/></svg>Previous</span><span class="btn outline sm">1</span><span class="btn ghost sm t-muted">Next<svg class="i sm"><use href="#i-right"/></svg></span></div></div>
+      </div>
+    </div>
+    <span class="mk" style="left:880px;top:34px">1</span>
+    <span class="mk" style="left:-10px;top:96px">2</span>
+    <span class="mk" style="left:-10px;top:120px">3</span>
+    <span class="mk" style="left:-10px;top:150px">4</span>
+    <span class="mk" style="left:-10px;top:208px">5</span>
+    <span class="mk" style="left:486px;top:176px">6</span>
+    <span class="mk" style="left:894px;top:208px">7</span>
+    <span class="mk" style="left:-10px;top:386px">8</span>
+  </div>
+  <div class="legend c4">
+    <div><span class="dot">1</span><span>One primary action with its shortcut; Export exports the <i>current filters</i>.</span></div>
+    <div><span class="dot">2</span><span>Filter bar: search (debounced 300 ms), Indian date presets, supplier, material. Applies instantly on desktop.</span></div>
+    <div><span class="dot">3</span><span>Active filters as removable chips + "Clear all". All filters live in the URL above.</span></div>
+    <div><span class="dot">4</span><span>Summary of the <b>whole filtered set</b>, computed on the server (a page-only total would mislead).</span></div>
+    <div><span class="dot">5</span><span>Row just saved: green tint that fades out after 1.5 s; focus moves to it.</span></div>
+    <div><span class="dot">6</span><span>Numbers right-aligned with tabular figures and fixed decimals; units in the header, not the cells.</span></div>
+    <div><span class="dot">7</span><span>Whole row opens the record; other actions in the ⋯ menu (View · Edit · Repeat purchase · Copy link).</span></div>
+    <div><span class="dot">8</span><span>Numbered pages, 25/50/100 rows. No infinite scroll: it loses place on Back and hinders comparing.</span></div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Lists</div>
+</section>
+
+<!-- =============================== 10. TABLE & FILTER RULES =============================== -->
+<section class="page">
+  <div class="eyebrow">Lists</div>
+  <h1 class="title">Table, filter and search rules</h1>
+  <p class="lead">One <code>DataTable</code> component (TanStack Table v9, server mode) serves every list. The identifier comes first, numbers line up, and the filter state always lives in the URL.</p>
+
+  <table class="doc compact">
+    <tr><th>List</th><th>Columns, in order</th></tr>
+    <tr><td><b>Purchases</b></td><td>Date · Supplier · Material · Tons (t) · Rate (₹/t) · Amount (₹) · Vehicle · Invoice · ⋯</td></tr>
+    <tr><td><b>Sales Orders</b></td><td>PO no. · Date · Customer · Material · Ordered (t) · Delivered (t) · Left (t) · Progress · Rate (₹/t) · Status · <b>Deliver</b> · ⋯</td></tr>
+    <tr><td><b>Deliveries</b></td><td>Date · PO no. · Customer · Stock from · Material · Tons (t) · Amount (₹) · Vehicle · ⋯</td></tr>
+    <tr><td><b>Companies</b></td><td>Name · Type · GSTIN · Phone · City · ⋯</td></tr>
+    <tr><td><b>Materials</b></td><td>Name · In yard (t) · Open demand (t) · Buy needed (t) · ⋯</td></tr>
+  </table>
+
+  <div class="grid2">
+    <div>
+      <h3 class="mt0">Table rules</h3>
+      <ul class="clean small" style="color:var(--doc-fg)">
+        <li>Rows 40 px on desktop (32 px compact option later), 48 px+ on touch.</li>
+        <li>Sticky header; row hover tint; long names truncate with a tooltip, <b>numbers never truncate</b>.</li>
+        <li>Max 1–2 visible row actions; the rest go in the ⋯ menu.</li>
+        <li>Status = badge with colour <b>and</b> icon <b>and</b> word.</li>
+        <li>Sorting shown with an arrow and <code>aria-sort</code>.</li>
+        <li>No bulk selection in v1: nothing here is a batch job except export.</li>
+        <li>6–9 columns visible; the rest behind "Columns".</li>
+      </ul>
+      <h3>Filters</h3>
+      <ul class="clean small" style="color:var(--doc-fg)">
+        <li><b>Desktop:</b> one toolbar row, filters apply instantly.</li>
+        <li><b>Phone:</b> search stays visible; "Filters (2)" opens a bottom drawer with <i>Apply</i> and <i>Reset</i> (batch filtering suits slow data).</li>
+        <li>Sales Orders opens on the <b>Open</b> tab, so completed orders never get in the way.</li>
+        <li>Zero results keep the header and filters visible and offer "Clear filters".</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="mt0">Date range with Indian FY presets</h3>
+      <div class="ui card" style="zoom:.78; width:470px; display:grid; grid-template-columns:170px 1fr; overflow:hidden">
+        <div style="border-right:1px solid var(--border); padding:8px">
+          <div style="padding:7px 8px">Today</div><div style="padding:7px 8px">Yesterday</div><div style="padding:7px 8px">This week</div>
+          <div class="flex between" style="padding:7px 8px;background:var(--accent);border-radius:6px;font-weight:500">This month <svg class="i sm t-primary"><use href="#i-check"/></svg></div>
+          <div style="padding:7px 8px">Last month</div><div style="padding:7px 8px">This quarter <span class="t-xs t-muted">Jul–Sep</span></div>
+          <div style="padding:7px 8px">This FY <span class="t-xs t-muted">2026-27</span></div><div style="padding:7px 8px">Last FY <span class="t-xs t-muted">2025-26</span></div><div style="padding:7px 8px">Custom…</div>
+        </div>
+        <div style="padding:12px">
+          <div class="flex between fw6" style="margin-bottom:8px"><svg class="i"><use href="#i-left"/></svg>September 2026<svg class="i"><use href="#i-right"/></svg></div>
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-size:12px">
+            <span class="t-muted">Mo</span><span class="t-muted">Tu</span><span class="t-muted">We</span><span class="t-muted">Th</span><span class="t-muted">Fr</span><span class="t-muted">Sa</span><span class="t-muted">Su</span>
+            <span></span>
+            <span style="background:var(--primary);color:#fff;border-radius:6px;padding:4px 0">1</span>
+            <span style="background:var(--accent);padding:4px 0">2</span><span style="background:var(--accent);padding:4px 0">3</span><span style="background:var(--accent);padding:4px 0">4</span><span style="background:var(--accent);padding:4px 0">5</span><span style="background:var(--accent);padding:4px 0">6</span>
+            <span style="background:var(--accent);padding:4px 0">7</span><span style="background:var(--accent);padding:4px 0">8</span><span style="background:var(--accent);padding:4px 0">9</span><span style="background:var(--accent);padding:4px 0">10</span><span style="background:var(--accent);padding:4px 0">11</span><span style="background:var(--accent);padding:4px 0">12</span><span style="background:var(--accent);padding:4px 0">13</span>
+            <span style="background:var(--accent);padding:4px 0">14</span><span style="background:var(--accent);padding:4px 0">15</span><span style="background:var(--accent);padding:4px 0">16</span><span style="background:var(--accent);padding:4px 0">17</span><span style="background:var(--accent);padding:4px 0">18</span><span style="background:var(--accent);padding:4px 0">19</span><span style="background:var(--accent);padding:4px 0">20</span>
+            <span style="background:var(--accent);padding:4px 0">21</span><span style="background:var(--accent);padding:4px 0">22</span><span style="background:var(--accent);padding:4px 0">23</span><span style="background:var(--accent);padding:4px 0">24</span><span style="background:var(--accent);padding:4px 0">25</span><span style="background:var(--accent);padding:4px 0">26</span><span style="background:var(--accent);padding:4px 0;font-weight:700">27</span>
+            <span style="background:var(--accent);padding:4px 0">28</span><span style="background:var(--accent);padding:4px 0">29</span><span style="background:var(--primary);color:#fff;border-radius:6px;padding:4px 0">30</span>
+          </div>
+          <div class="t-xs t-muted" style="margin-top:10px">01/09/2026 – 30/09/2026</div>
+        </div>
+      </div>
+      <p class="small mt2">Each preset shows its resolved dates. FY rule: if today is January–March, the FY started on 1 April of the previous calendar year.</p>
+      <table class="doc compact" style="font-size:8.5pt">
+        <tr><th>Preset</th><th>On 27/09/2026</th></tr>
+        <tr><td>This month</td><td>01/09/2026 – 30/09/2026</td></tr>
+        <tr><td>This quarter</td><td>01/07/2026 – 30/09/2026 (FY Q2)</td></tr>
+        <tr><td>This FY / Last FY</td><td>01/04/2026 – 31/03/2027 / 01/04/2025 – 31/03/2026</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="callout"><h4>URL = the view</h4><p><code>/sales-orders?status=PENDING,PARTIALLY_SUPPLIED&amp;material=hms-1</code> is a real, shareable screen. Dashboard drill-downs are plain links, Back restores the previous view, and "this month's purchases from Sharma Traders" can be sent on WhatsApp.</p></div>
+  <div class="runhead">Metalix UI/UX System · Lists</div>
+</section>
+
+<!-- =============================== 11. FORMS =============================== -->
+<section class="page">
+  <div class="eyebrow">Forms</div>
+  <h1 class="title">Forms: one pattern for every form</h1>
+  <p class="lead">Every create/edit form uses the same pattern: shadcn <code>Field</code> + React Hook Form, grouped sections, units inside the inputs, a live total, and a Save button that is never disabled.</p>
+
+  <div class="row" style="gap:6mm">
+    <div class="fig" style="flex:none; width:98mm">
+      <div class="ui" style="zoom:.62; width:560px; border:1px solid #c4cad2; border-radius:14px; overflow:hidden">
+        <div class="flex between" style="padding:18px 24px; border-bottom:1px solid var(--border)"><div><div class="fw6 t-lg">New purchase</div><div class="t-xs t-muted">Stock goes up when you save</div></div><svg class="i t-muted"><use href="#i-x"/></svg></div>
+        <div class="alert danger" style="margin:16px 24px 0"><svg class="i"><use href="#i-errc"/></svg><div><div class="a-title">There is a problem</div><div class="t-sm" style="color:var(--destructive);text-decoration:underline">Enter tons as a number, like 12.450</div></div></div>
+        <div style="padding:16px 24px; display:flex; flex-direction:column; gap:16px">
+          <div class="t-xs fw6 t-muted">WHAT &amp; WHO</div>
+          <div class="field"><span class="flabel">Date</span><div class="input" style="width:160px"><span class="grow">27/09/2026</span><svg class="i t-muted"><use href="#i-cal"/></svg></div></div>
+          <div class="field"><span class="flabel">Supplier</span><div class="input"><span class="grow">Shree Ganesh Metals</span><span class="badge b-outline" style="height:18px;font-size:11px">Last used</span><svg class="i t-muted"><use href="#i-updown"/></svg></div></div>
+          <div class="field"><span class="flabel">Material</span><div class="input"><span class="grow">HMS 1</span><svg class="i t-muted"><use href="#i-updown"/></svg></div></div>
+          <div class="t-xs fw6 t-muted" style="margin-top:4px">QUANTITY &amp; PRICE</div>
+          <div class="flex gap4" style="align-items:flex-start">
+            <div class="field"><span class="flabel">Tons</span><div class="input invalid" style="width:144px"><span class="grow num">12,45</span><span class="addon">t</span></div><span class="err"><svg class="i sm"><use href="#i-errc"/></svg>Enter tons as a number, like 12.450</span></div>
+            <div class="field"><span class="flabel">Rate</span><div class="input" style="width:170px"><span class="addon">₹</span><span class="grow num">34,500.00</span><span class="addon">/t</span></div><span class="help">Last rate on 24/09/2026</span></div>
+          </div>
+          <div class="field"><span class="flabel">Amount</span><div class="t-lg fw6">—</div><span class="help">Tons × rate, calculated for you</span></div>
+          <div class="t-xs fw6 t-muted" style="margin-top:4px">TRANSPORT &amp; PAPERWORK</div>
+          <div class="flex gap4"><div class="field"><span class="flabel">Vehicle no.</span><div class="input" style="width:176px">GJ 03 AX 4521</div></div><div class="field"><span class="flabel">Invoice no. <span class="opt">(optional)</span></span><div class="input focus" style="width:190px"><span class="ph">e.g. INV-2291</span></div></div></div>
+        </div>
+        <div class="flex between" style="padding:14px 24px; border-top:1px solid var(--border)"><span class="btn ghost">Cancel</span><div class="flex gap2"><span class="btn outline">Save &amp; add another</span><span class="btn primary">Save purchase <span class="kbd-in">Ctrl ↵</span></span></div></div>
+      </div>
+      <span class="mk" style="left:-8px;top:52px">1</span>
+      <span class="mk" style="left:300px;top:186px">2</span>
+      <span class="mk" style="left:-8px;top:316px">3</span>
+      <span class="mk" style="left:268px;top:296px">4</span>
+      <span class="mk" style="left:236px;top:436px">5</span>
+      <span class="mk" style="left:300px;top:500px">6</span>
+    </div>
+    <div class="legend" style="grid-template-columns:1fr; margin-top:0; font-size:8.8pt">
+      <div><span class="dot">1</span><span><b>Error summary</b> at the top, focused after a failed submit, linking to each field. Same wording as the inline error.</span></div>
+      <div><span class="dot">2</span><span><b>Smart defaults</b>: today, last-used supplier/material, supplier's last rate. Marked "Last used" and always editable.</span></div>
+      <div><span class="dot">3</span><span><b>Inline error</b> under the field: red border + icon + words; what the user typed is kept.</span></div>
+      <div><span class="dot">4</span><span><b>Units inside inputs</b> (₹, t, /t) via <code>InputGroup</code>; numbers right-aligned; widths match the expected value.</span></div>
+      <div><span class="dot">5</span><span>Only <b>optional</b> fields are marked; everything else is required.</span></div>
+      <div><span class="dot">6</span><span><b>Save never disabled</b>. While saving: spinner + "Saving…", same width, double-submit blocked.</span></div>
+    </div>
+  </div>
+
+  <h2>When to validate</h2>
+  <svg viewBox="0 0 700 70" width="100%">
+    <g font-size="11">
+      <rect x="0" y="10" width="160" height="44" rx="8" fill="#f5f7f9" stroke="#cfd4db"/><text x="80" y="29" text-anchor="middle" font-weight="700">First entry</text><text x="80" y="45" text-anchor="middle" fill="#5b6270">no errors while typing</text>
+      <path d="M160 32 H184" stroke="#9aa3ae" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="188" y="10" width="160" height="44" rx="8" fill="oklch(0.95 0.02 235)" stroke="oklch(0.80 0.05 235)"/><text x="268" y="29" text-anchor="middle" font-weight="700">On submit</text><text x="268" y="45" text-anchor="middle" fill="#5b6270">summary + inline errors</text>
+      <path d="M348 32 H372" stroke="#9aa3ae" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="376" y="10" width="160" height="44" rx="8" fill="#f5f7f9" stroke="#cfd4db"/><text x="456" y="29" text-anchor="middle" font-weight="700">While fixing</text><text x="456" y="45" text-anchor="middle" fill="#5b6270">error clears as it's fixed</text>
+      <rect x="552" y="10" width="148" height="44" rx="8" fill="#fff" stroke="oklch(0.84 0.16 84)"/><text x="626" y="29" text-anchor="middle" font-weight="700">Exceptions</text><text x="626" y="45" text-anchor="middle" fill="#5b6270">on blur: vehicle, GSTIN</text>
+    </g>
+  </svg>
+  <p class="small">React Hook Form: <code>mode: "onSubmit"</code>, <code>reValidateMode: "onChange"</code>. Limit checks are live warnings (cheap numbers). Research: on-blur validation cut errors 22% (Wroblewski); GOV.UK says never validate while typing: the hybrid respects both.</p>
+  <div class="grid2">
+    <div class="callout good"><h4>Good error copy</h4><p>"Enter tons as a number, like 12.450"<br>"Choose a supplier"<br>"Enter the vehicle number like GJ03AX4521"</p></div>
+    <div class="callout bad"><h4>Avoid</h4><p>"Invalid input", "Error 422", "Oops! Something went wrong", "Please enter a valid value": no blame, no codes, no "please/sorry".</p></div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Forms</div>
+</section>
+
+<!-- =============================== 12. NEW DELIVERY (landscape) =============================== -->
+<section class="page landscape">
+  <div class="eyebrow">Forms · Mockup S4 · the signature component</div>
+  <h1 class="title">New delivery with the live limits panel</h1>
+  <div class="row" style="gap:5mm; margin-top:2mm">
+    <div class="fig" style="flex:none; width:540px">
+      <div class="ui" style="zoom:.7; width:768px; border:1px solid #c4cad2; border-radius:14px; overflow:hidden">
+        <div class="flex between" style="padding:16px 24px; border-bottom:1px solid var(--border)"><div><div class="fw6 t-lg">Record delivery</div><div class="t-xs t-muted">PO-0142 · Bharat Castings Pvt Ltd</div></div><svg class="i t-muted"><use href="#i-x"/></svg></div>
+        <div style="display:grid; grid-template-columns:1fr 264px; gap:20px; padding:20px 24px">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="t-xs fw6 t-muted">SALES ORDER</div>
+            <div style="background:color-mix(in oklch,var(--muted) 70%,white);border-radius:12px;padding:14px 16px;font-size:13px">
+              <div class="flex gap2"><svg class="i t-muted"><use href="#i-lock"/></svg><b>PO-0142</b><span>Bharat Castings Pvt Ltd</span><span class="grow"></span><span class="btn link t-sm">Change order</span></div>
+              <div class="flex" style="margin-top:6px"><span class="t-muted" style="width:70px">Material</span>HMS 1 (Heavy Melting Scrap)</div>
+              <div class="flex"><span class="t-muted" style="width:70px">Rate</span>₹38,500.00/t</div>
+              <div class="flex gap2" style="margin-top:6px"><span class="t-muted">Ordered 30.000 t · Delivered 18.250 t</span><div class="bar info grow"><i style="width:61%"></i></div><span class="t-xs">61%</span></div>
+            </div>
+            <div class="t-xs fw6 t-muted">DELIVERY DETAILS</div>
+            <div class="field"><span class="flabel">Date</span><div class="input" style="width:160px"><span class="grow">27/09/2026</span><svg class="i t-muted"><use href="#i-cal"/></svg></div></div>
+            <div class="field"><span class="flabel">Stock from</span><div class="input"><span class="grow">Shree Ganesh Metals</span><span class="t-muted t-sm">9.200 t available</span><svg class="i t-muted"><use href="#i-updown"/></svg></div></div>
+            <div class="field"><span class="flabel">Tons</span><div class="flex gap2"><div class="input focus" style="width:144px"><span class="grow num">6.000</span><span class="addon">t</span></div><span class="btn ghost sm t-primary">Use max (9.200 t)</span></div><span class="help">Up to 9.200 t</span></div>
+            <div class="field"><span class="flabel">Amount</span><div class="t-lg fw6">₹2,31,000.00</div><span class="help">6.000 t × ₹38,500.00</span></div>
+            <div class="t-xs fw6 t-muted">TRANSPORT</div>
+            <div class="flex gap4"><div class="field"><span class="flabel">Vehicle no.</span><div class="input" style="width:170px">GJ 03 BW 7810</div></div><div class="field"><span class="flabel">Challan no. <span class="opt">(optional)</span></span><div class="input" style="width:170px">DC-0352</div></div></div>
+          </div>
+          <div class="card" style="padding:16px; align-self:start">
+            <div class="flex between"><span class="fw6">Delivery limits</span><svg class="i t-muted"><use href="#i-info"/></svg></div>
+            <div style="margin-top:12px"><div class="t-xs t-muted fw5">Left on PO-0142</div><div class="flex between"><span class="t-lg fw6">11.750 t</span><span class="t-xs t-muted">51%</span></div><div class="bar tall"><i style="width:51%"></i></div></div>
+            <div style="margin-top:12px"><div class="t-xs t-muted fw5">HMS 1 in yard</div><div class="flex between"><span class="t-lg fw6">71.500 t</span><span class="t-xs t-muted">8%</span></div><div class="bar tall"><i style="width:8%"></i></div></div>
+            <div style="margin-top:12px; padding:8px; margin-left:-8px; margin-right:-8px; border:1.5px solid var(--primary); border-radius:10px"><div class="flex between"><span class="t-xs t-muted fw5">Shree Ganesh Metals stock</span><span class="badge b-outline" style="height:18px;font-size:10px;padding:0 5px">Tightest</span></div><div class="flex between"><span class="t-lg fw6">9.200 t</span><span class="t-xs t-muted">65%</span></div><div class="bar tall"><i style="width:65%"></i></div></div>
+            <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border)"><div class="t-sm">You can deliver up to</div><div class="t-lg fw7">9.200 t</div><div class="t-xs t-muted">Limited by Shree Ganesh Metals stock</div></div>
+            <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)" class="t-sm"><div class="t-xs t-muted fw5" style="margin-bottom:4px">After this delivery</div><div class="flex between"><span>PO left</span><b>5.750 t</b></div><div class="flex between"><span>Supplier</span><b>3.200 t</b></div><div class="flex between"><span>Yard (HMS 1)</span><b>65.500 t</b></div></div>
+          </div>
+        </div>
+        <div class="flex between" style="padding:14px 24px; border-top:1px solid var(--border)"><span class="btn ghost">Cancel</span><div class="flex gap2"><span class="btn outline">Save &amp; add another</span><span class="btn primary">Save delivery <span class="kbd-in">Ctrl ↵</span></span></div></div>
+      </div>
+      <span class="mk" style="left:-10px;top:96px">1</span>
+      <span class="mk" style="left:-10px;top:280px">2</span>
+      <span class="mk" style="left:200px;top:334px">3</span>
+      <span class="mk" style="left:528px;top:210px">4</span>
+      <span class="mk" style="left:528px;top:262px">5</span>
+      <span class="mk" style="left:528px;top:330px">6</span>
+      <span class="mk" style="left:-10px;top:402px">7</span>
+    </div>
+    <div class="legend" style="grid-template-columns:1fr; margin-top:0; font-size:8.8pt">
+      <div><span class="dot">1</span><span><b>Opened from "Deliver"</b> on PO-0142: the order is locked (customer, material, rate come from it). "Change order" swaps in a picker.</span></div>
+      <div><span class="dot">2</span><span><b>"Stock from"</b> lists only suppliers holding HMS 1, sorted by stock, each showing its tons. Suppliers with 0 t are hidden with a note.</span></div>
+      <div><span class="dot">3</span><span>Quantity <b>defaults to the maximum allowed</b>; "Use max" refills it in one tap.</span></div>
+      <div><span class="dot">4</span><span><b>Three limits</b> as meters: typed tons ÷ each limit. The smallest limit is ringed and tagged "Tightest".</span></div>
+      <div><span class="dot">5</span><span><b>One sentence</b> names the binding limit, in plain words.</span></div>
+      <div><span class="dot">6</span><span><b>Preview</b> of what remains after saving: updates as the user types.</span></div>
+      <div><span class="dot">7</span><span>Live amount (tons × rate) announced politely to screen readers.</span></div>
+      <div class="callout warn" style="display:block; margin-top:2mm; font-size:8.3pt"><b>Backend dependency:</b> a read-only <code>GET /sales/capacity</code> endpoint returning the same numbers the server enforces. The limits refetch 300 ms after PO, supplier or date changes.</div>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Forms</div>
+</section>
+
+<!-- =============================== 13. LIMITS PANEL STATES =============================== -->
+<section class="page">
+  <div class="eyebrow">Forms</div>
+  <h1 class="title">Limits panel: every state designed</h1>
+  <p class="lead">The panel changes colour <i>and</i> icon <i>and</i> words as the typed tons approach the tightest limit. The server's 409 stays the final guard; when it fires, the panel refreshes from the error's own numbers.</p>
+
+  <div class="grid3" style="gap:4mm">
+    <div>
+      <div class="ui card" style="zoom:.72; padding:14px">
+        <div class="t-xs t-muted fw5">Shree Ganesh Metals stock</div><div class="flex between"><span class="t-lg fw6">9.200 t</span><span class="t-xs t-muted">65%</span></div><div class="bar tall"><i style="width:65%"></i></div>
+        <div style="margin-top:10px;border-top:1px solid var(--border);padding-top:8px"><div class="t-sm">You can deliver up to <b>9.200 t</b></div><div class="t-xs t-muted">Limited by Shree Ganesh Metals stock</div></div>
+      </div>
+      <h4 class="mt2" style="font-size:9.5pt">1 · Default (&lt; 80%)</h4><p class="small">Typed 6.000 t. Neutral blue fills.</p>
+    </div>
+    <div>
+      <div class="ui card" style="zoom:.72; padding:14px; border-color:color-mix(in oklch,var(--warning) 80%,transparent)">
+        <div class="t-xs t-muted fw5">Shree Ganesh Metals stock</div><div class="flex between"><span class="t-lg fw6 t-warn">9.200 t</span><span class="t-xs t-warn fw6">92%</span></div><div class="bar tall warn"><i style="width:92%"></i></div>
+        <div style="margin-top:10px;border-top:1px solid var(--border);padding-top:8px" class="flex gap2 t-warn"><svg class="i"><use href="#i-alert"/></svg><div class="t-sm fw5">Close to the limit: 0.700 t to spare</div></div>
+      </div>
+      <h4 class="mt2" style="font-size:9.5pt">2 · Near limit (80–99%)</h4><p class="small">Typed 8.500 t. Amber + warning icon; the Tons helper turns amber too.</p>
+    </div>
+    <div>
+      <div class="ui card" style="zoom:.72; padding:14px; border-color:color-mix(in oklch,var(--destructive) 60%,transparent)">
+        <div class="t-xs t-muted fw5">Shree Ganesh Metals stock</div><div class="flex between"><span class="t-lg fw6 t-danger">9.200 t</span><svg class="i t-danger"><use href="#i-xc"/></svg></div><div class="bar tall danger"><i style="width:100%"></i></div>
+        <div style="margin-top:10px;padding:8px;border-radius:8px;background:color-mix(in oklch,var(--destructive) 10%,white)"><div class="t-sm t-danger">Only 9.200 t of HMS 1 from Shree Ganesh Metals is left.</div><div class="flex gap2" style="margin-top:6px"><span class="btn outline sm">Use 9.200 t</span><span class="btn ghost sm">Choose another supplier</span></div></div>
+      </div>
+      <h4 class="mt2" style="font-size:9.5pt">3 · Over limit (&gt; 100%)</h4><p class="small">Typed 10.000 t. Red + icon + exact fix. Tons field invalid; on submit the summary appears too.</p>
+    </div>
+    <div>
+      <div class="ui card" style="zoom:.72; padding:14px">
+        <div class="t-xs t-muted">Checking limits…</div>
+        <div style="margin-top:10px"><span class="sk" style="width:60%"></span></div><div style="margin-top:8px"><span class="sk" style="width:100%;height:8px"></span></div>
+        <div style="margin-top:14px"><span class="sk" style="width:45%"></span></div><div style="margin-top:8px"><span class="sk" style="width:100%;height:8px"></span></div>
+      </div>
+      <h4 class="mt2" style="font-size:9.5pt">4 · Checking</h4><p class="small">Skeleton rows, only after 500 ms, so fast answers never flicker.</p>
+    </div>
+    <div>
+      <div class="ui card" style="zoom:.72; padding:14px; background:var(--muted)">
+        <div class="flex gap2 t-muted"><svg class="i"><use href="#i-cloudoff"/></svg><span class="fw5">Limits unavailable</span></div>
+        <div class="t-sm" style="margin-top:6px">Couldn't check limits right now. We'll still check when you save.</div>
+        <span class="btn outline sm" style="margin-top:10px">Try again</span>
+      </div>
+      <h4 class="mt2" style="font-size:9.5pt">5 · Unavailable</h4><p class="small">Network hiccup: the form still works; the server checks on save.</p>
+    </div>
+    <div>
+      <div class="ui" style="zoom:.72; border:1px solid color-mix(in oklch,var(--destructive) 45%,transparent); border-radius:10px; padding:12px; background:color-mix(in oklch,var(--destructive) 6%,white)">
+        <div class="flex gap2 t-danger fw6"><svg class="i"><use href="#i-errc"/></svg>Stock changed while you were typing</div>
+        <div class="t-sm" style="margin-top:4px">Only 8.200 t of HMS 1 from Shree Ganesh Metals is left now. Enter 8.200 t or less.</div>
+        <span class="btn outline sm" style="margin-top:8px">Use 8.200 t</span>
+      </div>
+      <h4 class="mt2" style="font-size:9.5pt">6 · Server 409 after save</h4><p class="small">Someone else delivered 1.000 t meanwhile. Panel refreshes from <code>error.details</code>; no generic toast.</p>
+    </div>
+  </div>
+
+  <h2>On phones: a strip above the Save bar</h2>
+  <div class="row" style="align-items:center">
+    <div class="ui" style="zoom:.8; flex:none; width:380px; border:1px solid var(--border); border-radius:12px; overflow:hidden">
+      <div class="flex between" style="height:48px;padding:0 14px;background:color-mix(in oklch,var(--accent) 70%,white)"><span>Max <b>9.200 t</b> · limited by Shree Ganesh stock</span><span class="t-primary t-sm fw5">Details ▴</span></div>
+      <div style="padding:10px 14px"><span class="btn primary lg" style="width:100%">Save delivery</span></div>
+    </div>
+    <p class="small" style="margin:0">The panel collapses into a 48 px strip pinned above the sticky Save button. It turns amber or red with an icon and text in the near/over states; "Details" expands the full panel as a second drawer snap point. "Use max" sits inside the Tons input.</p>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Forms</div>
+</section>
+
+<!-- =============================== 14. SALES ORDER DETAIL (landscape) =============================== -->
+<section class="page landscape">
+  <div class="eyebrow">Detail pages · Mockup S5</div>
+  <h1 class="title">Sales order detail: summary first, related records below</h1>
+  <div class="fig" style="width:950px; margin-top:2mm">
+    <div class="browser">
+      <div class="bar"><i></i><i></i><i></i><div class="url">metalix.app/sales-orders/0142</div></div>
+      <div class="ui" style="zoom:.7; width:1340px; padding:24px">
+        <div class="crumbs t-sm">Sales Orders <svg class="i sm"><use href="#i-right"/></svg> <b>PO-0142</b></div>
+        <div class="flex between" style="margin-top:8px">
+          <div><div class="flex gap3"><span style="font-size:24px;line-height:32px;font-weight:600">PO-0142</span><span class="badge b-partial"><svg class="i"><use href="#i-truck"/></svg>Partly delivered</span></div><div class="t-muted">Bharat Castings Pvt Ltd · HMS 1 (Heavy Melting Scrap) · Ordered on 09/09/2026</div></div>
+          <div class="flex gap2"><span class="btn outline icon"><svg class="i"><use href="#i-left"/></svg></span><span class="btn outline icon"><svg class="i"><use href="#i-right"/></svg></span><span class="btn outline">Edit</span><span class="btn primary"><svg class="i"><use href="#i-truck"/></svg>Record delivery <span class="kbd-in">Alt D</span></span><span class="btn outline icon"><svg class="i"><use href="#i-more"/></svg></span></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:18px">
+          <div class="card card-p stat" style="padding:16px"><div class="label">Ordered</div><div class="value" style="font-size:24px">30.000 t</div></div>
+          <div class="card card-p stat" style="padding:16px"><div class="label">Delivered</div><div class="value" style="font-size:24px">18.250 t</div><div class="foot">61% of order</div></div>
+          <div class="card card-p stat" style="padding:16px"><div class="label">Left to deliver</div><div class="value t-primary" style="font-size:24px">11.750 t</div></div>
+          <div class="card card-p stat" style="padding:16px"><div class="label">Rate</div><div class="value" style="font-size:24px">₹38,500.00/t</div></div>
+          <div class="card card-p stat" style="padding:16px"><div class="label">Value delivered</div><div class="value" style="font-size:24px">₹7,02,625.00</div><div class="foot">of ₹11,55,000.00</div></div>
+        </div>
+        <div class="flex gap3" style="margin-top:14px"><span class="t-sm">18.250 of 30.000 t delivered</span><div class="bar xtall info grow"><i style="width:61%"></i></div><span class="t-sm fw5">11.750 t left</span></div>
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-top:16px">
+          <div class="card" style="padding:16px 20px">
+            <div class="flex between"><div class="card-title">Deliveries (3)</div><span class="btn outline sm"><svg class="i sm"><use href="#i-plus"/></svg>Record delivery</span></div>
+            <table class="t" style="margin-top:8px">
+              <thead><tr><th>Date</th><th>Challan no.</th><th>Stock from</th><th class="num">Tons (t)</th><th class="num">Amount (₹)</th><th>Vehicle</th><th></th></tr></thead>
+              <tbody>
+                <tr><td>24/09/2026</td><td>DC-0340</td><td>Shree Ganesh Metals</td><td class="num">4.500</td><td class="num">1,73,250.00</td><td>GJ 03 AX 4521</td><td class="num"><svg class="i t-muted"><use href="#i-more"/></svg></td></tr>
+                <tr><td>18/09/2026</td><td>DC-0327</td><td>Jai Ambe Steel</td><td class="num">6.250</td><td class="num">2,40,625.00</td><td>MH 04 KL 2210</td><td class="num"><svg class="i t-muted"><use href="#i-more"/></svg></td></tr>
+                <tr><td>12/09/2026</td><td>DC-0311</td><td>Shree Ganesh Metals</td><td class="num">7.500</td><td class="num">2,88,750.00</td><td>GJ 03 AX 4521</td><td class="num"><svg class="i t-muted"><use href="#i-more"/></svg></td></tr>
+              </tbody>
+              <tfoot><tr><td>Total</td><td></td><td></td><td class="num">18.250</td><td class="num">7,02,625.00</td><td></td><td></td></tr></tfoot>
+            </table>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div class="card" style="padding:16px 20px; font-size:13px">
+              <div class="card-title">Order details</div>
+              <div class="flex" style="margin-top:8px"><span class="t-muted" style="width:90px">Customer</span><span class="linkish">Bharat Castings Pvt Ltd</span></div>
+              <div class="flex" style="margin-top:4px"><span class="t-muted" style="width:90px">PO date</span>09/09/2026</div>
+              <div class="flex" style="margin-top:4px"><span class="t-muted" style="width:90px">Notes</span>Deliver to Rajkot yard, gate 2</div>
+              <div class="flex" style="margin-top:4px"><span class="t-muted" style="width:90px">Created</span>Rajesh Patel · 09/09/2026, 11:42 am</div>
+            </div>
+            <div class="card" style="padding:16px 20px; font-size:13px">
+              <div class="card-title">Stock for this order</div>
+              <div style="margin-top:6px">HMS 1 in yard <b>71.500 t</b></div>
+              <div class="flex between" style="margin-top:4px"><span>Jai Ambe Steel</span><b>38.000 t</b></div>
+              <div class="flex between"><span>Patel Scrap Co.</span><b>24.300 t</b></div>
+              <div class="flex between"><span>Shree Ganesh Metals</span><b>9.200 t</b></div>
+              <div class="t-primary" style="margin-top:6px">See supplier stock →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span class="mk" style="left:-10px;top:52px">1</span>
+    <span class="mk" style="left:560px;top:52px">2</span>
+    <span class="mk" style="left:-10px;top:118px">3</span>
+    <span class="mk" style="left:-10px;top:178px">4</span>
+    <span class="mk" style="left:-10px;top:230px">5</span>
+    <span class="mk" style="left:614px;top:230px">6</span>
+  </div>
+  <div class="legend c3">
+    <div><span class="dot">1</span><span>Breadcrumb, title + status badge, subtitle with who/what/when.</span></div>
+    <div><span class="dot">2</span><span>Prev/next order, Edit, <b>one primary action</b>, ⋯ (Copy link · Print · Cancel order in red).</span></div>
+    <div><span class="dot">3</span><span>3–5 stat cards: the numbers people came for, before the full record.</span></div>
+    <div><span class="dot">4</span><span>Progress strip: "18.250 of 30.000 t delivered · 11.750 t left".</span></div>
+    <div><span class="dot">5</span><span>Related records in the same DataTable used everywhere, with a total row.</span></div>
+    <div><span class="dot">6</span><span>Side cards: order facts and the stock that can serve this order.</span></div>
+  </div>
+  <p class="small mt2"><b>Completed</b>: badge "Completed", primary action removed, info alert "All 30.000 t delivered on 26/09/2026." <b>Cancelled</b>: a permanent grey alert "This order was cancelled on 14/09/2026 by Rajesh Patel. Deliveries can't be recorded against it."; Edit and Record delivery hidden.</p>
+  <div class="runhead">Metalix UI/UX System · Detail pages</div>
+</section>
+
+<!-- =============================== 15. NUMBERS & COMPLEX DATA =============================== -->
+<section class="page">
+  <div class="eyebrow">Making data easy</div>
+  <h1 class="title">Numbers, dates and complex data</h1>
+  <p class="lead">Every number in the app goes through one file, <code>lib/format.ts</code>. Exact values in tables and forms; compact values only on summary tiles; never floating-point arithmetic.</p>
+
+  <table class="doc compact" style="font-size:8.5pt">
+    <tr><th>Kind</th><th>Rule</th><th class="num">Example</th></tr>
+    <tr><td>Tons in tables</td><td>3 fixed decimals, Indian grouping, unit in the header</td><td class="num">1,284.500</td></tr>
+    <tr><td>Tons in cards, forms, sentences</td><td>Same, with " t"</td><td class="num">12.450 t</td></tr>
+    <tr><td>Tons on a KPI tile</td><td>1 decimal; exact value in tooltip</td><td class="num">286.5 t</td></tr>
+    <tr><td>Money in tables</td><td>2 decimals, lakh/crore grouping, ₹ in the header</td><td class="num">11,87,894.21</td></tr>
+    <tr><td>Money in cards, forms, toasts</td><td>With the ₹ symbol</td><td class="num">₹11,87,894.21</td></tr>
+    <tr><td>Rate</td><td>₹ with "/t"</td><td class="num">₹38,500.00/t</td></tr>
+    <tr><td>Money on a KPI tile / chart axis</td><td>Custom compact: &lt; ₹1 L full rupees; lakh; crore; ≤ 3 significant digits</td><td class="num">₹8.75 L · ₹1.96 Cr</td></tr>
+    <tr><td>Percent</td><td>0 decimals in badges and bars</td><td class="num">61%</td></tr>
+    <tr><td>Negative</td><td>True minus sign + red + icon</td><td class="num" style="color:var(--doc-red)">−2.300 t</td></tr>
+    <tr><td>Zero vs not applicable</td><td>Real zero shows zero; not applicable shows a dash</td><td class="num">0.000 · —</td></tr>
+    <tr><td>Record dates</td><td>Always DD/MM/YYYY</td><td class="num">27/09/2026</td></tr>
+    <tr><td>Freshness / activity</td><td>Relative, exact date on hover</td><td class="num">Updated 2 min ago</td></tr>
+    <tr><td>Change</td><td>Arrow + sign + words (never colour alone)</td><td class="num">▲ 8% vs Aug</td></tr>
+  </table>
+
+  <div class="callout bad"><h4>Why a custom compact formatter?</h4><p>The browser's built-in compact Indian format printed <b>"1.2KCr"</b> for about ₹119 crore in testing. Money must never pass through JavaScript floats either: API strings go straight to <code>Intl.NumberFormat('en-IN')</code> (which formats strings exactly) and arithmetic like tons × rate uses <code>big.js</code>. Dates go to the API as <code>yyyy-MM-dd</code>, never through <code>toISOString()</code> (which shifts IST dates back a day).</p></div>
+
+  <h2>Six ways to make complex data easy</h2>
+  <div class="grid3" style="gap:3mm">
+    <div class="principle"><h4>Lead with the answer</h4><p>Detail pages open with 3–5 stat cards; the full record comes after. Lists show 6–9 columns; the rest are one click away.</p></div>
+    <div class="principle"><h4>Say what it means</h4><p>"You can deliver up to 9.200 t: limited by Shree Ganesh Metals stock" beats three numbers the user must compare.</p></div>
+    <div class="principle"><h4>Surface exceptions loudly</h4><p>Shortages, negative stock and aged orders always show colour + icon + words; everything normal stays quiet and grey.</p></div>
+    <div class="principle"><h4>Compare, don't just report</h4><p>Every KPI carries a comparison ("▲ 31.520 t since 01/09"); progress bars show "18.250 of 30.000 t".</p></div>
+    <div class="principle"><h4>Precision where it's copied</h4><p>Compact numbers never appear in tables, forms or anything a user might copy into an invoice.</p></div>
+    <div class="principle"><h4>Trade words, one vocabulary</h4><p>Same labels in lists, forms, badges, toasts and errors. Hindi / Gujarati later through one message dictionary.</p></div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Making data easy</div>
+</section>
+<!-- =============================== 16. LOADING & EMPTY (landscape) =============================== -->
+<section class="page landscape">
+  <div class="eyebrow">States and feedback · Mockup S6</div>
+  <h1 class="title">Loading and empty states: never a blank or confusing screen</h1>
+  <p class="lead">Under 1 s show nothing; skeletons for whole pages (only after 500 ms), spinners for single parts, and old rows stay visible while new ones load. Empty states always say why and offer one way forward.</p>
+  <div class="grid3" style="gap:5mm">
+    <div>
+      <div class="ui card" style="zoom:.66; padding:14px">
+        <div class="flex gap2"><div class="input" style="width:200px"><svg class="i t-muted"><use href="#i-search"/></svg><span class="ph">Supplier, vehicle…</span></div><span class="btn outline sm">This month</span></div>
+        <div style="margin-top:12px"><span class="sk" style="width:280px;height:14px"></span></div>
+        <table class="t" style="margin-top:6px"><thead><tr><th>Date</th><th>Supplier</th><th>Material</th><th class="num">Tons (t)</th><th class="num">Amount (₹)</th></tr></thead>
+        <tbody>
+          <tr><td><span class="sk" style="width:70px"></span></td><td><span class="sk" style="width:140px"></span></td><td><span class="sk" style="width:90px"></span></td><td class="num"><span class="sk" style="width:56px"></span></td><td class="num"><span class="sk" style="width:80px"></span></td></tr>
+          <tr><td><span class="sk" style="width:70px"></span></td><td><span class="sk" style="width:120px"></span></td><td><span class="sk" style="width:100px"></span></td><td class="num"><span class="sk" style="width:56px"></span></td><td class="num"><span class="sk" style="width:80px"></span></td></tr>
+          <tr><td><span class="sk" style="width:70px"></span></td><td><span class="sk" style="width:150px"></span></td><td><span class="sk" style="width:80px"></span></td><td class="num"><span class="sk" style="width:56px"></span></td><td class="num"><span class="sk" style="width:80px"></span></td></tr>
+        </tbody></table>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">L1 · First load</h3>
+      <p class="small">Header, filters and column titles are live at once; skeleton rows match real row height and column widths. Static or a slow 2 s pulse, no shimmer.</p>
+    </div>
+    <div>
+      <div class="ui card" style="zoom:.66; padding:14px; position:relative">
+        <div class="flex gap2"><span class="chip">Supplier: Sharma Traders <svg class="i sm"><use href="#i-x"/></svg></span></div>
+        <div style="height:2px;background:var(--muted);margin-top:10px;position:relative;overflow:hidden"><div style="position:absolute;left:20%;width:35%;height:2px;background:var(--primary)"></div></div>
+        <div class="t-sm" style="margin-top:8px">Updating…</div>
+        <table class="t" style="margin-top:6px"><thead><tr><th>Date</th><th>Supplier</th><th class="num">Tons (t)</th><th class="num">Amount (₹)</th></tr></thead>
+        <tbody>
+          <tr class="dim"><td>27/09/2026</td><td>Shree Ganesh Metals</td><td class="num">12.450</td><td class="num">4,29,525.00</td></tr>
+          <tr class="dim"><td>27/09/2026</td><td>Sharma Traders</td><td class="num">1.275</td><td class="num">10,00,875.00</td></tr>
+          <tr class="dim"><td>26/09/2026</td><td>Patel Scrap Co.</td><td class="num">2.140</td><td class="num">10,52,880.00</td></tr>
+        </tbody></table>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">L2 · Filter or page change</h3>
+      <p class="small">Old rows stay at 60% opacity with a 2 px progress line; the summary then reads "12 purchases · 118.400 t". The screen never blanks, even on slow yard data.</p>
+    </div>
+    <div>
+      <div class="ui card" style="zoom:.66; padding:18px">
+        <div class="flex gap2">
+          <span class="btn primary" style="min-width:170px"><svg class="i"><use href="#i-loader"/></svg>Saving…</span>
+          <span class="btn primary" style="min-width:170px;background:var(--success)"><svg class="i"><use href="#i-check"/></svg>Saved</span>
+        </div>
+        <div class="t-xs t-muted" style="margin-top:10px">Same width in every state · aria-busy · focus stays on the button · double submit blocked</div>
+        <div style="margin-top:16px" class="t-xs t-muted fw5">Dashboard card loading on its own</div>
+        <div class="card" style="padding:14px;margin-top:6px"><span class="sk" style="width:96px"></span><div style="margin-top:10px"><span class="sk" style="width:120px;height:26px"></span></div><div style="margin-top:10px"><span class="sk" style="width:160px"></span></div></div>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">L3 / L4 · Parts and buttons</h3>
+      <p class="small">A section loads inside its own card only. Save shows a spinner immediately, then a check for 1.2 s, then returns to its label.</p>
+    </div>
+    <div>
+      <div class="ui card empty" style="zoom:.66">
+        <div class="media"><svg class="i xl"><use href="#i-truck"/></svg></div>
+        <h5>No deliveries yet</h5>
+        <p>When scrap goes out to a buyer, record it here. Stock updates automatically.</p>
+        <div class="flex gap3"><span class="btn primary"><svg class="i"><use href="#i-plus"/></svg>Record delivery</span><span class="btn link">How deliveries work</span></div>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">E1 · First use</h3>
+      <p class="small">Explains what the page is for and gives the one next step. VIEWERs see "Deliveries will appear here once the owner adds them" with no button.</p>
+    </div>
+    <div>
+      <div class="ui card empty" style="zoom:.66; border-style:dashed">
+        <div class="media"><svg class="i xl"><use href="#i-filter"/></svg></div>
+        <h5>No purchases match these filters</h5>
+        <p>Showing: Copper wire (Berry) · 01/08/2026 – 15/08/2026 · Supplier: Sharma Traders</p>
+        <div class="flex gap2"><span class="btn primary">Clear filters</span><span class="btn outline">Change dates</span></div>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">E2 · No results</h3>
+      <p class="small">Shown inside the table body: header and filters stay so the user sees <i>what</i> is filtering. Search variant: "No results for 'bras'. Check the spelling, or search by GSTIN."</p>
+    </div>
+    <div>
+      <div class="ui card" style="zoom:.66; padding:16px 18px">
+        <div class="t-xs t-muted fw6">BUY NEEDED</div>
+        <div class="flex gap2 t-success" style="margin-top:10px"><svg class="i lg"><use href="#i-ok"/></svg><span class="fw5">All materials are stocked.</span></div>
+        <div class="t-sm t-muted" style="margin-top:4px">Nothing needs to be purchased for open orders right now.</div>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">E4 · All done</h3>
+      <p class="small">A positive empty state with no action. Never guilt-inducing ("You haven't…"). Empty states render only after a successful load with zero rows, never during loading or after an error.</p>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · States and feedback</div>
+</section>
+
+<!-- =============================== 17. ERRORS, SUCCESS, CONFIRM (landscape) =============================== -->
+<section class="page landscape">
+  <div class="eyebrow">States and feedback · Mockup S6</div>
+  <h1 class="title">Errors, success and confirmations</h1>
+  <p class="lead">Errors sit next to their cause, in plain words, and keep what the user typed. Success is shown in the page first; the toast only confirms. Confirmations are rare and name the action.</p>
+  <div class="grid3" style="gap:5mm">
+    <div>
+      <div class="ui alert danger" style="zoom:.7; display:flex">
+        <svg class="i lg"><use href="#i-errc"/></svg>
+        <div><div class="a-title">Purchase not saved</div><div class="t-sm" style="margin-top:2px">Something went wrong on our side and this purchase was not saved. Try again. If it keeps happening, share this reference with support.</div>
+        <div class="flex gap2" style="margin-top:8px"><span style="font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border);border-radius:5px;padding:2px 6px">Reference: 7f3a9c2e</span><svg class="i t-muted"><use href="#i-copy"/></svg></div>
+        <div class="flex gap2" style="margin-top:10px"><span class="btn outline sm">Try again</span><span class="btn ghost sm">Copy reference</span></div></div>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">Er4 · Server error (500)</h3>
+      <p class="small">Persistent inline alert in the form, never a vanishing toast. The requestId is the only technical token users ever see.</p>
+    </div>
+    <div>
+      <div class="ui" style="zoom:.7; border:1px solid var(--border); border-radius:10px; overflow:hidden">
+        <div class="flex gap2" style="height:40px;padding:0 14px;background:color-mix(in oklch,var(--warning) 22%,white);color:var(--warning-fg)"><svg class="i"><use href="#i-wifioff"/></svg><span class="t-sm fw5">You're offline. Changes can't be saved until the connection is back.</span></div>
+        <div style="padding:14px" class="t-sm t-muted">Page content stays usable for reading; the form keeps its entries.</div>
+      </div>
+      <div class="ui dialog" style="zoom:.7; margin-top:10px; width:420px; padding:20px">
+        <div class="fw6 t-lg">Your session has ended</div><div class="t-sm t-muted" style="margin-top:4px">Log in again to save this delivery. Your entries are kept.</div>
+        <div class="input" style="margin-top:12px"><span class="ph">Password</span></div><div style="text-align:right;margin-top:12px"><span class="btn primary">Log in</span></div>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">Er5 / Er7 · Offline and session ended</h3>
+      <p class="small">A non-dismissible banner while offline ("Back online" for 3 s after). An expired session opens a small login dialog <i>over</i> the form instead of redirecting.</p>
+    </div>
+    <div>
+      <div class="ui empty" style="zoom:.7; border:1px solid var(--border); border-radius:12px">
+        <div class="media"><svg class="i xl"><use href="#i-fileq"/></svg></div>
+        <h5>We couldn't find this sales order</h5>
+        <p>The link may be wrong, or the order number was typed incorrectly.</p>
+        <span class="btn primary">Go to Sales Orders</span>
+      </div>
+      <div class="ui card" style="zoom:.7; padding:16px; margin-top:10px">
+        <div class="card-title">Stock by material</div>
+        <div class="flex gap2 t-muted" style="margin-top:12px"><svg class="i lg"><use href="#i-cloudoff"/></svg><span class="t-sm">Couldn't load stock by material. Check your connection and try again.</span></div>
+        <span class="btn outline sm" style="margin-top:10px">Try again</span>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">Er6 / Er1 · Not found and section error</h3>
+      <p class="small">A failed section fails alone, inside its card, with its own "Try again"; the rest of the dashboard keeps working.</p>
+    </div>
+    <div>
+      <div class="ui dialog" style="zoom:.7; width:448px">
+        <div class="flex gap3" style="align-items:flex-start"><div style="width:40px;height:40px;border-radius:50%;background:color-mix(in oklch,var(--destructive) 12%,white);color:var(--destructive);display:flex;align-items:center;justify-content:center;flex:none"><svg class="i lg"><use href="#i-ban"/></svg></div>
+        <div><div class="fw6 t-lg">Cancel order PO-0151?</div><div class="t-sm t-muted" style="margin-top:6px">Kutch Foundry Works ordered 20.000 t of Brass honey. Nothing has been delivered yet. After cancelling, no deliveries can be recorded against this order.</div></div></div>
+        <div class="flex gap2" style="justify-content:flex-end;margin-top:18px"><span class="btn outline" style="outline:2px solid var(--ring);outline-offset:2px">Keep order</span><span class="btn destructive">Cancel order</span></div>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">C1 · Confirm a serious action</h3>
+      <p class="small">Names the record and the consequence; buttons are verbs ("Keep order" / "Cancel order", never "Cancel" / "OK"); focus starts on the safe button.</p>
+    </div>
+    <div>
+      <div class="ui toast" style="zoom:.7">
+        <svg class="i lg t-success"><use href="#i-ok"/></svg>
+        <div class="grow"><div class="fw6">Delivery saved</div><div class="t-sm t-muted">6.000 t of HMS 1 to Bharat Castings Pvt Ltd</div><div class="flex gap2" style="margin-top:8px"><span class="btn outline sm">View</span><span class="btn ghost sm">Add another</span></div></div>
+        <svg class="i t-muted"><use href="#i-x"/></svg>
+      </div>
+      <div class="ui" style="zoom:.7; margin-top:10px">
+        <table class="t" style="border:1px solid var(--border)"><tbody><tr class="new"><td>27/09/2026</td><td>DC-0352</td><td>Shree Ganesh Metals</td><td class="num">6.000</td></tr><tr><td>24/09/2026</td><td>DC-0340</td><td>Shree Ganesh Metals</td><td class="num">4.500</td></tr></tbody></table>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">S1 · Success</h3>
+      <p class="small">The sheet closes, the new row is tinted and focused, <i>then</i> a toast confirms. Toasts with actions stay 10 s with a close button; plain ones 4 s.</p>
+    </div>
+    <div>
+      <div class="ui card" style="zoom:.7; padding:16px">
+        <div class="flex gap3"><span class="btn outline"><svg class="i t-success"><use href="#i-check"/></svg>Copied</span><span class="t-sm t-muted">icon swaps for 1.5 s, "Link copied" announced</span></div>
+        <div class="flex gap3" style="margin-top:12px"><span class="btn primary" style="background:var(--success)"><svg class="i"><use href="#i-check"/></svg>Saved</span><span class="t-sm t-muted">inline save confirmation, 1.2 s</span></div>
+        <div class="alert info" style="margin-top:12px"><svg class="i t-info"><use href="#i-info"/></svg><div class="t-sm">All 30.000 t delivered on 26/09/2026.</div></div>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">S2 / S3 · Small confirmations</h3>
+      <p class="small">Tiny successes don't need a toast: the control itself confirms. Persistent facts use an in-page Alert with icon + word, not only colour.</p>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · States and feedback</div>
+</section>
+
+<!-- =============================== 18. ERROR MAPPING =============================== -->
+<section class="page">
+  <div class="eyebrow">States and feedback</div>
+  <h1 class="title">Every API error, mapped to the screen</h1>
+  <p class="lead">One dictionary keyed by <code>error.code</code> turns every failure into plain words that reuse the server's own numbers, plus a one-tap fix.</p>
+  <table class="doc compact" style="font-size:8.1pt">
+    <tr><th style="width:22%">Backend response</th><th style="width:20%">Where it appears</th><th>What the user reads</th><th style="width:16%">One-tap fix</th></tr>
+    <tr><td><b>422</b> field issues</td><td>Under each field + focused "There is a problem" summary</td><td>"Enter tons as a number, like 12.450" · "Choose a supplier"</td><td>Summary links jump to fields</td></tr>
+    <tr><td><b>409</b> PO_QUANTITY_EXCEEDED</td><td>Tons field + alert; limits panel refreshed</td><td>"PO-0142 has only 11.750 t left to deliver. You entered 12.000 t."</td><td>Use 11.750 t</td></tr>
+    <tr><td><b>409</b> INSUFFICIENT_STOCK</td><td>Same</td><td>"Only 71.500 t of HMS 1 is in the yard. Enter 71.500 t or less."</td><td>Use 71.500 t</td></tr>
+    <tr><td><b>409</b> INSUFFICIENT_SOURCE_STOCK</td><td>Same + supplier field highlighted</td><td>"Only 9.200 t of HMS 1 from Shree Ganesh Metals is left. Enter 9.200 t or less, or choose another supplier."</td><td>Use 9.200 t · Choose another supplier</td></tr>
+    <tr><td><b>409</b> DUPLICATE_VALUE</td><td>The offending field</td><td>"Invoice number ST/26-27/418 is already used on another purchase."</td><td>Open that purchase</td></tr>
+    <tr><td><b>409</b> NEGATIVE_STOCK_HISTORY</td><td>Alert inside the edit form</td><td>"This change would make HMS 1 stock go below zero on 18/09/2026. Change the quantity or date, or edit the later deliveries first."</td><td>View stock history</td></tr>
+    <tr><td><b>403</b></td><td>Prevented by hiding actions; inline alert if it happens</td><td>"You have view-only access. Ask the owner if you need to make changes."</td><td>—</td></tr>
+    <tr><td><b>404</b></td><td>Full-page state</td><td>"We couldn't find this sales order. The link may be wrong."</td><td>Go to Sales Orders</td></tr>
+    <tr><td><b>401</b></td><td>Silent refresh; else login dialog over the form</td><td>"Your session has ended. Log in again to save this delivery. Your entries are kept."</td><td>Log in</td></tr>
+    <tr><td><b>429</b></td><td>Non-blocking warning</td><td>"Too many requests in a short time. Wait a few seconds and try again."</td><td>Try again</td></tr>
+    <tr><td><b>500</b></td><td>Persistent inline alert</td><td>"Something went wrong on our side and this purchase was not saved…" + Reference</td><td>Try again · Copy reference</td></tr>
+    <tr><td>Network / offline</td><td>Inline + global banner</td><td>"No internet connection. Your entries are still here. Try again when you're back online."</td><td>Try again</td></tr>
+    <tr><td>Render crash</td><td>Route / widget error boundary</td><td>"This page stopped working. Reload the page. Your saved records are safe."</td><td>Reload</td></tr>
+  </table>
+  <div class="grid2">
+    <div>
+      <h3 class="mt0">Rules for all messages</h3>
+      <ul class="clean small" style="color:var(--doc-fg)">
+        <li>Say what happened and how to fix it; never show raw codes.</li>
+        <li>No "invalid", "please", "sorry", "oops"; no blame.</li>
+        <li>Errors use <code>role="alert"</code>; results use <code>role="status"</code> (WCAG 4.1.3).</li>
+              </ul>
+    </div>
+    <div>
+      <h3 class="mt0">Confirm only these four</h3>
+      <ul class="clean small" style="color:var(--doc-fg)">
+        <li>Cancelling a sales order</li>
+        <li>Deactivating a company or material</li>
+        <li>Saving a backdated edit that changes stock history (impact shown first)</li>
+        <li>Leaving a form with unsaved changes</li>
+      </ul>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · States and feedback</div>
+</section>
+
+<!-- =============================== 19. MICRO-INTERACTIONS & MOTION =============================== -->
+<section class="page">
+  <div class="eyebrow">Interaction</div>
+  <h1 class="title">Micro-interactions and motion</h1>
+  <p class="lead">A micro-interaction is a trigger plus its feedback. Motion exists only to give feedback, show a change of state, or show where something came from: subtle, brief, and never in the way of typing.</p>
+
+  <div class="do-dont">
+    <div class="do"><h4>Keep these six</h4><ul>
+      <li><b>Press:</b> buttons shift 1 px down; no ripple</li>
+      <li><b>Save:</b> spinner → check for 1.2 s → label</li>
+      <li><b>Meters:</b> progress and limit fills glide to the new value (300 ms)</li>
+      <li><b>Copy:</b> icon swaps to a check + "Copied" for 1.5 s</li>
+      <li><b>Just saved:</b> new/edited row tints green, fades over 1.5 s</li>
+      <li><b>Overlays:</b> shadcn's default menu, sheet, dialog, accordion, tab motion</li>
+    </ul></div>
+    <div class="dont"><h4>Reject these</h4><ul>
+      <li>KPI count-up numbers (delay reading the real value)</li>
+      <li>Shaking fields on error (vestibular trigger; never the only signal)</li>
+      <li>Shimmer skeletons (use static or slow pulse)</li>
+      <li>Confetti, parallax, pull-to-refresh, animated illustrations</li>
+      <li>Animation on typing, keyboard focus, or re-sorting large tables</li>
+    </ul></div>
+  </div>
+
+  <h2>Duration and easing tokens</h2>
+  <div class="row" style="gap:6mm">
+    <svg viewBox="0 0 330 150" width="54%">
+      <g font-size="10" fill="#5b6270">
+        <line x1="30" y1="130" x2="320" y2="130" stroke="#dfe3e8"/>
+        <g font-weight="600" fill="#17191c">
+          <rect x="30" y="10" width="29" height="16" rx="3" fill="oklch(0.85 0.05 235)"/><text x="64" y="22">100 ms · fast: hover, press, checkbox</text>
+          <rect x="30" y="32" width="43" height="16" rx="3" fill="oklch(0.75 0.08 235)"/><text x="78" y="44">150 ms · base: menus, tooltips, route fade</text>
+          <rect x="30" y="54" width="58" height="16" rx="3" fill="oklch(0.62 0.10 235)"/><text x="93" y="66">200 ms · moderate: dialog, accordion</text>
+          <rect x="30" y="76" width="87" height="16" rx="3" fill="oklch(0.50 0.10 235)"/><text x="122" y="88">300 ms · slow: sheet, drawer, meters</text>
+          <rect x="30" y="98" width="116" height="16" rx="3" fill="oklch(0.62 0.21 30)"/><text x="151" y="110">400 ms · hard ceiling</text>
+        </g>
+        <text x="30" y="144">0</text><text x="146" y="144">400 ms</text><text x="210" y="144">(500 ms = "a real drag")</text>
+      </g>
+    </svg>
+    <svg viewBox="0 0 250 150" width="42%">
+      <g font-size="9.5">
+        <rect x="20" y="10" width="100" height="100" fill="#f5f7f9" stroke="#dfe3e8"/>
+        <path d="M20 110 C20 110 58 10 120 10" fill="none" stroke="oklch(0.55 0.13 240)" stroke-width="2.5"/>
+        <path d="M20 110 C40 110 120 18 120 10" fill="none" stroke="oklch(0.70 0.16 55)" stroke-width="2.5" stroke-dasharray="5 3"/>
+        <path d="M20 110 C25 40 30 10 120 10" fill="none" stroke="oklch(0.50 0.12 150)" stroke-width="2"/>
+        <text x="130" y="30" fill="oklch(0.45 0.13 240)" font-weight="700">Enter</text><text x="130" y="42" fill="#5b6270">(0, 0, .38, .9)</text>
+        <text x="130" y="62" fill="oklch(0.55 0.16 55)" font-weight="700">Exit</text><text x="130" y="74" fill="#5b6270">(.2, 0, 1, .9)</text>
+        <text x="130" y="94" fill="oklch(0.42 0.12 150)" font-weight="700">Sheets (M3)</text><text x="130" y="106" fill="#5b6270">(.05, .7, .1, 1)</text>
+        <text x="20" y="126" fill="#5b6270">Enter decelerates; exits are faster</text><text x="20" y="138" fill="#5b6270">(0.7–0.8× the entrance).</text>
+      </g>
+    </svg>
+  </div>
+
+  <table class="doc compact" style="font-size:8.4pt">
+    <tr><th>Element</th><th>What moves</th><th class="num">Enter</th><th class="num">Exit</th><th>Reduced motion</th></tr>
+    <tr><td>Button hover / press</td><td>colour; press translateY(1px)</td><td class="num">100 ms</td><td class="num">100 ms</td><td>colour only</td></tr>
+    <tr><td>Tooltip, menu, popover, combobox</td><td>opacity + scale 0.95→1</td><td class="num">150 ms</td><td class="num">100 ms</td><td>fade 100 ms</td></tr>
+    <tr><td>Dialog / AlertDialog</td><td>backdrop fade; panel fade + scale</td><td class="num">200 ms</td><td class="num">150 ms</td><td>fade; no blur on phones</td></tr>
+    <tr><td>Sheet (right) / Drawer (bottom)</td><td>slide in from the edge</td><td class="num">300 ms</td><td class="num">200 ms</td><td>fade 100 ms</td></tr>
+    <tr><td>Progress / limit meter</td><td>scaleX to new value</td><td class="num">300 ms</td><td class="num">—</td><td>instant</td></tr>
+    <tr><td>Route change</td><td>React <code>&lt;ViewTransition&gt;</code> cross-fade</td><td class="num">150 ms</td><td class="num">150 ms</td><td>none</td></tr>
+    <tr><td>New-row highlight</td><td>background colour (not motion)</td><td class="num">instant</td><td class="num">1.5 s</td><td>same</td></tr>
+  </table>
+  <div class="callout"><h4>Performance rules for low-end Android</h4><p>Animate only <code>transform</code> and <code>opacity</code>; remove shadcn's backdrop blur on phones; honour <code>prefers-reduced-motion</code> <b>and</b> offer a "Reduce animations" switch in the user menu. Feedback must paint in the very next frame (INP ≤ 200 ms) or users click twice.</p></div>
+  <div class="runhead">Metalix UI/UX System · Interaction</div>
+</section>
+
+<!-- =============================== 20. INTERACTION STATES =============================== -->
+<section class="page">
+  <div class="eyebrow">Interaction</div>
+  <h1 class="title">Hover, focus, active, disabled and other states</h1>
+  <p class="lead">One state vocabulary for every control. Focus is always a solid 2 px ring with a 2 px gap (not shadcn's 50% transparent ring, which can miss the 3:1 contrast rule).</p>
+
+  <div class="ui" style="zoom:.74; border:1px solid var(--border); border-radius:12px; padding:18px; background:#fff">
+    <div style="display:grid; grid-template-columns:130px repeat(6, 1fr); gap:14px 10px; align-items:center; font-size:13px">
+      <span></span><span class="t-xs t-muted fw6">DEFAULT</span><span class="t-xs t-muted fw6">HOVER</span><span class="t-xs t-muted fw6">FOCUS (keyboard)</span><span class="t-xs t-muted fw6">PRESSED</span><span class="t-xs t-muted fw6">LOADING</span><span class="t-xs t-muted fw6">DISABLED*</span>
+
+      <span class="fw5">Primary button</span>
+      <span class="btn primary">Save</span>
+      <span class="btn primary" style="background:color-mix(in oklch,var(--primary) 88%,white)">Save</span>
+      <span class="btn primary" style="outline:2px solid var(--ring);outline-offset:2px">Save</span>
+      <span class="btn primary" style="transform:translateY(1px);background:color-mix(in oklch,var(--primary) 85%,black)">Save</span>
+      <span class="btn primary"><svg class="i"><use href="#i-loader"/></svg>Saving…</span>
+      <span class="btn primary" style="opacity:.5">Save</span>
+
+      <span class="fw5">Outline button</span>
+      <span class="btn outline">Export</span>
+      <span class="btn outline" style="background:var(--muted)">Export</span>
+      <span class="btn outline" style="outline:2px solid var(--ring);outline-offset:2px">Export</span>
+      <span class="btn outline" style="background:var(--muted);transform:translateY(1px)">Export</span>
+      <span class="btn outline"><svg class="i"><use href="#i-loader"/></svg>Export</span>
+      <span class="btn outline" style="opacity:.5">Export</span>
+
+      <span class="fw5">Tons input</span>
+      <div class="input"><span class="grow num">6.000</span><span class="addon">t</span></div>
+      <div class="input" style="border-color:oklch(0.55 0 0)"><span class="grow num">6.000</span><span class="addon">t</span></div>
+      <div class="input focus"><span class="grow num">6.000</span><span class="addon">t</span></div>
+      <div class="input focus"><span class="grow num">6.0|</span><span class="addon">t</span></div>
+      <div class="input"><span class="grow num">6.000</span><svg class="i t-muted"><use href="#i-loader"/></svg></div>
+      <div class="input readonly"><svg class="i t-muted"><use href="#i-lock"/></svg><span class="grow num">6.000</span></div>
+
+      <span class="fw5">Table row</span>
+      <div style="height:36px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 8px">PO-0142</div>
+      <div style="height:36px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 8px;background:var(--muted)">PO-0142</div>
+      <div style="height:36px;display:flex;align-items:center;padding:0 8px;outline:2px solid var(--ring);outline-offset:-2px;border-radius:4px">PO-0142</div>
+      <div style="height:36px;display:flex;align-items:center;padding:0 8px;background:color-mix(in oklch,var(--muted) 60%,oklch(0.9 0 0))">PO-0142</div>
+      <div style="height:36px;display:flex;align-items:center;padding:0 8px;opacity:.6">PO-0142</div>
+      <div style="height:36px;display:flex;align-items:center;padding:0 8px;color:var(--muted-fg)">PO-0139 <span class="badge b-cancel" style="margin-left:6px;height:18px;font-size:11px">Cancelled</span></div>
+
+      <span class="fw5">Sidebar item</span>
+      <div class="sb-item"><svg class="i"><use href="#i-in"/></svg>Purchases</div>
+      <div class="sb-item" style="background:var(--sidebar-accent)"><svg class="i"><use href="#i-in"/></svg>Purchases</div>
+      <div class="sb-item" style="outline:2px solid var(--ring);outline-offset:1px"><svg class="i"><use href="#i-in"/></svg>Purchases</div>
+      <div class="sb-item active" style="margin-left:8px"><svg class="i"><use href="#i-in"/></svg>Purchases</div>
+      <span class="t-xs t-muted">— (selected shown left)</span>
+      <span class="t-xs t-muted">hidden for VIEWER</span>
+    </div>
+  </div>
+  <p class="small mt2">* "Pressed" for the sidebar item shows the <b>selected</b> state (tint + bold + 3 px bar + <code>aria-current="page"</code>). Disabled is avoided wherever possible; when unavoidable use <code>aria-disabled</code> + a visible reason, because a disabled button can't show a tooltip or receive focus.</p>
+
+  <div class="grid2">
+    <div>
+      <h3 class="mt0">Invalid</h3>
+      <div class="ui" style="zoom:.8"><div class="field"><span class="flabel">Tons</span><div class="input invalid" style="width:180px"><span class="grow num">10.000</span><span class="addon">t</span></div><span class="err"><svg class="i sm"><use href="#i-errc"/></svg>Enter 9.200 t or less</span></div></div>
+      <p class="small">Red border + soft red ring + icon + message linked with <code>aria-describedby</code>; value kept.</p>
+    </div>
+    <div>
+      <h3 class="mt0">Read-only (VIEWER, locked PO)</h3>
+      <div class="ui" style="zoom:.8"><div class="field"><span class="flabel">Sales order</span><div class="input readonly" style="width:260px"><svg class="i t-muted"><use href="#i-lock"/></svg><span class="grow">PO-0142 · Bharat Castings</span></div></div></div>
+      <p class="small">Muted background + lock icon; still focusable and copyable; no hover or focus border change.</p>
+    </div>
+  </div>
+  <table class="doc compact" style="font-size:8.4pt">
+    <tr><th>Rule</th><th>Value</th></tr>
+    <tr><td>Focus ring</td><td><code>outline-2 outline-offset-2 outline-ring</code>, <code>:focus-visible</code> only; ≥ 3:1 contrast</td></tr>
+    <tr><td>Hover</td><td>Pointer devices only; 100 ms colour change; never the only way to find information</td></tr>
+    <tr><td>Selected</td><td>Colour <b>plus</b> a non-colour cue (check, bar, bold) and the right ARIA attribute</td></tr>
+    <tr><td>Cursor</td><td>Restore <code>cursor-pointer</code> on buttons (Tailwind v4 changed the default)</td></tr>
+  </table>
+  <div class="runhead">Metalix UI/UX System · Interaction</div>
+</section>
+<!-- =============================== 21. RESPONSIVE RULES =============================== -->
+<section class="page">
+  <div class="eyebrow">Mobile and access</div>
+  <h1 class="title">Responsive rules and breakpoints</h1>
+  <p class="lead">One codebase, three shapes. The main switch is 768 px (shadcn's mobile breakpoint): below it, navigation moves to the bottom, tables become cards and dialogs become bottom drawers.</p>
+
+  <svg viewBox="0 0 700 120" width="100%">
+    <g font-size="11">
+      <rect x="0" y="30" width="146" height="40" fill="oklch(0.93 0.04 235)"/><rect x="146" y="30" width="72" height="40" fill="oklch(0.88 0.05 235)"/><rect x="218" y="30" width="146" height="40" fill="oklch(0.80 0.07 235)"/><rect x="364" y="30" width="146" height="40" fill="oklch(0.68 0.09 235)"/><rect x="510" y="30" width="190" height="40" fill="oklch(0.52 0.10 235)"/>
+      <g font-weight="700"><text x="73" y="54" text-anchor="middle">Phones</text><text x="182" y="54" text-anchor="middle">Large</text><text x="291" y="54" text-anchor="middle">Tablets</text><text x="437" y="54" text-anchor="middle" fill="#fff">Laptops</text><text x="605" y="54" text-anchor="middle" fill="#fff">Desktops</text></g>
+      <g fill="#5b6270"><text x="146" y="22" text-anchor="middle">640</text><text x="218" y="22" text-anchor="middle" font-weight="700" fill="oklch(0.62 0.21 30)">768 ◆ main switch</text><text x="364" y="22" text-anchor="middle">1024</text><text x="510" y="22" text-anchor="middle">1280</text></g>
+      <g fill="#17191c" font-size="10"><text x="73" y="88" text-anchor="middle">bottom nav · cards</text><text x="73" y="101" text-anchor="middle">drawers · sticky Save</text>
+      <text x="291" y="88" text-anchor="middle">icon-rail sidebar · table</text><text x="291" y="101" text-anchor="middle">scrolls, first column pinned</text>
+      <text x="437" y="88" text-anchor="middle">full sidebar · sheets</text><text x="437" y="101" text-anchor="middle">detail 2/3 + 1/3</text>
+      <text x="605" y="88" text-anchor="middle">4-up KPI grid</text><text x="605" y="101" text-anchor="middle">full-width lists</text></g>
+    </g>
+  </svg>
+
+  <table class="doc compact">
+    <tr><th>Element</th><th>Desktop</th><th>Phone (&lt; 768 px)</th></tr>
+    <tr><td>Navigation</td><td>Sidebar (256 px, collapsible)</td><td>Bottom bar: Home · Purchases · <b>+</b> · Orders · More</td></tr>
+    <tr><td>Lists</td><td>DataTable, numbered pages</td><td>Tappable cards, "Load more"</td></tr>
+    <tr><td>Create / edit</td><td>Right Sheet</td><td>Full-height bottom Drawer, Save bar pinned above the keyboard</td></tr>
+    <tr><td>Dialogs, confirmations</td><td>Centred Dialog</td><td>Bottom Drawer, 48 px buttons, safe option on the left</td></tr>
+    <tr><td>Filters</td><td>Toolbar, instant</td><td>"Filters (2)" drawer with Apply / Reset</td></tr>
+    <tr><td>Dashboard</td><td>4 KPI cards in a row, charts beside lists</td><td>KPIs 2 × 2, then Needs attention, then charts</td></tr>
+    <tr><td>Charts</td><td>Hover tooltips</td><td>Values printed on bars (no tap tooltips)</td></tr>
+  </table>
+
+  <h2>Touch and typing on phones</h2>
+  <div class="grid2">
+    <ul class="clean small" style="color:var(--doc-fg)">
+      <li><b>Targets:</b> WCAG minimum 24 px; the app uses <b>44 px</b> buttons and inputs, 48 px list rows and 64 px bottom-bar items on touch (<code>pointer-coarse:</code> variant); desktop keeps shadcn's density.</li>
+      <li><b>16 px</b> input text so iPhones don't zoom.</li>
+      <li>Numbers: <code>inputmode="decimal"</code>; phones: <code>type="tel"</code>; vehicle and GSTIN: capitals automatically.</li>
+      <li>Keyboard "Next" key moves between fields; "Done" on the last one.</li>
+    </ul>
+    <ul class="clean small" style="color:var(--doc-fg)">
+      <li>Primary action in a sticky bottom bar, clear of the phone's gesture area (<code>safe-area-inset</code>).</li>
+      <li>Destructive actions live in ⋯ menus, never next to Save.</li>
+      <li>Things used most in the yard (the "+" button, Save) sit in the thumb zone at the bottom.</li>
+      <li>No pull-to-refresh, no swipe-only actions: every gesture has a button alternative.</li>
+    </ul>
+  </div>
+
+  <h2>"Sunlight" theme for outdoor use</h2>
+  <div class="row" style="align-items:center; gap:6mm">
+    <div class="ui card" style="zoom:.68; flex:none; width:230px; padding:14px; white-space:nowrap"><div class="t-xs t-muted">Standard</div><div class="stat"><div class="label">Stock in yard</div><div class="value" style="font-size:26px">286.5 t</div><div class="delta t-muted">▲ 31.520 t since 01/09</div></div><div class="input" style="margin-top:8px"><span class="ph">Tons</span></div></div>
+    <div class="ui" style="zoom:.68; flex:none; width:230px; white-space:nowrap; padding:14px; border:2px solid #000; border-radius:12px; background:#fff; color:#000"><div class="t-xs fw6">Sunlight</div><div class="stat"><div class="label" style="color:#1a1a1a;font-weight:600">Stock in yard</div><div class="value" style="font-size:28px;font-weight:800">286.5 t</div><div class="delta" style="color:#222;font-weight:600">▲ 31.520 t since 01/09</div></div><div class="input" style="margin-top:8px;border:2px solid #333"><span style="color:#333">Tons</span></div></div>
+    <p class="small" style="margin:0">Pure white background, near-black text at 7:1 or better, 2 px input borders, no faint greys, bold key figures, 16 px base font. Switched from the user menu; also follows the phone's "increase contrast" setting.</p>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Mobile and access</div>
+</section>
+
+<!-- =============================== 22. PHONE SCREENS (landscape) =============================== -->
+<section class="page landscape">
+  <div class="eyebrow">Mobile · Mockup S7</div>
+  <h1 class="title">Phone screens (360 × 800, a typical mid-range Android)</h1>
+  <div class="row" style="gap:7mm; margin-top:3mm; align-items:flex-start">
+    <!-- Phone 1: dashboard -->
+    <div class="phone" style="zoom:.7; flex:none">
+      <div class="status"><span>10:42</span><span>▮▮▮ 4G 78%</span></div>
+      <div class="ui mobile" style="height:740px; position:relative; overflow:hidden">
+        <div class="m-head"><div class="logo" style="width:28px;height:28px;border-radius:7px;font-size:13px">M</div><span class="fw6 t-lg grow">Dashboard</span><span class="btn ghost icon" style="width:44px;height:44px"><svg class="i lg"><use href="#i-search"/></svg></span><div class="avatar">RP</div></div>
+        <div style="padding:12px 16px">
+          <span class="btn outline" style="height:36px"><svg class="i"><use href="#i-cal"/></svg>This month<svg class="i"><use href="#i-down"/></svg></span>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+            <div class="card" style="padding:12px"><div class="t-xs t-muted fw5">Stock in yard</div><div style="font-size:24px;font-weight:600;margin-top:4px">286.5 t</div><div class="t-xs">▲ 31.520 t</div></div>
+            <div class="card" style="padding:12px;border-color:color-mix(in oklch,var(--warning) 70%,transparent)"><div class="t-xs t-muted fw5 flex between">Buy needed <svg class="i sm t-warn"><use href="#i-alert"/></svg></div><div style="font-size:24px;font-weight:600;margin-top:4px">38.8 t</div><div class="t-xs t-warn">3 materials short</div></div>
+            <div class="card" style="padding:12px"><div class="t-xs t-muted fw5">Open orders</div><div style="font-size:24px;font-weight:600;margin-top:4px">14</div><div class="t-xs">212.300 t left</div></div>
+            <div class="card" style="padding:12px"><div class="t-xs t-muted fw5">Delivered</div><div style="font-size:24px;font-weight:600;margin-top:4px">₹1.96 Cr</div><div class="t-xs t-success">▲ 8% vs Aug</div></div>
+          </div>
+          <div class="card" style="padding:12px 14px;margin-top:12px">
+            <div class="fw6">Needs attention</div>
+            <div class="flex gap2" style="height:56px;border-bottom:1px solid var(--border)"><svg class="i t-warn"><use href="#i-alert"/></svg><div class="grow"><div class="fw5">HMS 1</div><div class="t-xs t-muted">short 24.500 t</div></div><span class="btn outline" style="height:44px">+ Purchase</span></div>
+            <div class="flex gap2" style="height:56px;border-bottom:1px solid var(--border)"><svg class="i t-warn"><use href="#i-alert"/></svg><div class="grow"><div class="fw5">Brass honey</div><div class="t-xs t-muted">short 13.000 t</div></div><span class="btn outline" style="height:44px">+ Purchase</span></div>
+            <div class="flex gap2" style="height:56px"><svg class="i t-info"><use href="#i-truck"/></svg><div class="grow"><div class="fw5">PO-0142</div><div class="t-xs t-muted">Bharat Castings · 11.750 t left</div></div><span class="btn outline" style="height:44px">Deliver</span></div>
+          </div>
+        </div>
+        <div class="bnav" style="position:absolute;left:0;right:0;bottom:0">
+          <div class="it on"><span class="pill"><svg class="i lg"><use href="#i-home"/></svg></span>Home</div>
+          <div class="it"><span class="pill"><svg class="i lg"><use href="#i-in"/></svg></span>Purchases</div>
+          <div class="it"><span class="fab"><svg class="i lg"><use href="#i-plus"/></svg></span>New</div>
+          <div class="it"><span class="pill"><svg class="i lg"><use href="#i-clip"/></svg></span>Orders</div>
+          <div class="it"><span class="pill"><svg class="i lg"><use href="#i-more"/></svg></span>More</div>
+        </div>
+      </div>
+    </div>
+    <!-- Phone 2: list -->
+    <div class="phone" style="zoom:.7; flex:none">
+      <div class="status"><span>10:43</span><span>▮▮▮ 4G 78%</span></div>
+      <div class="ui mobile" style="height:740px; position:relative; overflow:hidden">
+        <div class="m-head"><div class="logo" style="width:28px;height:28px;border-radius:7px;font-size:13px">M</div><span class="fw6 t-lg grow">Purchases</span><span class="btn ghost icon" style="width:44px;height:44px"><svg class="i lg"><use href="#i-search"/></svg></span><div class="avatar">RP</div></div>
+        <div style="padding:12px 16px">
+          <div class="input" style="height:44px;font-size:16px"><svg class="i t-muted"><use href="#i-search"/></svg><span class="ph">Supplier, vehicle, invoice…</span></div>
+          <div class="flex gap2" style="margin-top:10px"><span class="btn outline" style="height:44px"><svg class="i"><use href="#i-filter"/></svg>Filters (1)</span><span class="chip" style="height:32px">This month <svg class="i sm"><use href="#i-x"/></svg></span></div>
+          <div style="margin-top:12px" class="t-sm"><b>46 purchases</b> · 412.380 t<br>₹1,84,62,310.00</div>
+          <div class="mcard" style="margin-top:12px"><div class="flex between"><span class="fw6" style="font-size:16px">Shree Ganesh Metals</span><svg class="i t-muted"><use href="#i-more"/></svg></div><div class="t-sm t-muted">HMS 1 · 27/09/2026</div><dl class="dl"><dt>Tons</dt><dt>Amount</dt><dd>12.450 t</dd><dd>₹4,29,525.00</dd></dl><div class="t-sm t-muted" style="margin-top:6px">₹34,500.00/t · GJ 03 AX 4521</div></div>
+          <div class="mcard" style="margin-top:12px"><div class="flex between"><span class="fw6" style="font-size:16px">Sharma Traders</span><svg class="i t-muted"><use href="#i-more"/></svg></div><div class="t-sm t-muted">Copper wire (Berry) · 27/09/2026</div><dl class="dl"><dt>Tons</dt><dt>Amount</dt><dd>1.275 t</dd><dd>₹10,00,875.00</dd></dl><div class="t-sm t-muted" style="margin-top:6px">₹7,85,000.00/t · GJ 01 BT 9087</div></div>
+          <span class="btn outline" style="width:100%;height:44px;margin-top:12px">Load more (21 more)</span>
+        </div>
+        <div class="bnav" style="position:absolute;left:0;right:0;bottom:0">
+          <div class="it"><span class="pill"><svg class="i lg"><use href="#i-home"/></svg></span>Home</div>
+          <div class="it on"><span class="pill"><svg class="i lg"><use href="#i-in"/></svg></span>Purchases</div>
+          <div class="it"><span class="fab"><svg class="i lg"><use href="#i-plus"/></svg></span>New</div>
+          <div class="it"><span class="pill"><svg class="i lg"><use href="#i-clip"/></svg></span>Orders</div>
+          <div class="it"><span class="pill"><svg class="i lg"><use href="#i-more"/></svg></span>More</div>
+        </div>
+      </div>
+    </div>
+    <!-- Phone 3: new delivery drawer -->
+    <div class="phone" style="zoom:.7; flex:none">
+      <div class="status"><span>10:45</span><span>▮▮▮ 4G 77%</span></div>
+      <div class="ui mobile" style="height:740px; position:relative; overflow:hidden; background:#4a4f57">
+        <div style="position:absolute;left:0;right:0;top:24px;bottom:0;background:#fff;border-radius:16px 16px 0 0">
+          <div class="handle"></div>
+          <div class="flex between" style="padding:4px 16px 10px;border-bottom:1px solid var(--border)"><div><div class="fw6 t-lg">Record delivery</div><div class="t-xs t-muted">PO-0142 · Bharat Castings</div></div><span class="btn ghost icon" style="width:44px;height:44px"><svg class="i lg"><use href="#i-x"/></svg></span></div>
+          <div style="padding:12px 16px;display:flex;flex-direction:column;gap:12px">
+            <div style="background:color-mix(in oklch,var(--muted) 70%,white);border-radius:12px;padding:12px;font-size:14px"><div class="flex gap2"><svg class="i t-muted"><use href="#i-lock"/></svg><b>PO-0142</b> · HMS 1</div><div class="t-sm t-muted" style="margin-top:4px">₹38,500.00/t · 11.750 t left</div></div>
+            <div class="field"><span class="flabel">Date</span><div class="input" style="height:44px;font-size:16px">27/09/2026</div></div>
+            <div class="field"><span class="flabel">Stock from</span><div class="input" style="height:44px;font-size:16px"><span class="grow">Shree Ganesh Metals</span><span class="t-sm t-muted">9.200 t</span></div></div>
+            <div class="field"><span class="flabel">Tons</span><div class="input focus" style="height:44px;font-size:16px"><span class="grow num">6.000</span><span class="addon">t</span><span class="btn ghost sm t-primary" style="margin-right:-6px">Use max</span></div></div>
+            <div class="field"><span class="flabel">Vehicle no.</span><div class="input" style="height:44px;font-size:16px">GJ 03 BW 7810</div></div>
+          </div>
+          <div style="position:absolute;left:0;right:0;bottom:0;border-top:1px solid var(--border);background:#fff">
+            <div class="flex between" style="height:48px;padding:0 16px;background:color-mix(in oklch,var(--accent) 70%,white)"><span class="t-sm">Max <b>9.200 t</b> · limited by Shree Ganesh</span><span class="t-sm t-primary fw5">Details ▴</span></div>
+            <div style="padding:10px 16px 14px"><span class="btn primary" style="width:100%;height:48px;font-size:16px">Save delivery</span><div style="text-align:center;margin-top:8px" class="t-sm t-primary">Save &amp; add another</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="legend" style="grid-template-columns:1fr; margin-top:0; font-size:8.6pt">
+      <div><span class="dot">1</span><span><b>Dashboard:</b> KPIs as a 2 × 2 grid; "Needs attention" right under them with 44 px action buttons.</span></div>
+      <div><span class="dot">2</span><span><b>Bottom bar:</b> 4 destinations + a raised centre "+" in thumb reach. Active item: tinted pill, blue icon and bold label.</span></div>
+      <div><span class="dot">3</span><span><b>Lists:</b> sticky 44 px search, a "Filters (1)" button, the summary, then cards: identifier, 2 key numbers, secondary line.</span></div>
+      <div><span class="dot">4</span><span><b>Forms:</b> full-height drawer, 44 px fields with 16 px text, "Use max" inside the Tons field.</span></div>
+      <div><span class="dot">5</span><span><b>Limits strip</b> pinned above the Save button; "Details" expands the full panel.</span></div>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Mobile</div>
+</section>
+
+<!-- =============================== 23. PHONE DRAWERS (landscape) =============================== -->
+<section class="page landscape">
+  <div class="eyebrow">Mobile · Mockup S7</div>
+  <h1 class="title">Phone drawers: create, filter, confirm</h1>
+  <div class="row" style="gap:7mm; margin-top:3mm; align-items:flex-start">
+    <div class="phone" style="zoom:.7; flex:none">
+      <div class="status"><span>10:46</span><span>▮▮▮ 4G 77%</span></div>
+      <div class="ui mobile" style="height:740px; position:relative; overflow:hidden; background:#4a4f57">
+        <div style="position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:16px 16px 0 0;padding-bottom:12px">
+          <div class="handle"></div>
+          <div class="fw6 t-lg" style="padding:6px 20px 10px">What are you recording?</div>
+          <div class="flex gap3" style="height:64px;padding:0 20px;border-top:1px solid var(--border)"><div style="width:40px;height:40px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center" class="t-primary"><svg class="i xl"><use href="#i-in"/></svg></div><div><div class="fw6">Purchase</div><div class="t-sm t-muted">Scrap coming in from a supplier</div></div></div>
+          <div class="flex gap3" style="height:64px;padding:0 20px;border-top:1px solid var(--border)"><div style="width:40px;height:40px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center" class="t-primary"><svg class="i xl"><use href="#i-truck"/></svg></div><div><div class="fw6">Delivery</div><div class="t-sm t-muted">Scrap going out against an order</div></div></div>
+          <div class="flex gap3" style="height:64px;padding:0 20px;border-top:1px solid var(--border)"><div style="width:40px;height:40px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center" class="t-primary"><svg class="i xl"><use href="#i-clip"/></svg></div><div><div class="fw6">Sales order</div><div class="t-sm t-muted">A new order from a buyer</div></div></div>
+          <div style="text-align:center;padding-top:10px" class="t-primary fw5">Cancel</div>
+        </div>
+      </div>
+    </div>
+    <div class="phone" style="zoom:.7; flex:none">
+      <div class="status"><span>10:47</span><span>▮▮▮ 4G 77%</span></div>
+      <div class="ui mobile" style="height:740px; position:relative; overflow:hidden; background:#4a4f57">
+        <div style="position:absolute;left:0;right:0;bottom:0;top:110px;background:#fff;border-radius:16px 16px 0 0">
+          <div class="handle"></div>
+          <div class="fw6 t-lg" style="padding:4px 16px 8px">Filters</div>
+          <div style="padding:0 16px">
+            <div class="t-xs t-muted fw6" style="margin:6px 0">DATE</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <span class="btn outline" style="height:44px">Today</span><span class="btn outline" style="height:44px">Yesterday</span>
+              <span class="btn outline" style="height:44px">This week</span><span class="btn outline" style="height:44px;border-color:var(--primary);background:var(--accent)"><svg class="i t-primary"><use href="#i-check"/></svg>This month</span>
+              <span class="btn outline" style="height:44px">Last month</span><span class="btn outline" style="height:44px">This quarter</span>
+              <span class="btn outline" style="height:44px">This FY</span><span class="btn outline" style="height:44px">Custom…</span>
+            </div>
+            <div class="t-xs t-muted fw6" style="margin:14px 0 6px">SUPPLIER</div>
+            <div class="input" style="height:44px;font-size:16px"><span class="ph grow">All suppliers</span><svg class="i t-muted"><use href="#i-updown"/></svg></div>
+            <div class="t-xs t-muted fw6" style="margin:14px 0 6px">MATERIAL</div>
+            <div class="input" style="height:44px;font-size:16px"><span class="ph grow">All materials</span><svg class="i t-muted"><use href="#i-down"/></svg></div>
+          </div>
+          <div class="flex gap2" style="position:absolute;left:0;right:0;bottom:0;padding:12px 16px 16px;border-top:1px solid var(--border)"><span class="btn outline" style="height:48px;flex:1">Reset</span><span class="btn primary" style="height:48px;flex:2">Show 46 purchases</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="phone" style="zoom:.7; flex:none">
+      <div class="status"><span>10:48</span><span>▮▮▮ 4G 77%</span></div>
+      <div class="ui mobile" style="height:740px; position:relative; overflow:hidden; background:#4a4f57">
+        <div style="position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:16px 16px 0 0;padding:0 20px 18px">
+          <div class="handle"></div>
+          <div style="width:44px;height:44px;border-radius:50%;background:color-mix(in oklch,var(--destructive) 12%,white);color:var(--destructive);display:flex;align-items:center;justify-content:center;margin:10px 0"><svg class="i xl"><use href="#i-ban"/></svg></div>
+          <div class="fw6 t-lg">Cancel order PO-0151?</div>
+          <div class="t-sm t-muted" style="margin-top:6px">Kutch Foundry Works ordered 20.000 t of Brass honey. Nothing has been delivered yet. After cancelling, no deliveries can be recorded against this order.</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px"><span class="btn outline" style="height:48px">Keep order</span><span class="btn destructive" style="height:48px">Cancel order</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="legend" style="grid-template-columns:1fr; margin-top:0; font-size:8.6pt">
+      <div><span class="dot">1</span><span><b>"+" drawer</b> asks one plain question. Three 64 px rows, each with an icon, a name and what it means.</span></div>
+      <div><span class="dot">2</span><span><b>Filter drawer</b> (batch filtering): preset chips in a 2-column grid, then pickers. The main button shows the live result count.</span></div>
+      <div><span class="dot">3</span><span><b>Confirmations</b> become bottom drawers with two 48 px buttons: the safe option on the left, the destructive one on the right.</span></div>
+      <div class="callout" style="display:block;margin-top:2mm;font-size:8.3pt">Drawers slide up in 300 ms with a decelerating curve and leave in 200 ms. A visible handle and a close button: swipe-down is never the only way to dismiss.</div>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Mobile</div>
+</section>
+
+<!-- =============================== 24. ACCESSIBILITY =============================== -->
+<section class="page">
+  <div class="eyebrow">Mobile and access</div>
+  <h1 class="title">Accessibility checklist (WCAG 2.2 AA)</h1>
+  <p class="lead">Base UI gives keyboard support, focus trapping and ARIA roles for free. The items below are the app's own responsibility; most are token and wiring work, done once in shared components.</p>
+  <table class="doc compact" style="font-size:8.5pt">
+    <tr><th style="width:26%">Criterion</th><th>What the app must do</th><th style="width:13%">Where</th></tr>
+    <tr><td>1.4.3 Text contrast</td><td>≥ 4.5:1 for all text; darken muted text so it passes on grey panels; dark text on amber badges</td><td>Tokens</td></tr>
+    <tr><td>1.4.11 Non-text contrast</td><td>Input borders, checkboxes, focus ring and chart marks ≥ 3:1</td><td>Tokens</td></tr>
+    <tr><td>1.4.1 Use of colour</td><td>Badges, deltas, meters and chart series always carry text or an icon too</td><td>Components</td></tr>
+    <tr><td>2.1.1 Keyboard</td><td>Every action reachable with Tab / Enter / Space / Esc; rows focusable; skip link</td><td>Components</td></tr>
+    <tr><td>2.4.7 / 2.4.11 Focus visible, not hidden</td><td>Solid 2 px ring; scroll padding so sticky header, Save bar and bottom nav never cover the focused field</td><td>Global CSS</td></tr>
+    <tr><td>2.4.3 Focus order</td><td>Focus returns to the trigger after overlays close; moves to the new row after save</td><td>Components</td></tr>
+    <tr><td>2.5.8 Target size</td><td>≥ 24 px everywhere; 44–48 px on touch</td><td>Tokens</td></tr>
+    <tr><td>2.5.7 Dragging</td><td>Any drag (reorder, upload) has a button alternative</td><td>Features</td></tr>
+    <tr><td>3.3.1 / 3.3.3 Errors</td><td>Text errors with a fix, <code>aria-invalid</code>, <code>aria-describedby</code>, focused summary, hidden "Error:" prefix</td><td>Forms</td></tr>
+    <tr><td>3.3.4 Error prevention</td><td>Limits panel before submit; confirm or undo for cancel, deactivate, backdated edits</td><td>Features</td></tr>
+    <tr><td>4.1.3 Status messages</td><td>Toasts, "Saved", "Copied", "Showing 24 purchases" in polite live regions; errors as alerts</td><td>Components</td></tr>
+    <tr><td>3.2.6 Consistent help</td><td>Help, shortcuts and WhatsApp support in the same place on every page</td><td>Shell</td></tr>
+    <tr><td>3.3.7 Redundant entry</td><td>Pre-fill supplier, material, rate, PO data and vehicle from earlier steps</td><td>Forms</td></tr>
+    <tr><td>3.3.8 Accessible login</td><td>Allow paste and password managers; <code>autocomplete</code> on login fields</td><td>Login</td></tr>
+    <tr><td>1.3.1 Structure</td><td>Real tables with header cells and <code>aria-sort</code>; cards use description lists; every input has a label</td><td>Components</td></tr>
+    <tr><td>1.1.1 Non-text content</td><td>Charts have a text summary and "View as table"; icon-only buttons have labels</td><td>Components</td></tr>
+    <tr><td>1.4.4 / 1.4.10 Zoom and reflow</td><td>Usable at 320 px width and 200% zoom; never block pinch-zoom</td><td>Global</td></tr>
+    <tr><td>3.1.1 Language</td><td><code>&lt;html lang="en-IN"&gt;</code>; <code>lang="hi"</code> / <code>"gu"</code> on translated text later</td><td>Shell</td></tr>
+    <tr><td>2.3.3 Motion (AAA, cheap)</td><td>Reduced-motion rule covers all animation; in-app "Reduce animations" switch</td><td>Global CSS</td></tr>
+  </table>
+  <div class="callout"><h4>Keep it enforced</h4><p>Check every colour pair in tweakcn's contrast checker before use, run <code>eslint-plugin-jsx-a11y</code> in CI, and test once with a keyboard only and once with Android TalkBack before each release.</p></div>
+  <div class="runhead">Metalix UI/UX System · Accessibility</div>
+</section>
+
+<!-- =============================== 25. USER FLOWS =============================== -->
+<section class="page">
+  <div class="eyebrow">Flows</div>
+  <h1 class="title">User flows and click counts</h1>
+  <p class="lead">Target: three clicks per core task, with defaults doing the rest. A "click" includes choosing an option; typing is not counted.</p>
+
+  <h3 class="mt0">Record a delivery against an order: 3 clicks</h3>
+  <svg viewBox="0 0 700 92" width="100%">
+    <g font-size="10.5">
+      <rect x="0" y="16" width="118" height="54" rx="8" fill="#f5f7f9" stroke="#cfd4db"/><text x="59" y="38" text-anchor="middle" font-weight="700">Open order row</text><text x="59" y="54" text-anchor="middle" fill="#5b6270">list or dashboard</text>
+      <path d="M118 43 H140" stroke="#9aa3ae" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="144" y="16" width="118" height="54" rx="8" fill="oklch(0.95 0.02 235)" stroke="oklch(0.45 0.10 235)"/><text x="203" y="38" text-anchor="middle" font-weight="700">① "Deliver"</text><text x="203" y="54" text-anchor="middle" fill="#5b6270">sheet opens, PO locked</text>
+      <path d="M262 43 H284" stroke="#9aa3ae" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="288" y="16" width="130" height="54" rx="8" fill="oklch(0.95 0.02 235)" stroke="oklch(0.45 0.10 235)"/><text x="353" y="38" text-anchor="middle" font-weight="700">② Pick "Stock from"</text><text x="353" y="54" text-anchor="middle" fill="#5b6270">sorted by stock</text>
+      <path d="M418 43 H440" stroke="#9aa3ae" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="444" y="16" width="118" height="54" rx="8" fill="#f5f7f9" stroke="#cfd4db"/><text x="503" y="38" text-anchor="middle" font-weight="700">Tons pre-filled</text><text x="503" y="54" text-anchor="middle" fill="#5b6270">= max allowed (or type)</text>
+      <path d="M562 43 H584" stroke="#9aa3ae" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="588" y="16" width="112" height="54" rx="8" fill="oklch(0.45 0.10 235)"/><text x="644" y="38" text-anchor="middle" font-weight="700" fill="#fff">③ Save</text><text x="644" y="54" text-anchor="middle" fill="#dbe7f3">row highlights, toast</text>
+      <text x="0" y="88" fill="#5b6270">Keyboard: Alt+D → pick PO → pick supplier → Ctrl+Enter · Phone: 4 taps</text>
+    </g>
+  </svg>
+
+  <h3>Record a purchase: 4 clicks (2 when defaults match)</h3>
+  <svg viewBox="0 0 700 92" width="100%">
+    <g font-size="10.5">
+      <rect x="0" y="16" width="130" height="54" rx="8" fill="oklch(0.95 0.02 235)" stroke="oklch(0.45 0.10 235)"/><text x="65" y="38" text-anchor="middle" font-weight="700">① New purchase</text><text x="65" y="54" text-anchor="middle" fill="#5b6270">button, + New, Alt+P</text>
+      <path d="M130 43 H152" stroke="#9aa3ae" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="156" y="16" width="140" height="54" rx="8" fill="#f5f7f9" stroke="#cfd4db"/><text x="226" y="34" text-anchor="middle" font-weight="700">Defaults filled</text><text x="226" y="49" text-anchor="middle" fill="#5b6270">today · last supplier</text><text x="226" y="62" text-anchor="middle" fill="#5b6270">last material · last rate</text>
+      <path d="M296 43 H318" stroke="#9aa3ae" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="322" y="16" width="120" height="54" rx="8" fill="oklch(0.95 0.02 235)" stroke="oklch(0.45 0.10 235)" stroke-dasharray="4 3"/><text x="382" y="38" text-anchor="middle" font-weight="700">②③ Change</text><text x="382" y="54" text-anchor="middle" fill="#5b6270">only if different</text>
+      <path d="M442 43 H464" stroke="#9aa3ae" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="468" y="16" width="100" height="54" rx="8" fill="#f5f7f9" stroke="#cfd4db"/><text x="518" y="38" text-anchor="middle" font-weight="700">Type tons</text><text x="518" y="54" text-anchor="middle" fill="#5b6270">vehicle, invoice</text>
+      <path d="M568 43 H590" stroke="#9aa3ae" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="594" y="16" width="106" height="54" rx="8" fill="oklch(0.45 0.10 235)"/><text x="647" y="38" text-anchor="middle" font-weight="700" fill="#fff">④ Save</text><text x="647" y="54" text-anchor="middle" fill="#dbe7f3">or Save &amp; next</text>
+    </g>
+  </svg>
+
+  <table class="doc compact">
+    <tr><th>Flow</th><th>Fastest start</th><th class="num">Desktop clicks</th><th class="num">Phone taps</th></tr>
+    <tr><td>Record a purchase</td><td>+ New › Purchase, or "+ Purchase" beside a shortage</td><td class="num">4 (2)</td><td class="num">5</td></tr>
+    <tr><td>Create a sales order</td><td>Sales Orders button, customer page, Alt+O</td><td class="num">4</td><td class="num">5</td></tr>
+    <tr><td>Record a delivery</td><td>"Deliver" on the order row</td><td class="num">3</td><td class="num">4</td></tr>
+    <tr><td>Check what to buy</td><td>Dashboard "Buy needed"</td><td class="num">0–1</td><td class="num">0–1</td></tr>
+    <tr><td>Look up a company's history</td><td>Ctrl+K → name → Enter</td><td class="num">2</td><td class="num">3</td></tr>
+    <tr><td>See a supplier's stock</td><td>Sidebar › Supplier stock</td><td class="num">2</td><td class="num">3</td></tr>
+  </table>
+
+  <h3>The click reducers, by impact</h3>
+  <div class="grid2" style="gap:3mm">
+    <ul class="clean small" style="color:var(--doc-fg)">
+      <li><b>"Deliver" where the decision is made</b>: no PO picking</li>
+      <li><b>Quantity defaults to the maximum</b>; "Use max" in every limit error</li>
+      <li><b>Predictable defaults</b>, tagged "Last used", always editable</li>
+      <li><b>Inline "+ Add '…'"</b> in every picker (Alt+C, as in Tally)</li>
+      <li><b>"Save &amp; add another"</b> keeps date and supplier for the next truck</li>
+    </ul>
+    <ul class="clean small" style="color:var(--doc-fg)">
+      <li><b>"Repeat purchase"</b> in the row menu for regular suppliers</li>
+      <li><b>Filters in the URL</b>: no re-filtering after Back</li>
+      <li><b>Sales Orders opens on "Open"</b></li>
+      <li><b>Keyboard-first</b>: Enter to next field, Ctrl+Enter to save</li>
+      <li><b>Centre "+" on phones</b>: any transaction in two taps</li>
+    </ul>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Flows</div>
+</section>
+
+<!-- =============================== 26. SHADCN COMPONENT MAP =============================== -->
+<section class="page">
+  <div class="eyebrow">Build system</div>
+  <h1 class="title">Which shadcn/ui component for which job</h1>
+  <p class="lead">Decide once at <code>shadcn init</code>: <b>Base UI</b> (the default since July 2026, with native Combobox and Drawer), compact Nova style. Never mix Radix and Base UI. Borrow layout ideas from shadcn-admin; don't fork it (it is Radix-based).</p>
+  <table class="doc compact" style="font-size:8.2pt">
+    <tr><th style="width:24%">Need</th><th>shadcn/ui components</th><th style="width:22%">Wrapped as</th></tr>
+    <tr><td>App shell</td><td>Sidebar (icon-collapsible, inset), SidebarTrigger, SidebarMenuBadge, Breadcrumb, DropdownMenu, Avatar</td><td>AppShell, AppSidebar</td></tr>
+    <tr><td>Mobile navigation</td><td>Button + router links, Sheet ("More"), Drawer ("+")</td><td>BottomNav</td></tr>
+    <tr><td>Command palette</td><td>Command in CommandDialog, CommandShortcut, Kbd</td><td>CommandPalette</td></tr>
+    <tr><td>Page header</td><td>Breadcrumb, Button, ButtonGroup, DropdownMenu</td><td>PageHeader</td></tr>
+    <tr><td>KPI tiles</td><td>Card (Header/Title/Action/Content/Footer), Badge, Tooltip, Skeleton</td><td>StatCard</td></tr>
+    <tr><td>Charts</td><td>Chart (ChartContainer, ChartTooltip, accessibilityLayer), ToggleGroup</td><td>—</td></tr>
+    <tr><td>Data tables</td><td>Table + TanStack Table v9 guide, DropdownMenu, Pagination, Select, ScrollArea</td><td>DataTable</td></tr>
+    <tr><td>Mobile lists</td><td>Item / ItemGroup or Card</td><td>DataTable renderMobileCard</td></tr>
+    <tr><td>Filters and search</td><td>InputGroup, Popover + Calendar (range), Combobox, Select, Tabs, Badge, Drawer</td><td>FilterBar, DateRangePicker</td></tr>
+    <tr><td>Forms</td><td>Field, FieldLabel, FieldDescription, FieldError, FieldSet, FieldLegend, Input, InputGroup, Textarea, RadioGroup, Switch</td><td>FormField, FormSection, ErrorSummary</td></tr>
+    <tr><td>Company / material pickers</td><td>Combobox (Base UI) with async search + Dialog</td><td>EntityCombobox</td></tr>
+    <tr><td>Money and tons inputs</td><td>InputGroup + react-number-format (lakh grouping)</td><td>MoneyInput, TonsInput</td></tr>
+    <tr><td>Delivery limits</td><td>Card, Progress, Alert, Button</td><td>LimitMeter, DeliveryLimitsPanel</td></tr>
+    <tr><td>Status</td><td>Badge with added success / warning / info variants</td><td>StatusBadge</td></tr>
+    <tr><td>Create / edit containers</td><td>Sheet (desktop), Drawer (phone), Dialog (inline create)</td><td>FormSheet, ResponsiveDialog</td></tr>
+    <tr><td>Confirmation</td><td>AlertDialog</td><td>ConfirmDialog</td></tr>
+    <tr><td>Loading</td><td>Skeleton, Spinner, Progress</td><td>—</td></tr>
+    <tr><td>Empty states</td><td>Empty (EmptyMedia, EmptyTitle, EmptyDescription, EmptyContent)</td><td>EmptyState</td></tr>
+    <tr><td>Messages</td><td>Alert (+ variants); Sonner behind one wrapper</td><td>lib/notify.ts</td></tr>
+    <tr><td>Help</td><td>Tooltip (icon buttons only), Popover (info "i"), Kbd</td><td>—</td></tr>
+    <tr><td>Detail pages</td><td>Card, Tabs, Item, Separator, Badge, Progress</td><td>DetailHeader, KeyValueList</td></tr>
+    <tr><td>Login</td><td>login-03 block (Card + Field + Input)</td><td>—</td></tr>
+  </table>
+  <div class="callout warn"><h4>Pin these to avoid known breakages</h4><p><code>react-day-picker</code> (shadcn's Calendar breaks on DayPicker v10 until regenerated), <code>recharts@3</code>, <code>@base-ui/react</code>. Run <code>shadcn add --diff</code> before every component update.</p></div>
+  <div class="runhead">Metalix UI/UX System · Build system</div>
+</section>
+
+<!-- =============================== 27. TOKENS =============================== -->
+<section class="page">
+  <div class="eyebrow">Build system</div>
+  <h1 class="title">Design tokens: colour, type, spacing</h1>
+  <p class="lead">Components use only semantic tokens (<code>bg-success</code>, never <code>bg-green-500</code>). Base colour is Neutral; only the primary steel blue carries a hue. <b>Values are proposals</b>: check each pair's contrast in tweakcn before use.</p>
+
+  <div class="grid4" style="gap:3mm">
+    <div><div style="height:16mm;border-radius:2mm;background:oklch(0.45 0.10 235)"></div><div class="small"><b style="color:var(--doc-fg)">primary</b><br>oklch(0.45 0.10 235)<br>buttons, active nav, focus</div></div>
+    <div><div style="height:16mm;border-radius:2mm;background:oklch(0.95 0.02 235);border:1px solid #e3e6ea"></div><div class="small"><b style="color:var(--doc-fg)">accent</b><br>oklch(0.95 0.02 235)<br>hover, selected rows</div></div>
+    <div><div style="height:16mm;border-radius:2mm;background:oklch(0.967 0 0);border:1px solid #e3e6ea"></div><div class="small"><b style="color:var(--doc-fg)">muted / muted-fg</b><br>0.967 / 0.48 (darkened)<br>panels, secondary text</div></div>
+    <div><div style="height:16mm;border-radius:2mm;background:#fff;border:2px solid oklch(0.62 0 0)"></div><div class="small"><b style="color:var(--doc-fg)">input border</b><br>oklch(0.62 0 0)<br>≥ 3:1 on white</div></div>
+    <div><div style="height:16mm;border-radius:2mm;background:oklch(0.50 0.12 150)"></div><div class="small"><b style="color:var(--doc-fg)">success</b><br>oklch(0.50 0.12 150)<br>completed, saved</div></div>
+    <div><div style="height:16mm;border-radius:2mm;background:oklch(0.84 0.16 84)"></div><div class="small"><b style="color:var(--doc-fg)">warning</b><br>oklch(0.84 0.16 84)<br>pending, near limit, offline</div></div>
+    <div><div style="height:16mm;border-radius:2mm;background:oklch(0.52 0.15 255)"></div><div class="small"><b style="color:var(--doc-fg)">info</b><br>oklch(0.52 0.15 255)<br>partly delivered, tips</div></div>
+    <div><div style="height:16mm;border-radius:2mm;background:oklch(0.577 0.245 27.3)"></div><div class="small"><b style="color:var(--doc-fg)">destructive</b><br>oklch(0.577 0.245 27.3)<br>over limit, errors, cancel</div></div>
+  </div>
+  <div class="row mt2" style="gap:2mm; align-items:center">
+    <span class="small" style="width:22mm">Chart series</span>
+    <span style="width:16mm;height:6mm;border-radius:1mm;background:oklch(0.55 0.13 240)"></span><span style="width:16mm;height:6mm;border-radius:1mm;background:oklch(0.70 0.16 55)"></span><span style="width:16mm;height:6mm;border-radius:1mm;background:oklch(0.60 0.11 170)"></span><span style="width:16mm;height:6mm;border-radius:1mm;background:oklch(0.55 0.15 300)"></span><span style="width:16mm;height:6mm;border-radius:1mm;background:oklch(0.60 0 0)"></span>
+    <span class="small">blue / orange for two-series charts; ≤ 4 series per chart</span>
+  </div>
+
+  <div class="grid2 mt4">
+    <div>
+      <h3 class="mt0">Type scale (Inter + Noto Sans Devanagari/Gujarati)</h3>
+      <div style="font-variant-numeric:tabular-nums">
+        <div style="font-size:21pt;font-weight:600;line-height:1.2">286.5 t <span class="small">KPI 30/36</span></div>
+        <div style="font-size:16.5pt;font-weight:600">Sales Orders <span class="small">Title 24/32</span></div>
+        <div style="font-size:13pt;font-weight:500">Needs attention <span class="small">Section 18/28</span></div>
+        <div style="font-size:10.5pt;font-weight:500">Stock in yard <span class="small">Label 14/20 · 500</span></div>
+        <div style="font-size:10.5pt">Bharat Castings Pvt Ltd <span class="small">Body / cell 14/20</span></div>
+        <div style="font-size:8.5pt;color:var(--doc-muted)">Updated 2 min ago · Meta 12/16</div>
+      </div>
+      <p class="small mt2">Phones: body and inputs 16 px. Devanagari/Gujarati need looser leading (≈ 1.6). <code>tabular-nums</code> on every number.</p>
+    </div>
+    <div>
+      <h3 class="mt0">Spacing (4 px base) and shape</h3>
+      <table class="doc compact" style="font-size:8.6pt">
+        <tr><td>Page gutter</td><td class="num">16 / 24 px</td><td><span style="display:inline-block;width:12mm;height:2.5mm;background:var(--doc-accent)"></span></td></tr>
+        <tr><td>Between sections</td><td class="num">24 px</td><td><span style="display:inline-block;width:12mm;height:2.5mm;background:var(--doc-accent)"></span></td></tr>
+        <tr><td>Card padding</td><td class="num">16 / 24 px</td><td><span style="display:inline-block;width:8mm;height:2.5mm;background:var(--doc-accent)"></span></td></tr>
+        <tr><td>Between form fields</td><td class="num">16 px</td><td><span style="display:inline-block;width:8mm;height:2.5mm;background:var(--doc-accent)"></span></td></tr>
+        <tr><td>Label → input</td><td class="num">8 px</td><td><span style="display:inline-block;width:4mm;height:2.5mm;background:var(--doc-accent)"></span></td></tr>
+        <tr><td>Table row</td><td class="num">40 / 48 px</td><td></td></tr>
+        <tr><td>Radius</td><td class="num">0.5rem</td><td>controls 8 px · cards 11 px</td></tr>
+        <tr><td>Elevation</td><td class="num">flat</td><td>1 px borders; shadows only on menus/dialogs</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Build system</div>
+</section>
+
+<!-- =============================== 28. COMPONENTS & FOLDERS =============================== -->
+<section class="page">
+  <div class="eyebrow">Build system</div>
+  <h1 class="title">Reusable components and folder structure</h1>
+  <p class="lead">Three layers: shadcn output (treated as vendored code), the app's own composite components, and feature screens. Feature code never imports Base UI or the toast library directly.</p>
+  <div class="g-1-2">
+    <pre style="font-family:var(--mono);font-size:7.3pt;line-height:1.45;background:var(--doc-soft);border:1px solid var(--doc-line);border-radius:2mm;padding:3mm;margin:0;white-space:pre">src/
+  components/
+    ui/          shadcn CLI output only
+    layout/
+      app-shell  app-sidebar
+      site-header  bottom-nav
+      command-palette  shortcuts
+    common/
+      page-header  detail-header
+      data-table/  (table, toolbar,
+        pagination, skeleton,
+        summary-strip)
+      filter-bar/  (filter-bar,
+        date-range-picker, chips)
+      form/  (form-sheet, form-section,
+        form-field, error-summary,
+        entity-combobox, money-input,
+        tons-input, date-input,
+        vehicle-input)
+      stat-card  status-badge
+      limit-meter  empty-state
+      error-state  confirm-dialog
+      responsive-dialog
+      key-value-list  freshness
+      offline-banner
+  features/
+    dashboard  purchases
+    sales-orders  deliveries
+    companies  materials
+    reports  auth
+     └ api/ schemas/ components/
+  lib/
+    api-client  errors  format
+    decimal  fy  notify
+    permissions  timing
+  hooks/  styles/</pre>
+    <div>
+      <table class="doc compact" style="font-size:8.4pt">
+        <tr><th>Composite</th><th>Key props</th></tr>
+        <tr><td><b>PageHeader</b></td><td>title, description, primaryAction, secondaryActions (≤ 3), breadcrumbs</td></tr>
+        <tr><td><b>DataTable</b></td><td>columns, data, rowCount, state, renderMobileCard, emptyState, isLoading, isPlaceholderData, error, getRowHref, highlightRowId</td></tr>
+        <tr><td><b>FilterBar</b></td><td>typed filter config; reads/writes URL search params</td></tr>
+        <tr><td><b>DateRangePicker</b></td><td>value, onChange, presets (Indian FY)</td></tr>
+        <tr><td><b>EntityCombobox</b></td><td>fetcher, filter (e.g. SALE/BOTH), onCreate ("+ Add"), renderOption</td></tr>
+        <tr><td><b>MoneyInput / TonsInput</b></td><td>string in, string out ("30.250"); max + "Use max"</td></tr>
+        <tr><td><b>StatCard</b></td><td>label, value, exactValue, delta, footnote, href, loading</td></tr>
+        <tr><td><b>StatusBadge</b></td><td>PENDING · PARTIALLY_SUPPLIED · COMPLETED · CANCELLED · ACTIVE · INACTIVE</td></tr>
+        <tr><td><b>LimitMeter</b></td><td>label, value, limit, isBinding, state</td></tr>
+        <tr><td><b>EmptyState</b></td><td>kind: first-use · no-results · all-done</td></tr>
+        <tr><td><b>ConfirmDialog</b></td><td><code>await confirm({ title, body, confirmLabel, cancelLabel, destructive })</code></td></tr>
+        <tr><td><b>FormSheet / ResponsiveDialog</b></td><td>Sheet or Dialog on desktop, Drawer on phones; unsaved-changes guard</td></tr>
+      </table>
+      <h3>Consistency guard-rails</h3>
+      <ul class="clean small" style="color:var(--doc-fg)">
+        <li>Edits to <code>components/ui</code> are limited to added variants and accessibility fixes, logged in <code>CHANGES.md</code>; updates via <code>shadcn add --diff</code>.</li>
+        <li>Lint bans raw colour classes (<code>bg-red-500</code>) and direct imports of <code>@base-ui/react</code> / <code>sonner</code> in features.</li>
+        <li>A dev-only <code>/dev/components</code> page shows every composite in every state: cheaper than Storybook for a small team.</li>
+        <li>All numbers through <code>lib/format.ts</code>; all toasts through <code>lib/notify.ts</code>; all permissions through <code>can('write')</code>.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Build system</div>
+</section>
+
+<!-- =============================== 29. PRIORITIES =============================== -->
+<section class="page">
+  <div class="eyebrow">Build plan</div>
+  <h1 class="title">What to build first: 20 priorities</h1>
+  <p class="lead">Ranked by how much friction each removes. P0 items make the core daily tasks safe and fast; P1 makes them pleasant; P2 adds polish and insight.</p>
+  <table class="doc compact" style="font-size:8.4pt">
+    <tr><th style="width:8%">Rank</th><th>Change</th><th style="width:34%">Why it matters</th><th style="width:7%">Effort</th></tr>
+    <tr><td><b>P0-1</b></td><td>Live delivery limits panel with "Use max" and the binding-limit sentence</td><td>Turns the strictest rejections into guidance (needs capacity endpoint)</td><td>M</td></tr>
+    <tr><td><b>P0-2</b></td><td>"Deliver" on open order rows, order page and dashboard, order pre-locked</td><td>Delivery in 3 clicks; no wrong-PO errors</td><td>S</td></tr>
+    <tr><td><b>P0-3</b></td><td>Smart defaults: today, last supplier / material / rate, max quantity</td><td>Most users keep defaults; purchase in 2 clicks</td><td>S</td></tr>
+    <tr><td><b>P0-4</b></td><td>One <code>lib/format.ts</code>: exact en-IN values, custom lakh/crore compact</td><td>No misread rupee figures, no "1.2KCr"</td><td>S</td></tr>
+    <tr><td><b>P0-5</b></td><td>Plain-language error dictionary with one-tap fixes; 422 → field + summary</td><td>Users fix errors without help</td><td>S</td></tr>
+    <tr><td><b>P0-6</b></td><td>Keep previous rows while loading; skeleton only on first load after 500 ms</td><td>Screen never blanks on weak data</td><td>S</td></tr>
+    <tr><td><b>P0-7</b></td><td>URL-held filters with Indian FY presets</td><td>Shareable views, working Back</td><td>M</td></tr>
+    <tr><td><b>P0-8</b></td><td>Hide write actions for VIEWER; "View only" badge</td><td>No dead ends or 403s</td><td>S</td></tr>
+    <tr><td><b>P0-9</b></td><td>Wait-for-server saves on stock/money, then highlight row + short toast</td><td>No numbers that roll back after the user saw them</td><td>S</td></tr>
+    <tr><td>P1-10</td><td>EntityCombobox with inline "+ Add" (Alt+C)</td><td>No leaving the form to create masters</td><td>M</td></tr>
+    <tr><td>P1-11</td><td>"Save &amp; add another" and "Repeat purchase"</td><td>Fast batch entry at the weighbridge</td><td>S</td></tr>
+    <tr><td>P1-12</td><td>Ctrl+K palette, Alt shortcuts, Enter-to-next, Ctrl+Enter save</td><td>Tally-speed entry for accountants</td><td>M</td></tr>
+    <tr><td>P1-13</td><td>Bottom nav with centre "+", drawer forms, sticky Save, 44–48 px targets</td><td>One-handed use outdoors</td><td>M</td></tr>
+    <tr><td>P1-14</td><td>Sunlight theme, stronger input borders, darker muted text</td><td>Outdoor readability, AA contrast</td><td>S</td></tr>
+    <tr><td>P1-15</td><td>Form drafts saved locally + re-login dialog that keeps entries</td><td>No lost work on dropped connections</td><td>S</td></tr>
+    <tr><td>P1-16</td><td>Dashboard "Needs attention" with inline actions and drill-downs</td><td>"What to buy / deliver" at a glance</td><td>M</td></tr>
+    <tr><td>P2-17</td><td>Column visibility and density remembered per user</td><td>Power users see more</td><td>S</td></tr>
+    <tr><td>P2-18</td><td>Recent items in the palette and sidebar</td><td>Faster return to working records</td><td>S</td></tr>
+    <tr><td>P2-19</td><td>Rate trend and margin charts</td><td>Pricing insight (needs rates endpoint)</td><td>M</td></tr>
+    <tr><td>P2-20</td><td>Component showcase page, lint guard-rails, Hindi/Gujarati</td><td>Keeps the system consistent as it grows</td><td>M</td></tr>
+  </table>
+  <h3>Suggested order of work</h3>
+  <svg viewBox="0 0 700 60" width="100%">
+    <g font-size="10.5">
+      <rect x="0" y="6" width="170" height="44" rx="8" fill="oklch(0.95 0.02 235)" stroke="oklch(0.80 0.05 235)"/><text x="85" y="24" text-anchor="middle" font-weight="700">1 · Foundation</text><text x="85" y="40" text-anchor="middle" fill="#5b6270">init, tokens, shell, api-client</text>
+      <rect x="176" y="6" width="170" height="44" rx="8" fill="oklch(0.95 0.02 235)" stroke="oklch(0.80 0.05 235)"/><text x="261" y="24" text-anchor="middle" font-weight="700">2 · Composites</text><text x="261" y="40" text-anchor="middle" fill="#5b6270">DataTable, FilterBar, form kit</text>
+      <rect x="352" y="6" width="170" height="44" rx="8" fill="oklch(0.45 0.10 235)"/><text x="437" y="24" text-anchor="middle" font-weight="700" fill="#fff">3 · Delivery + one list</text><text x="437" y="40" text-anchor="middle" fill="#dbe7f3">test with 3–5 real users</text>
+      <rect x="528" y="6" width="172" height="44" rx="8" fill="oklch(0.95 0.02 235)" stroke="oklch(0.80 0.05 235)"/><text x="614" y="24" text-anchor="middle" font-weight="700">4 · Remaining screens</text><text x="614" y="40" text-anchor="middle" fill="#5b6270">dashboard, reports, masters</text>
+    </g>
+  </svg>
+  <div class="runhead">Metalix UI/UX System · Build plan</div>
+</section>
+
+<!-- =============================== 30. NEXT STEPS =============================== -->
+<section class="page">
+  <div class="eyebrow">Build plan</div>
+  <h1 class="title">Open questions and next steps</h1>
+  <p class="lead">Most of this guide rests on established research and design-system guidance. A few choices are reasoned rather than tested, and a few need small backend additions.</p>
+
+  <h2 class="mt0">Backend additions the UI depends on</h2>
+  <table class="doc compact">
+    <tr><th>Endpoint</th><th>Unlocks</th><th>Priority</th></tr>
+    <tr><td><code>GET /sales/capacity?poId&amp;sourceCompanyId&amp;saleDate&amp;excludeSaleId</code></td><td>The live limits panel with the same numbers the server enforces</td><td><b>Highest</b></td></tr>
+    <tr><td>Last rate for a supplier + material</td><td>The "last rate" default on purchases</td><td>High</td></tr>
+    <tr><td><code>GET /reports/rates</code> (day / week / month buckets)</td><td>Rate trend chart; KPI comparisons with the previous period</td><td>Medium</td></tr>
+    <tr><td>Refresh token in an httpOnly cookie</td><td>Safer sessions (token never readable by page scripts)</td><td>Medium</td></tr>
+    <tr><td>Idempotency key on create endpoints</td><td>Safe "Try again" on flaky yard connections without duplicates</td><td>Medium</td></tr>
+  </table>
+
+  <h2>Validate with real users before building everything</h2>
+  <ul class="clean">
+    <li>Run a short session with <b>3–5 people</b> (owner, accountant, yard staff) on a <b>mid-range Android phone in daylight</b>, using the delivery form and one filtered list.</li>
+    <li>Check: click counts, whether hiding (rather than disabling) buttons for VIEWERs confuses anyone, and whether the trade words ("Left to deliver", "Stock from") read naturally.</li>
+    <li>Confirm the Sunlight theme is readable outdoors and the 44 px targets are comfortable with work gloves.</li>
+  </ul>
+
+  <h2>Still to verify</h2>
+  <ul class="clean">
+    <li>Contrast of every proposed colour pair (tweakcn) in light, dark and Sunlight themes.</li>
+    <li>Vehicle-number and GSTIN patterns against official formats.</li>
+    <li>That the shadcn data-table guide and chosen community table code work with TanStack Table v9.</li>
+  </ul>
+
+  <h2>Main sources behind this guide</h2>
+  <p class="small">Nielsen Norman Group · GOV.UK Design System · Baymard Institute · Shopify Polaris · IBM Carbon · GitHub Primer · Material 3 · Microsoft Fluent 2 · W3C WCAG 2.2 · web.dev · MDN · shadcn/ui, Base UI, TanStack and React 19.3 docs · Stephen Few · UK Government Analysis Function · Tally, Vyapar and Khatabook patterns. Full citations: companion report <i>shadcn UI UX design system.md</i>.</p>
+
+  <div class="callout good"><h4>In one sentence</h4><p>Build one calm, number-first interface where the three limits behind every delivery are visible before the user acts, every screen follows the same patterns, and every interaction gives quick, plain feedback, on a desk PC and on a phone in the yard.</p></div>
+  <div class="runhead">Metalix UI/UX System · Build plan</div>
+</section>
+
+</body>
+</html>

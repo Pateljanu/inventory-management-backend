@@ -1,0 +1,234 @@
+<!-- =============================== 7. FRONTEND SCREENS =============================== -->
+<section class="chapter">
+  <div class="eyebrow">7 · Frontend · Screens</div>
+  <h1>Screen changes F1–F8</h1>
+  <p class="lead">These changes are added to the UI/UX System v1.0 (Vite · React 19 · shadcn/ui on Base UI · TanStack Router/Query/Table · RHF + Zod). All of its rules still apply: numbers through <code>lib/format.ts</code>, write actions hidden for VIEWER, filters in the URL, old rows kept while loading.</p>
+
+  <h2>Navigation after this spec</h2>
+  <p>One new module, <b>Rate analysis</b>, joins "Stock &amp; reports". There are now nine modules; everything else stays in place.</p>
+  <table class="tight">
+    <thead><tr><th>Overview</th><th>Daily work</th><th>Stock &amp; reports</th><th>Setup</th></tr></thead>
+    <tbody><tr><td>Dashboard</td><td>Purchases · Sales Orders <span class="muted">(badge from B3)</span> · Deliveries</td><td>Supplier stock · Company report · <b>Rate analysis (new, F8)</b></td><td>Companies · Materials</td></tr></tbody>
+  </table>
+
+  <!-- F1 -->
+  <div class="spec">
+    <div class="head"><span class="id">F1</span><span class="name">Delivery form: live limits panel</span><span class="tag p0">P0</span><span class="tag fe">FE</span><span class="small muted">uses B1</span></div>
+    <div class="body">
+      <div class="grid2">
+        <div>
+          <ul class="small">
+            <li><code>useCapacity({ poId, sourceCompanyId, saleDate, excludeSaleId })</code>: TanStack Query, key <code>['capacity', …]</code>, refetched 300 ms after PO, supplier or date change (debounced), with <code>placeholderData: keepPreviousData</code>.</li>
+            <li>"Stock from" options come from <code>capacity.sources</code> (sorted by <code>floorTons</code>, with a "2 suppliers with no stock are hidden" note). This replaces a separate source-stock call.</li>
+            <li>Three meters (typed ÷ each limit). The smallest limit is ringed and tagged "Tightest". One sentence names <code>bindingLimit</code> in trade words.</li>
+            <li>When <code>yardFloorTons</code> &lt; <code>yardStockTons</code>, add: "<i>X t is already promised to later deliveries.</i>"</li>
+            <li>Quantity defaults to <code>maxAllowedTons</code>; "Use max" refills it. Blockers replace the panel with one plain sentence and the fix ("Change order", "Choose another supplier").</li>
+            <li>On any 409 from save: refetch capacity, keep the form, apply the F9 message.</li>
+          </ul>
+        </div>
+        <div class="wire">
+          <div class="wt">Delivery limits</div>
+          <div class="ws">PO-0142 · HMS 1 · 27/09/2026</div>
+          <div class="small">Left on order <b style="float:right">11.750 t</b></div><div class="meter"><span style="width:78%"></span></div>
+          <div class="small">In yard <b style="float:right">71.500 t</b></div><div class="meter"><span style="width:13%"></span></div>
+          <div class="small">Shree Ganesh Metals stock <span class="tag p1">Tightest</span><b style="float:right">9.200 t</b></div><div class="meter tight"><span style="width:100%"></span></div>
+          <div style="margin-top:2mm;font-size:9pt">You can deliver up to <b>9.200 t</b></div>
+          <div class="small muted">Limited by Shree Ganesh Metals stock</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- F2 -->
+  <div class="spec">
+    <div class="head"><span class="id">F2</span><span class="name">Lists: summary strip, sortable headers, status tabs with counts</span><span class="tag p0">P0</span><span class="tag fe">FE</span><span class="small muted">uses B2 B3 B4 B6</span></div>
+    <div class="body">
+      <ul class="small">
+        <li><b>Summary strip</b> above every transaction table, from <code>meta.summary</code>: "6 purchases · 54.195 t · ₹22,15,130.00 · avg ₹40,873.33/t". It shows the whole filtered set, never the page.</li>
+        <li><b>Sortable headers</b> map to <code>?sort=</code> (URL-held). Only B4's whitelisted columns get the sort affordance.</li>
+        <li><b>Sales Orders tabs</b> "Open · 14 | Partly delivered · 5 | Completed | All", counts from <code>/sales-pos/summary</code>. Open = <code>status=OPEN</code>. The sidebar badge uses the same query (<code>counts.OPEN</code>).</li>
+        <li><b>Search placeholder</b> lists what B6 searches: "Supplier, material, vehicle or invoice no."</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- F3 + F4 -->
+  <div class="grid2">
+    <div class="spec" style="margin-top:0">
+      <div class="head"><span class="id">F3</span><span class="name">Purchases: "With supplier now"</span><span class="tag p1">P1</span></div>
+      <div class="body small">
+        <p>Optional column (behind "Columns", off by default on phones): the current pool for that row's supplier + material, e.g. <b>24.100 t</b> with the muted line "HMS 1 left from Shree Ganesh". Filled from one <code>/reports/source-stock</code> call per page, mapped by <code>sourceCompanyId:materialId</code>. It is position <i>today</i>, so the header tooltip says so. This is the POC "Current supplier stock" column.</p>
+      </div>
+    </div>
+    <div class="spec" style="margin-top:0">
+      <div class="head"><span class="id">F4</span><span class="name">Sales Orders: "Material position"</span><span class="tag p1">P1</span></div>
+      <div class="body small">
+        <p>Column after "Left (t)": the order's material position from <code>/materials?include=position</code> (one call, cached 60 s). A <span class="neg">Short 24.500 t</span> badge links to a new purchase with that material filled in; <span class="pos">Extra 6.900 t</span>; "Covered". This is the POC "Purchase balance" column, also shown in the dashboard's "Orders waiting".</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- F5 -->
+  <div class="spec">
+    <div class="head"><span class="id">F5</span><span class="name">Materials page with full position</span><span class="tag p1">P1</span><span class="tag fe">FE</span><span class="small muted">uses B7 B8</span></div>
+    <div class="body">
+      <p class="small">The table keeps the UI doc columns (<b>Name · In yard · Open demand · Buy needed</b>) from <code>include=position</code>. Clicking a row opens a sheet with the POC card: Purchased, Total PO, Sold, Remaining PO, Current stock, Purchase value and the final position sentence, from <code>/reports/dashboard?materialId=…</code> for the global period. Units are tons only (D4). The "Unit" field from the POC is not shown.</p>
+    </div>
+  </div>
+
+  <!-- F6 -->
+  <div class="spec">
+    <div class="head"><span class="id">F6</span><span class="name">Companies list stats and "Stock used" tab</span><span class="tag p1">P1</span><span class="tag fe">FE</span><span class="small muted">uses B9</span></div>
+    <div class="body">
+      <ul class="small">
+        <li>The list calls <code>/companies?include=stats&amp;from&amp;to</code>. Default columns: Name · Type · Phone · City · <b>Bought (t)</b> · <b>Sold (t)</b> · <b>Stock with us (t)</b>. GSTIN, open orders and "Used for sales" sit behind "Columns". Supplier-only columns show "—" for SALE companies, and vice versa.</li>
+        <li>Company detail tabs become <b>Purchases · Orders · Deliveries · Stock used · Stock</b>. "Stock used" = <code>/sales?sourceCompanyId=…</code> (deliveries that consumed this supplier's stock: date, customer, PO, material, tons), the POC's "Stock used from this purchase company" table.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- F7 -->
+  <div class="spec">
+    <div class="head"><span class="id">F7</span><span class="name">Dashboard additions</span><span class="tag p1">P1</span><span class="tag fe">FE</span><span class="small muted">uses B7–B11</span></div>
+    <div class="body">
+      <div class="wire">
+        <div class="wt">Dashboard · This month</div>
+        <div class="ws">01/09/2026 – 27/09/2026 · compared with 01/08/2026 – 27/08/2026</div>
+        <div class="cards">
+          <div class="card"><div class="l">Stock in yard</div><div class="v">286.5 t</div><div class="d">▲ 31.520 t since 01/09</div></div>
+          <div class="card"><div class="l">Buy needed</div><div class="v" style="color:var(--amber)">38.8 t</div><div class="d">3 materials are short</div></div>
+          <div class="card"><div class="l">Open sales orders</div><div class="v">14</div><div class="d">9 pending · 5 partly delivered</div></div>
+          <div class="card"><div class="l">Delivered this month</div><div class="v">₹1.57 Cr</div><div class="d">▲ 8% vs Aug · 380.860 t</div></div>
+        </div>
+        <div style="display:flex;gap:5mm;font-size:8pt;border:1px dashed #cfd6df;border-radius:1.5mm;padding:1.6mm 2.4mm;background:#fff">
+          <span class="muted">More figures:</span><span>Bought <b>412.380 t</b> · ₹1.49 Cr</span><span>Sold <b>380.860 t</b></span><span>Total PO <b>596.000 t</b></span><span>Extra stock <b class="pos">112.900 t</b></span><span>Buy needed <b class="neg">38.750 t</b></span>
+        </div>
+      </div>
+      <table class="tight">
+        <thead><tr><th style="width:30%">Block</th><th>Data</th><th style="width:22%">POC / UI origin</th></tr></thead>
+        <tbody>
+          <tr><td>"More figures" strip (D5)</td><td><code>purchases</code>, <code>sales</code>, <code>po.poQuantityTons</code>, <code>totals.*</code></td><td>POC 6 KPI cards</td></tr>
+          <tr><td>Comparison "▲ 8% vs Aug"</td><td>Second dashboard call with the previous range: same day-count, month-aligned for "This month" (01–27 Aug)</td><td>UI p.7</td></tr>
+          <tr><td>Needs attention</td><td>Buy needed: <code>materials[]</code> with <code>purchaseRequiredTons</code> &gt; 0 · Orders waiting: <code>/sales-pos?status=OPEN&amp;sort=poDate&amp;limit=3</code> · Low supplier stock: <code>/reports/source-stock</code> rows under 1 t where the material has open demand</td><td>UI p.7</td></tr>
+          <tr><td>Stock vs open orders bars</td><td><code>materials[]</code> <code>currentStockTons</code> vs <code>remainingPOQuantityTons</code>, sorted by shortage</td><td>UI p.7</td></tr>
+          <tr><td>Material-wise position (table view)</td><td><code>materials[]</code> with <code>include=parties</code>: bought from / PO customers / sold, current stock, remaining, final balance, status</td><td>POC main table</td></tr>
+          <tr><td>View one material</td><td>Material picker → <code>/reports/dashboard?materialId</code>, six position cards</td><td>POC</td></tr>
+          <tr><td>Company-wise purchases / sales</td><td><code>/reports/companies?type=PURCHASE&amp;sort=-purchaseValue&amp;limit=8</code> and the SALE equivalent</td><td>POC</td></tr>
+          <tr><td>Bought vs delivered per week</td><td><code>/reports/trend?bucket=week</code>, two labelled lines</td><td>UI p.7</td></tr>
+          <tr><td>Recent activity</td><td><code>/reports/activity?limit=8</code>, "Show more" pages with <code>nextCursor</code></td><td>POC + UI</td></tr>
+        </tbody>
+      </table>
+      <p class="small">Above the fold, the UI doc rule still holds: 4 cards and at most 2 charts. The material table, company-wise panels and "view one material" sit below the fold, in that order.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =============================== F8 RATE ANALYSIS =============================== -->
+<section class="chapter">
+  <div class="eyebrow">7 · Frontend · New page</div>
+  <h1>F8 · Rate analysis</h1>
+  <p class="lead">The POC page, rebuilt on B12 with decision D3: material rows are the real answer, and the overall difference is labelled as blended.</p>
+
+  <div class="wire">
+    <div class="wt">Rate analysis</div>
+    <div class="ws">Weighted averages: total value ÷ total tons. Selling rates are the rates actually billed on each delivery. · This month ▾</div>
+    <div class="cards">
+      <div class="card"><div class="l">Avg buying rate</div><div class="v">₹36,120.40</div><div class="d">412.380 t bought · ₹1.49 Cr</div></div>
+      <div class="card"><div class="l">Avg selling rate</div><div class="v">₹41,210.75</div><div class="d">380.860 t sold · ₹1.57 Cr</div></div>
+      <div class="card"><div class="l">Blended difference ⓘ</div><div class="v">₹5,090.35</div><div class="d">mixed materials, see table</div></div>
+      <div class="card"><div class="l">Blended difference %</div><div class="v">14.09%</div><div class="d">of avg buying rate</div></div>
+    </div>
+    <table>
+      <thead><tr><th>Material</th><th class="num">Bought (t)</th><th class="num">Avg buy (₹/t)</th><th class="num">Sold (t)</th><th class="num">Avg sell (₹/t)</th><th class="num">Difference (₹/t)</th><th class="num">%</th></tr></thead>
+      <tbody>
+        <tr><td><b>HMS 1</b></td><td class="num">96.450</td><td class="num">34,310.00</td><td class="num">88.200</td><td class="num">38,500.00</td><td class="num pos">+4,190.00</td><td class="num pos">+12.21%</td></tr>
+        <tr><td><b>MS turnings</b></td><td class="num">71.300</td><td class="num">29,780.00</td><td class="num">60.000</td><td class="num">35,500.00</td><td class="num pos">+5,720.00</td><td class="num pos">+19.21%</td></tr>
+        <tr><td><b>Brass honey</b></td><td class="num">9.800</td><td class="num">4,92,000.00</td><td class="num">0.000</td><td class="num">—</td><td class="num muted">—</td><td class="num muted">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Behaviour</h2>
+  <ul>
+    <li><b>Period</b> uses the same URL-held date control and FY presets as every other page. Default: This month.</li>
+    <li><b>"Check one material"</b> (POC) becomes a click on a row. That opens a sheet with the six POC boxes (bought, avg buy, sold, avg sell, difference, %) and the rate trend line from <code>series</code> (<code>bucket=week</code> for ranges ≤ 3 months, otherwise <code>month</code>), buy solid and sell dashed, labelled at the line ends.</li>
+    <li><b>Colour</b> is green/red only on per-material differences, always with a sign and a word for screen readers ("higher", "lower"). The blended cards are never coloured (D3).</li>
+    <li><b>Empty sides</b> show "—" with the tooltip "Nothing sold in this period", never ₹0.00.</li>
+    <li><b>Tooltip on "Difference"</b>: "Average selling rate minus average buying rate in this period. It is not profit per ton: stock bought earlier may have been sold now."</li>
+    <li>VIEWER sees the page fully; it is read-only.</li>
+  </ul>
+
+  <div class="callout">
+    <h4>Why the overall figure is kept but downgraded</h4>
+    <p class="small">The owner used the POC's overall spread, so removing it would be a regression. The UI doc is right that mixing ₹4.9 lakh/t brass with ₹34,000/t HMS gives a number that moves with the product mix, not with pricing. Labelling it "blended", adding the tooltip and putting the per-material table first keeps the figure honest.</p>
+  </div>
+</section>
+
+<!-- =============================== 8. API CLIENT =============================== -->
+<section class="chapter">
+  <div class="eyebrow">8 · Frontend · API client</div>
+  <h1>F9–F14: data layer</h1>
+
+  <!-- F9 -->
+  <h2>F9 · Complete error dictionary</h2>
+  <p>The UI doc maps 11 situations. The backend can return <b>33</b> API error codes today, and this spec adds <b>4</b>. <code>lib/errors.ts</code> must cover every one, using <code>error.details</code> for the numbers. Raw codes are never shown; the <code>requestId</code> appears only behind "Copy reference" on 500s.</p>
+  <table class="tight">
+    <thead><tr><th style="width:9%">HTTP</th><th style="width:30%">Code</th><th>What the user reads (and the one-tap fix)</th></tr></thead>
+    <tbody>
+      <tr><td>422</td><td><code>VALIDATION_ERROR</code></td><td>Message under each field from <code>details.issues[].path</code>, plus a focused "There is a problem" summary.</td></tr>
+      <tr><td>400</td><td><code>INVALID_JSON</code></td><td>"The app sent something the server could not read. Reload the page and try again." (Reload)</td></tr>
+      <tr><td>400</td><td><code>INVALID_ID</code></td><td>"This link is broken." (Go to list)</td></tr>
+      <tr><td>413</td><td><code>PAYLOAD_TOO_LARGE</code></td><td>"This entry is too long. Shorten the notes and save again."</td></tr>
+      <tr><td>401</td><td><code>INVALID_CREDENTIALS</code></td><td>"Email or password is wrong." (on the login form)</td></tr>
+      <tr><td>401</td><td><code>TOKEN_EXPIRED</code></td><td>Silent: refresh once, replay the request. Never shown.</td></tr>
+      <tr><td>401</td><td><code>UNAUTHENTICATED</code>, <code>INVALID_REFRESH_TOKEN</code></td><td>Login dialog over the form: "Your session has ended. Log in again to save. Your entries are kept."</td></tr>
+      <tr><td>403</td><td><code>FORBIDDEN</code></td><td>"You have view-only access. Ask the owner if you need to make changes."</td></tr>
+      <tr><td>403</td><td><code>CSRF_CHECK_FAILED</code> <span class="tag both">new B16</span></td><td>"Your session could not be confirmed. Reload the page and log in again." (Reload)</td></tr>
+      <tr><td>404</td><td><code>NOT_FOUND</code>, <code>COMPANY_NOT_FOUND</code>, <code>MATERIAL_NOT_FOUND</code>, <code>PO_NOT_FOUND</code>, <code>PURCHASE_NOT_FOUND</code>, <code>SALE_NOT_FOUND</code></td><td>Full-page state: "We couldn't find this sales order. The link may be wrong." (Go to Sales Orders, or the matching list)</td></tr>
+      <tr><td>409</td><td><code>DUPLICATE_VALUE</code></td><td>On the field named by <code>details.fields</code> (map <code>normalizedName</code>→Name, <code>normalizedInvoiceNumber</code>→Invoice no., <code>normalizedChallanNumber</code>→Challan no., <code>normalizedPoNumber</code>→PO no., <code>gstNumber</code>→GSTIN): "Invoice no. ST/26-27/418 is already used by this supplier." (Open that record)</td></tr>
+      <tr><td>409</td><td><code>COMPANY_TYPE_IN_USE</code></td><td>"This company already has purchases (or orders), so it must stay a supplier (or buyer). Choose Both instead." (Set to Both)</td></tr>
+      <tr><td>409</td><td><code>PO_QUANTITY_EXCEEDED</code></td><td>"PO-0142 has only 11.750 t left to deliver. You entered 12.000 t." (Use 11.750 t)</td></tr>
+      <tr><td>409</td><td><code>INSUFFICIENT_STOCK</code></td><td>"Only 71.500 t of HMS 1 is in the yard on that date." (Use max)</td></tr>
+      <tr><td>409</td><td><code>INSUFFICIENT_SOURCE_STOCK</code></td><td>"Only 9.200 t of HMS 1 from Shree Ganesh Metals is left." (Use 9.200 t · Choose another supplier)</td></tr>
+      <tr><td>409</td><td><code>NEGATIVE_STOCK_HISTORY</code></td><td>"This change would make HMS 1 stock go below zero on 18/09/2026 (by 2.300 t). Change the quantity or date, or edit the later deliveries first." (View stock history)</td></tr>
+      <tr><td>409</td><td><code>NEGATIVE_SOURCE_STOCK_HISTORY</code></td><td>Same sentence, naming the supplier: "…HMS 1 from Shree Ganesh Metals would go below zero on 18/09/2026."</td></tr>
+      <tr><td>409</td><td><code>PO_QTY_BELOW_SOLD</code></td><td>"18.250 t is already delivered on this order. The order quantity cannot be lower." (Use 18.250 t)</td></tr>
+      <tr><td>422</td><td><code>PO_DATE_AFTER_SALES</code></td><td>"The first delivery on this order is dated 12/09/2026. The order date must be on or before it." (Use 12/09/2026)</td></tr>
+      <tr><td>422</td><td><code>PO_NOT_AVAILABLE</code></td><td>"This order is cancelled. Choose another order." (Change order)</td></tr>
+      <tr><td>422</td><td><code>SALE_BEFORE_PO_DATE</code></td><td>"The delivery date is before the order date (09/09/2026)." (Use 09/09/2026)</td></tr>
+      <tr><td>422</td><td><code>INVALID_PURCHASE_COMPANY</code>, <code>INVALID_SALE_COMPANY</code>, <code>INVALID_SOURCE_COMPANY</code></td><td>"Sharma Traders is inactive or is not set up as a supplier (buyer)." (Choose another · Edit company)</td></tr>
+      <tr><td>422</td><td><code>INVALID_MATERIAL</code></td><td>"This material is inactive. Reactivate it in Materials or choose another."</td></tr>
+      <tr><td>422</td><td><code>EXPORT_TOO_LARGE</code> <span class="tag both">new B14</span></td><td>"That is more than 50,000 rows. Choose a shorter date range and export again."</td></tr>
+      <tr><td>409</td><td><code>IDEMPOTENCY_IN_PROGRESS</code> <span class="tag both">new B17</span></td><td>Silent: wait <code>Retry-After</code>, repeat once with the same key. Shown only if it repeats: "Still saving… Check the list before trying again."</td></tr>
+      <tr><td>422</td><td><code>IDEMPOTENCY_KEY_REUSED</code> <span class="tag both">new B17</span></td><td>Client bug: generate a new key, retry once silently, then treat it as a 500.</td></tr>
+      <tr><td>429</td><td><code>TOO_MANY_AUTH_ATTEMPTS</code></td><td>"Too many login attempts. Wait 15 minutes and try again." (The window is 15 min / 10 attempts.)</td></tr>
+      <tr><td>429</td><td><code>TOO_MANY_REQUESTS</code></td><td>Non-blocking: "Too many requests in a short time. Wait a few seconds and try again." (Try again)</td></tr>
+      <tr><td>500</td><td><code>INTERNAL_ERROR</code></td><td>"Something went wrong on our side and this purchase was not saved. Your entries are still here." (Try again · Copy reference)</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">Reconciliation codes (<code>PO_OVER_DELIVERED</code>, <code>SALE_AMOUNT_MISMATCH</code>, <code>NEGATIVE_MATERIAL_STOCK</code> and 6 more) only appear in <code>npm run reconcile</code> output, never in API responses, so the dictionary does not need them.</p>
+
+  <!-- F10 -->
+  <h2>F10 · Query keys and what to refresh after each save</h2>
+  <p>Saves wait for the server on stock and money (UI doc P0-9), then invalidate exactly these keys. Missing one leaves a stale number on screen; invalidating everything makes the app feel slow on weak data.</p>
+  <table class="tight">
+    <thead><tr><th style="width:24%">After</th><th>Invalidate</th></tr></thead>
+    <tbody>
+      <tr><td>Purchase create / edit</td><td><code>purchases</code>, <code>dashboard</code>, <code>materials</code> (position), <code>source-stock</code>, <code>capacity</code>, <code>company-stats</code>, <code>activity</code>, <code>trend</code>, <code>rates</code>, <code>last-rate</code></td></tr>
+      <tr><td>Sale create / edit</td><td><code>sales</code>, <code>sales-pos</code>, <code>sales-po-summary</code>, <code>sales-po:{id}</code>, <code>dashboard</code>, <code>materials</code>, <code>source-stock</code>, <code>capacity</code>, <code>company-stats</code>, <code>activity</code>, <code>trend</code>, <code>rates</code></td></tr>
+      <tr><td>Sales PO create / edit / cancel</td><td><code>sales-pos</code>, <code>sales-po-summary</code>, <code>sales-po:{id}</code>, <code>dashboard</code>, <code>materials</code>, <code>capacity</code>, <code>company-stats</code>, <code>activity</code>; plus <code>sales</code> when company or material changed (cascade)</td></tr>
+      <tr><td>Company create / edit</td><td><code>companies</code>, <code>company:{id}</code>, <code>company-stats</code>; names shown in lists refresh on their next fetch</td></tr>
+      <tr><td>Material create / edit</td><td><code>materials</code>, <code>material:{id}</code>, <code>dashboard</code> (opening stock changes position)</td></tr>
+    </tbody>
+  </table>
+  <p class="small">Stale times: masters 5 min · lists 30 s · dashboard 60 s (the UI doc refetches every 60 s) · capacity 0 (always fresh) · activity 30 s.</p>
+
+  <!-- F11–F14 -->
+  <h2>F11–F14 · Smaller client items</h2>
+  <div class="grid2">
+    <div class="box"><h4>F11 · URL filters with ids</h4><p class="small">Filters are stored as <code>?companyId=66f…&amp;materialId=66f…</code>. The chip shows the name from the cached master list ("Supplier: Shree Ganesh Metals ×"). An unknown id (deleted or deactivated) shows "Unknown supplier" and can still be cleared. No backend slug field.</p></div>
+    <div class="box"><h4>F12 · Export button</h4><p class="small">Calls B14 with the current URL query using <code>fetch</code> plus the Bearer header, receives a blob and saves it with the <code>Content-Disposition</code> filename. A plain link cannot carry the token. A spinner shows on the button; 422 <code>EXPORT_TOO_LARGE</code> goes through F9.</p></div>
+    <div class="box"><h4>F13 · Purchase "last rate" default</h4><p class="small">When supplier and material are both set and the rate is still empty, the form fills it from B5 and shows the muted line "Last rate from Shree Ganesh: ₹34,500.00 on 27/09/2026". If <code>scope</code> is <code>MATERIAL</code>: "Last rate for HMS 1 (any supplier)". It never overwrites a typed rate.</p></div>
+    <div class="box"><h4>F14 · Cookie session and idempotency</h4><p class="small">When the backend runs <code>AUTH_REFRESH_TRANSPORT=cookie</code>: <code>credentials: 'include'</code> on auth calls, the <code>X-Requested-With: metalix</code> header, and the refresh token is never stored. On every create: <code>Idempotency-Key</code> = a UUID made when the form opens. It is reused by "Try again", and a new one is made after success or when the user edits a field.</p></div>
+  </div>
+</section>

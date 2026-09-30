@@ -1,0 +1,62 @@
+# Local development stack: single-node MongoDB replica set (transactions require a replica set)
+# plus the API with hot reload.
+#
+#   docker compose -f docker-compose.dev.yml up -d          # everything
+#   docker compose -f docker-compose.dev.yml up -d mongo    # only MongoDB; run the API with npm run dev
+#
+# From your machine (outside Docker) connect with:
+#   MONGODB_URI=mongodb://localhost:27017/metal_scrap?directConnection=true
+# (directConnection is needed because the replica-set member is registered as "mongo:27017",
+# a hostname that only resolves inside the Docker network.)
+name: metal-scrap
+
+services:
+  mongo:
+    image: mongo:8
+    command: ['mongod', '--replSet', 'rs0', '--bind_ip_all']
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+    # Initiates the replica set on first start and reports healthy only once this node is PRIMARY,
+    # so the API never starts against a node that cannot accept transactions yet.
+    healthcheck:
+      test:
+        - CMD
+        - mongosh
+        - --quiet
+        - --eval
+        - "try { rs.status() } catch (e) { rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: 'mongo:27017' }] }) }; if (!db.hello().isWritablePrimary) quit(1)"
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 5s
+
+  api:
+    build:
+      context: .
+      target: dev
+    # Migrations first (idempotent), then hot reload. Legacy (polling) watch works on Windows/macOS bind mounts.
+    command: ['sh', '-c', 'npm run migrate && npx nodemon --legacy-watch src/server.js']
+    environment:
+      NODE_ENV: development
+      PORT: 4000
+      MONGODB_URI: mongodb://mongo:27017/metal_scrap?replicaSet=rs0
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-local-development-secret-change-me-123456}
+      JWT_ACCESS_TTL: 15m
+      REFRESH_TOKEN_TTL_DAYS: 7
+      CORS_ORIGINS: http://localhost:5173
+      LOG_LEVEL: debug
+      TRUST_PROXY: 0
+      BUSINESS_TIMEZONE: Asia/Kolkata
+    ports:
+      - '4000:4000'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+volumes:
+  mongo_data:

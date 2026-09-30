@@ -1,0 +1,101 @@
+<!-- =============================== 6. BACKEND PHASES C + D =============================== -->
+<section class="chapter">
+  <div class="eyebrow">6 · Backend · Phases C and D</div>
+  <h1>Convenience and hardening (P2)</h1>
+  <p class="lead">Export and demo data make the app pleasant to run; the cookie session and idempotency keys make it safer on shared devices and weak yard connections. Each is switched on without breaking current clients.</p>
+
+  <!-- ============ B14 ============ -->
+  <div class="spec">
+    <div class="head"><span class="id">B14</span><span class="name">CSV export</span><span class="tag p2">P2</span><span class="tag be">BE</span></div>
+    <div class="body">
+      <div class="endpoint"><span class="tag get">GET</span>/api/v1/purchases/export.csv · /sales-pos/export.csv · /sales/export.csv</div>
+      <p><b>Why.</b> The list header's "Export" exports the current filters (UI doc page 9). Client-side paging would hit the 100-row page cap and the per-minute rate limit.</p>
+      <ul>
+        <li>Takes exactly the list query (filters, <code>search</code>, <code>sort</code>) without <code>page</code>/<code>limit</code>, and reuses the list service's filter builder, so the export always matches the screen.</li>
+        <li>Counts first: more than 50,000 rows → 422 <code>EXPORT_TOO_LARGE</code> with <code>details.total</code> ("Narrow the date range"). Otherwise it streams with a Mongoose cursor. Headers: <code>Content-Type: text/csv; charset=utf-8</code>, <code>Content-Disposition: attachment; filename="purchases_2026-09-01_2026-09-30.csv"</code>. It starts with a UTF-8 BOM so Excel shows ₹ and Hindi names correctly.</li>
+        <li>Values: dates <code>YYYY-MM-DD</code>, decimals as exact plain strings (no thousands separators, so Excel sums work), names instead of ids, and ids in a trailing column for re-import.</li>
+        <li><b>CSV injection guard:</b> any cell starting with <code>= + - @</code> or a tab is prefixed with <code>'</code>. New <code>src/utils/csv.js</code> holds <code>csvRow()</code> and escaping (quotes doubled, fields with comma, quote or newline wrapped).</li>
+        <li>This is the one endpoint outside the JSON envelope; errors before streaming still use the envelope. Open to VIEWER.</li>
+      </ul>
+      <table class="tight">
+        <thead><tr><th style="width:16%">File</th><th>Columns</th></tr></thead>
+        <tbody>
+          <tr><td>purchases</td><td>Date, Supplier, Material, Tons, Rate per ton, Amount, Vehicle, Invoice, Notes, Purchase ID</td></tr>
+          <tr><td>sales-pos</td><td>PO no., PO date, Customer, Material, Ordered t, Delivered t, Left t, Rate per ton, PO amount, Status, PO ID</td></tr>
+          <tr><td>sales</td><td>Date, PO no., Customer, Stock from, Material, Tons, Rate per ton (at sale), Amount, Vehicle, Challan, Sale ID</td></tr>
+        </tbody>
+      </table>
+      <p class="small"><b>Tests:</b> header and row count match the list total; a filter is applied; the injection guard works; 50,001 rows gives 422 (use a lowered limit via an env override in the test).</p>
+    </div>
+  </div>
+
+  <!-- ============ B15 ============ -->
+  <div class="spec">
+    <div class="head"><span class="id">B15</span><span class="name">Demo / seed data script</span><span class="tag p2">P2</span><span class="tag be">BE</span></div>
+    <div class="body">
+      <div class="endpoint"><span class="tag both">CLI</span>npm run seed -- --demo [--reset]</div>
+      <p><b>Why.</b> Replaces the POC's "Reset demo data" button. It is useful for staging, demos, frontend development and user testing (UI doc page 30). It is never a production feature, and there is no HTTP endpoint for it.</p>
+      <ul>
+        <li><code>scripts/seed.js</code>, <code>"seed": "node scripts/seed.js"</code> in <code>package.json</code>. Refuses to run when <code>NODE_ENV=production</code>. Refuses when purchases, POs or sales already exist, unless <code>--reset</code> is given.</li>
+        <li><code>--reset</code> additionally requires <code>ALLOW_DB_RESET=true</code>. It clears companies, materials, purchases, POs, sales and idempotency keys, <b>never</b> users or refresh sessions.</li>
+        <li>Writes <b>through the services</b> (<code>companyService.create</code>, <code>purchaseService.create</code>, …), so every validation, ledger check and amount calculation applies exactly as in the app. <code>createdBy</code> is the first active OWNER; if there is none, the script tells the user to run <code>npm run create-owner</code> first.</li>
+        <li>Data: the POC demo set (4 materials, 4 companies incl. one BOTH, 3 purchases, 3 sales POs, 2 deliveries with "stock from" suppliers), with dates relative to business today (−7 … −2 days). The Brass PO has no purchase, so the dashboard shows a real "Buy needed" case.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ B16 ============ -->
+  <div class="spec">
+    <div class="head"><span class="id">B16</span><span class="name">Refresh token in an httpOnly cookie</span><span class="tag p2">P2</span><span class="tag be">BE</span></div>
+    <div class="body">
+      <p><b>Why.</b> A refresh token in JSON has to be stored by page scripts, so any XSS can steal a 30-day session. An httpOnly cookie is never readable by JavaScript (UI doc page 30, decision D6).</p>
+      <h4>Switch</h4>
+      <table class="tight">
+        <thead><tr><th style="width:34%">Env var</th><th style="width:18%">Default</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>AUTH_REFRESH_TRANSPORT</code></td><td><code>body</code></td><td><code>body</code> = today's behaviour · <code>cookie</code> = cookie only · <code>both</code> = transition period (accept either, send both)</td></tr>
+          <tr><td><code>REFRESH_COOKIE_NAME</code></td><td><code>msm_rt</code></td><td>Cookie name.</td></tr>
+          <tr><td><code>COOKIE_SECURE</code></td><td><code>true</code></td><td>Must be <code>true</code> in production (env validation enforces it).</td></tr>
+          <tr><td><code>COOKIE_SAMESITE</code></td><td><code>strict</code></td><td><code>strict</code> when app and API are on the same site (<code>app.metalix.in</code> + <code>api.metalix.in</code>). <code>none</code> only if they are on different sites.</td></tr>
+          <tr><td><code>COOKIE_DOMAIN</code></td><td><i>unset</i></td><td>Optional parent domain.</td></tr>
+        </tbody>
+      </table>
+      <h4>Behaviour in cookie mode</h4>
+      <ul>
+        <li><b>Login / refresh</b> set <code>Set-Cookie: msm_rt=…; HttpOnly; Secure; SameSite=Strict; Path=/api/v1/auth; Max-Age=REFRESH_TOKEN_TTL_DAYS × 86400</code>, and omit <code>refreshToken</code> from the JSON body. The rotation logic in <code>authService.refresh</code> is unchanged.</li>
+        <li><b>Refresh / logout</b> read the token from the cookie. <code>refreshSchema</code> body becomes optional in cookie mode. Logout clears the cookie (<code>Max-Age=0</code>).</li>
+        <li><b>CSRF:</b> when the token comes from a cookie, <code>/auth/refresh</code> and <code>/auth/logout</code> require the header <code>X-Requested-With: metalix</code> and an <code>Origin</code> in <code>CORS_ORIGINS</code>. Otherwise → 403 <code>CSRF_CHECK_FAILED</code>. Cross-site forms cannot set custom headers, and CORS blocks cross-origin fetches.</li>
+        <li><b>CORS:</b> <code>credentials: true</code> and <code>allowedHeaders</code> include <code>X-Requested-With</code> and <code>Idempotency-Key</code>. Env validation rejects <code>CORS_ORIGINS=*</code> in cookie mode.</li>
+        <li>Cookie parsing: add <code>cookie-parser</code> (one small, widely used dependency), mounted only on the auth router.</li>
+      </ul>
+      <p class="small"><b>Tests:</b> login sets the cookie and omits the body token; refresh via cookie rotates the cookie and the old one fails; missing header → 403; <code>both</code> mode accepts body or cookie; <code>body</code> mode matches today's tests byte for byte.</p>
+    </div>
+  </div>
+
+  <!-- ============ B17 ============ -->
+  <div class="spec">
+    <div class="head"><span class="id">B17</span><span class="name">Idempotency keys on create endpoints</span><span class="tag p2">P2</span><span class="tag be">BE</span></div>
+    <div class="body">
+      <div class="endpoint"><span class="tag post">POST</span>/companies · /materials · /purchases · /sales-pos · /sales &nbsp;+&nbsp; header <code>Idempotency-Key</code></div>
+      <p><b>Why.</b> On a flaky yard connection the request may succeed while the response is lost. "Try again" then creates a second purchase. With a key, the retry returns the first result instead (UI doc page 30).</p>
+      <h4>Rules</h4>
+      <ul>
+        <li>The header is optional; without it, behaviour is unchanged. Format: 8–100 chars <code>[A-Za-z0-9_-]</code> (the frontend sends a UUID v4).</li>
+        <li>New model <code>IdempotencyKey</code>: <code>{ userId, key, method, path, requestHash, state: IN_PROGRESS|COMPLETED, responseStatus, responseBody, expiresAt }</code>, unique <code>(userId, key)</code>, TTL on <code>expiresAt</code> (24 h). Created in migration 002/003.</li>
+        <li>Middleware <code>src/middleware/idempotency.js</code>, placed after <code>authorize</code> and before <code>validate</code> on the five routes:</li>
+      </ul>
+      <table class="tight">
+        <thead><tr><th style="width:36%">Situation</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>New key</td><td>Insert IN_PROGRESS, run the handler. On 2xx store COMPLETED + response. On any error delete the record, so a corrected retry can run.</td></tr>
+          <tr><td>Same key, same path + body hash, COMPLETED</td><td>Replay the stored status and body with header <code>Idempotent-Replayed: true</code>. Nothing is written.</td></tr>
+          <tr><td>Same key, still IN_PROGRESS</td><td>409 <code>IDEMPOTENCY_IN_PROGRESS</code> with <code>Retry-After: 2</code>.</td></tr>
+          <tr><td>Same key, different body or path</td><td>422 <code>IDEMPOTENCY_KEY_REUSED</code>.</td></tr>
+          <tr><td>IN_PROGRESS older than 60 s</td><td>Treated as abandoned (process crashed) and taken over.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout warn"><p class="small"><b>Known limit:</b> if the process dies after the business transaction commits but before the response is stored, a retry more than 60 s later can create a duplicate. Closing that fully means writing the key inside each service transaction, which is a larger change. The middleware already covers the common case: a lost response on a live server.</p></div>
+      <p class="small"><b>Tests:</b> two identical POSTs with one key create one purchase and the second has the replay header; a different body → 422; concurrent same key → one 201 and one 409; a failed request (409 stock) can be retried with the same key after stock arrives.</p>
+    </div>
+  </div>
+</section>

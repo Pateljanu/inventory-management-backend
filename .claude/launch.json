@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "metalix-web",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["D:/Metalix inventory/Frontend/node_modules/vite/bin/vite.js", "D:/Metalix inventory/Frontend"],
+      "port": 5173
+    },
+    {
+      "name": "metalix-web-e2e",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:/Users/HP/AppData/Local/Temp/claude/D--Metalix-inventory-Backend/a187ebba-acd7-4bdf-aa2f-7d699b6b362d/scratchpad/vite-e2e.mjs"],
+      "port": 5180
+    }
+  ]
+}

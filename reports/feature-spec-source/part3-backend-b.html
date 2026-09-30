@@ -1,0 +1,179 @@
+<!-- =============================== 5. BACKEND PHASE B =============================== -->
+<section class="chapter">
+  <div class="eyebrow">5 · Backend · Phase B</div>
+  <h1>POC parity (P1)</h1>
+  <p class="lead">These items bring back what the POC showed and the production plan dropped: material position everywhere, company-wise figures, rate analysis, activity and trends. All of them are reads built on the existing report service, so every number follows the activity-vs-position rule.</p>
+
+  <!-- ============ B6 ============ -->
+  <div class="spec">
+    <div class="head"><span class="id">B6</span><span class="name">Wider search</span><span class="tag p1">P1</span><span class="tag be">BE</span></div>
+    <div class="body">
+      <p><b>Why.</b> The POC searched purchases by material, supplier, invoice and vehicle, and sales by customer, "stock from" supplier, PO number, material, challan and vehicle. The UI doc's search box says "Supplier, vehicle or invoice no." The backend only searches invoice/challan and vehicle.</p>
+      <table class="tight">
+        <thead><tr><th style="width:16%">List</th><th>Search matches (case-insensitive, contains)</th></tr></thead>
+        <tbody>
+          <tr><td>purchases</td><td>invoice no., vehicle no., <b>supplier name</b>, <b>material name</b></td></tr>
+          <tr><td>sales</td><td>challan no., vehicle no., <b>customer name</b>, <b>stock-from supplier name</b>, <b>material name</b>, <b>PO number</b></td></tr>
+          <tr><td>sales-pos</td><td>PO number, <b>customer name</b>, <b>material name</b></td></tr>
+          <tr><td>companies</td><td>name, GST, <b>contact phone</b>, <b>contact person</b>, <b>contact email</b>, <b>address</b> (city)</td></tr>
+          <tr><td>materials</td><td>name, <b>notes</b></td></tr>
+        </tbody>
+      </table>
+      <h4>Implementation</h4>
+      <ul>
+        <li>New <code>src/utils/search.js</code>: <code>idsMatching(repository, text, field = 'name', cap = 200)</code> returns ObjectIds of masters whose name matches (masters are small; capped). <code>codeRegex(text)</code> = <code>escapeRegex(normalizeCode(text))</code>.</li>
+        <li>Each list service builds <code>$or</code> from these: e.g. purchases <code>[{normalizedInvoiceNumber: codeRegex}, {vehicleNumber: codeRegex}, {companyId: {$in: supplierIds}}, {materialId: {$in: materialIds}}]</code>. Sales add <code>poId: {$in: poIds}</code> from a PO-number lookup.</li>
+        <li><b>Bug fix included:</b> vehicle and invoice numbers are stored in code form (<code>GJ03AX4521</code>), but search uses <code>normalizeText</code>, so typing "GJ 03 AX" finds nothing today. Code fields must be searched with <code>codeRegex</code>.</li>
+        <li>Search requires at least 2 characters (Zod <code>.min(2)</code>); shorter input is ignored by the frontend.</li>
+      </ul>
+      <p class="small"><b>Scale note:</b> contains-regex scans are fine at yard scale (tens of thousands of rows). If lists grow past ~200k rows, add a MongoDB text index; the API contract does not change. <b>Tests:</b> one per new field; "GJ 03 AX" matches <code>GJ03AX4521</code>; regex characters in input are escaped; search combines with the other filters (AND).</p>
+    </div>
+  </div>
+
+  <!-- ============ B7 ============ -->
+  <div class="spec">
+    <div class="head"><span class="id">B7</span><span class="name">Materials with stock position</span><span class="tag p1">P1</span><span class="tag be">BE</span></div>
+    <div class="body">
+      <div class="endpoint"><span class="tag get">GET</span>/api/v1/materials?include=position&amp;asOf=2026-09-27</div>
+      <p><b>Why.</b> UI doc Materials columns are "In yard · Open demand · Buy needed". The POC material cards show purchased, total PO, sold, remaining PO, current stock and final position. The POC Sales PO list shows each row's material position. Today <code>GET /materials</code> returns master data only.</p>
+<pre><span class="c">// each item gains (only when include=position):</span>
+<span class="s">"position"</span>: { <span class="s">"asOf"</span>: <span class="s">"2026-09-27"</span>, <span class="s">"currentStockTons"</span>: <span class="s">"71.500"</span>, <span class="s">"openDemandTons"</span>: <span class="s">"96.000"</span>,
+              <span class="s">"purchaseRequiredTons"</span>: <span class="s">"24.500"</span>, <span class="s">"extraStockTons"</span>: <span class="s">"0.000"</span>,
+              <span class="s">"activePOQuantityTons"</span>: <span class="s">"150.000"</span>, <span class="s">"status"</span>: <span class="s">"SHORT"</span> }   <span class="c">// SHORT | EXTRA | COVERED</span></pre>
+      <ul>
+        <li>Extract <code>materialPositions({ asOf, materials })</code> from <code>reportService.dashboard</code>. It wraps <code>stockByMaterialAsOf</code> and <code>poPositionsAsOf</code> restricted to the given materials. The dashboard then calls the helper too, so both endpoints can never disagree.</li>
+        <li><code>material.service.list</code>: after <code>paginate</code>, when <code>include=position</code>, call the helper for the page's materials only. <code>GET /materials/:id</code> keeps <code>currentStockTons</code> and also gains <code>position</code>.</li>
+        <li>Validation: <code>include: z.enum(['position']).optional()</code>, <code>asOf: businessDate.optional()</code>.</li>
+      </ul>
+      <p class="small"><b>Tests:</b> position equals the dashboard row for the same material and date; cancelled POs are not counted as demand; <code>asOf</code> in the past ignores later purchases.</p>
+    </div>
+  </div>
+
+  <!-- ============ B8 ============ -->
+  <div class="spec">
+    <div class="head"><span class="id">B8</span><span class="name">Dashboard extensions</span><span class="tag p1">P1</span><span class="tag be">BE</span></div>
+    <div class="body">
+      <div class="endpoint"><span class="tag get">GET</span>/api/v1/reports/dashboard?from&amp;to&amp;materialId&amp;companyId&amp;include=parties</div>
+      <p><b>Why.</b> The POC dashboard shows purchase/sales quantities and values, total PO quantity, extra stock and, per material, who it was bought from and sold to. The UI doc mockup shows "380.860 t in 41 deliveries", "9 pending · 5 partly delivered" and "3 materials are short". All are additive fields.</p>
+      <table class="tight">
+        <thead><tr><th style="width:36%">New field</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>purchases.count</code>, <code>sales.count</code></td><td>Records in the period (activity).</td></tr>
+          <tr><td><code>po.pendingPOCount</code>, <code>po.partlyDeliveredPOCount</code></td><td>Split of <code>openPOCount</code> by delivered = 0 or &gt; 0 (as of <code>to</code>).</td></tr>
+          <tr><td><code>totals.stockInYardTons</code></td><td>Sum of <code>currentStockTons</code> (position).</td></tr>
+          <tr><td><code>totals.purchaseRequiredTons</code>, <code>totals.extraStockTons</code>, <code>totals.shortMaterialCount</code></td><td>Sums and count over material rows (POC "Purchase required" and "Extra stock" cards).</td></tr>
+          <tr><td><code>totals.netStockChangeTons</code></td><td>Purchased − sold in the period ("▲ 31.520 t since 01/09").</td></tr>
+          <tr><td><code>materials[].activePOQuantityTons</code>, <code>…activePOValue</code>, <code>…deliveredOnActivePOTons</code></td><td>POC "Total PO qty" and "PO value" per material (active POs as of <code>to</code>).</td></tr>
+          <tr><td><code>materials[].suppliers[]</code>, <code>…customers[]</code> <span class="small muted">(include=parties)</span></td><td><code>{companyId, name, quantityTons, value}</code> from period purchases / sales grouped by (material, company). Opt-in to keep the default payload small.</td></tr>
+        </tbody>
+      </table>
+      <p class="small"><b>Comparison ("▲ 8% vs Aug")</b> stays a second dashboard call from the frontend with the previous range (F7). No backend change is needed, and both periods keep identical semantics. <b>Tests:</b> totals equal sums of rows; counts match inserted records; parties grouped correctly; existing dashboard tests unchanged.</p>
+    </div>
+  </div>
+
+  <!-- ============ B9 ============ -->
+  <div class="spec">
+    <div class="head"><span class="id">B9</span><span class="name">Company statistics</span><span class="tag p1">P1</span><span class="tag be">BE</span></div>
+    <div class="body">
+      <div class="endpoint"><span class="tag get">GET</span>/api/v1/reports/companies?from&amp;to&amp;type&amp;search&amp;sort&amp;limit</div>
+      <div class="endpoint"><span class="tag get">GET</span>/api/v1/companies?include=stats&amp;from&amp;to <span class="small muted">(same numbers merged into the paged list)</span></div>
+      <p><b>Why.</b> POC dashboard "Company-wise purchases / sales" panels and the POC companies table columns: purchases, purchase stock used, purchase stock available, POs, sales. Neither exists today; <code>GET /reports/companies/:id</code> covers one company only.</p>
+<pre>{ <span class="s">"companyId"</span>: <span class="s">"66f…c11"</span>, <span class="s">"name"</span>: <span class="s">"Shree Ganesh Metals"</span>, <span class="s">"type"</span>: <span class="s">"PURCHASE"</span>, <span class="s">"isActive"</span>: true,
+  <span class="s">"purchases"</span>:  { <span class="s">"count"</span>: 6, <span class="s">"quantityTons"</span>: <span class="s">"54.195"</span>, <span class="s">"value"</span>: <span class="s">"2215130.00"</span> },      <span class="c">// activity, as supplier</span>
+  <span class="s">"sales"</span>:      { <span class="s">"count"</span>: 0, <span class="s">"quantityTons"</span>: <span class="s">"0.000"</span>,  <span class="s">"value"</span>: <span class="s">"0.00"</span> },          <span class="c">// activity, as customer</span>
+  <span class="s">"orders"</span>:     { <span class="s">"activeCount"</span>: 0, <span class="s">"openCount"</span>: 0, <span class="s">"remainingTons"</span>: <span class="s">"0.000"</span> },     <span class="c">// position, as customer</span>
+  <span class="s">"sourcePool"</span>: { <span class="s">"purchasedTons"</span>: <span class="s">"212.400"</span>, <span class="s">"usedForSalesTons"</span>: <span class="s">"188.300"</span>,
+                  <span class="s">"availableTons"</span>: <span class="s">"24.100"</span>, <span class="s">"usedInPeriodTons"</span>: <span class="s">"41.550"</span> } }             <span class="c">// position as of to + period use</span></pre>
+      <ul>
+        <li><code>reportService.companyStats({ companyIds?, from, to })</code> runs five grouped aggregations (purchases by <code>companyId</code>, sales by <code>companyId</code>, sales by <code>sourceCompanyId</code> in period, pool totals as of <code>to</code>, PO positions by customer) and merges them in memory. Both endpoints call it.</li>
+        <li><code>type</code> filters to PURCHASE, SALE or BOTH (BOTH companies appear under either side). <code>sort</code>: <code>name</code>, <code>-purchaseValue</code>, <code>-salesValue</code>, <code>-availableTons</code>. <code>limit</code> ≤ 500 (dashboard panels use <code>limit=8</code>).</li>
+        <li>The pool is <b>all-time as of <code>to</code></b>, like <code>/reports/source-stock</code>. The POC mixed an all-time pool with period purchases in one row; here the two are separate, labelled fields.</li>
+      </ul>
+      <p class="small"><b>Tests:</b> BOTH company appears with purchase and sales figures; pool equals <code>/reports/source-stock</code> summed per company; <code>include=stats</code> only aggregates the returned page.</p>
+    </div>
+  </div>
+
+  <!-- ============ B10 ============ -->
+  <div class="spec">
+    <div class="head"><span class="id">B10</span><span class="name">Activity feed</span><span class="tag p1">P1</span><span class="tag be">BE</span></div>
+    <div class="body">
+      <div class="endpoint"><span class="tag get">GET</span>/api/v1/reports/activity?limit=20&amp;cursor&amp;types=PURCHASE,SALE,SALES_PO</div>
+      <p><b>Why.</b> Both the POC and the UI doc show "Recent activity" (purchases, deliveries and new orders, newest first). Lists are ordered by business date, so a backdated entry would never show as recent; the feed orders by <code>createdAt</code>.</p>
+<pre>{ <span class="s">"items"</span>: [ { <span class="s">"type"</span>: <span class="s">"SALE"</span>, <span class="s">"id"</span>: <span class="s">"66f…"</span>, <span class="s">"at"</span>: <span class="s">"2026-09-27T10:42:11.201Z"</span>, <span class="s">"date"</span>: <span class="s">"2026-09-26"</span>,
+    <span class="s">"company"</span>: { <span class="s">"_id"</span>: <span class="s">"…"</span>, <span class="s">"name"</span>: <span class="s">"Rajkot Alloys"</span> }, <span class="s">"material"</span>: { <span class="s">"_id"</span>: <span class="s">"…"</span>, <span class="s">"name"</span>: <span class="s">"MS turnings"</span> },
+    <span class="s">"quantityTons"</span>: <span class="s">"15.000"</span>, <span class="s">"amount"</span>: <span class="s">"532500.00"</span>, <span class="s">"reference"</span>: <span class="s">"CH-1044"</span>,
+    <span class="s">"po"</span>: { <span class="s">"_id"</span>: <span class="s">"…"</span>, <span class="s">"poNumber"</span>: <span class="s">"PO-0138"</span>, <span class="s">"displayStatus"</span>: <span class="s">"COMPLETED"</span> },
+    <span class="s">"sourceCompany"</span>: { <span class="s">"_id"</span>: <span class="s">"…"</span>, <span class="s">"name"</span>: <span class="s">"Patel Scrap Co."</span> } }, … ],
+  <span class="s">"nextCursor"</span>: <span class="s">"eyJhdCI6Ij…"</span> }   <span class="c">// null when there is nothing older</span></pre>
+      <ul>
+        <li>Three queries, <code>find({ createdAt/_id before cursor }).sort({ createdAt: -1, _id: -1 }).limit(limit)</code> with the display populates, merged and cut to <code>limit</code>. The cursor is base64 JSON <code>{at, id}</code>, so equal timestamps page correctly.</li>
+        <li><code>po.displayStatus</code> is the order's status <i>now</i> ("now Completed" in the mockup), via <code>salesPORepository.findWithPosition</code> for the POs on the page only.</li>
+        <li><code>limit</code> 1–50, default 20. Needs the <code>createdAt</code> indexes from B13.</li>
+      </ul>
+      <div class="callout"><p class="small"><b>Scope:</b> the feed shows <b>creations</b>. Edits are not listed because the system has no audit log. An <code>audit_events</code> collection written by each service is a later item; this feed's contract can absorb a new <code>type</code> such as <code>PURCHASE_EDITED</code> without changes.</p></div>
+    </div>
+  </div>
+
+  <!-- ============ B11 ============ -->
+  <div class="spec">
+    <div class="head"><span class="id">B11</span><span class="name">Bought vs delivered trend</span><span class="tag p1">P1</span><span class="tag be">BE</span></div>
+    <div class="body">
+      <div class="endpoint"><span class="tag get">GET</span>/api/v1/reports/trend?from&amp;to&amp;bucket=week&amp;materialId&amp;companyId</div>
+      <p><b>Why.</b> The UI dashboard chart "Bought vs delivered per week (t)" answers "are we buying faster than we deliver?".</p>
+<pre>{ <span class="s">"bucket"</span>: <span class="s">"week"</span>, <span class="s">"from"</span>: <span class="s">"2026-09-01"</span>, <span class="s">"to"</span>: <span class="s">"2026-09-27"</span>,
+  <span class="s">"series"</span>: [ { <span class="s">"start"</span>: <span class="s">"2026-09-01"</span>, <span class="s">"end"</span>: <span class="s">"2026-09-06"</span>, <span class="s">"purchasedTons"</span>: <span class="s">"96.420"</span>, <span class="s">"purchaseValue"</span>: <span class="s">"…"</span>,
+                <span class="s">"soldTons"</span>: <span class="s">"88.100"</span>, <span class="s">"salesValue"</span>: <span class="s">"…"</span> },
+              { <span class="s">"start"</span>: <span class="s">"2026-09-07"</span>, <span class="s">"end"</span>: <span class="s">"2026-09-13"</span>, … }, … ] }</pre>
+      <ul>
+        <li><code>bucket</code>: <code>day</code> | <code>week</code> (Monday start, as in the mockup: 07–13 Sep) | <code>month</code>. Defaults when <code>from</code> is absent: last 8 weeks, last 30 days or last 12 months, ending at <code>to</code> or business today.</li>
+        <li>Two aggregations using <code>$dateTrunc: { date, unit, startOfWeek: 'monday', timezone: 'UTC' }</code>. UTC is correct because business dates are stored at UTC midnight. Missing buckets are zero-filled in code; the first and last buckets are clipped to <code>from</code>/<code>to</code>. Requires MongoDB ≥ 5.0 (Atlas and the test replica set both qualify).</li>
+        <li>Maximum 400 buckets, otherwise 422 <code>VALIDATION_ERROR</code> ("choose a larger bucket").</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ B12 ============ -->
+  <div class="spec">
+    <div class="head"><span class="id">B12</span><span class="name">Rate analysis and rate trend</span><span class="tag p1">P1</span><span class="tag be">BE</span></div>
+    <div class="body">
+      <div class="endpoint"><span class="tag get">GET</span>/api/v1/reports/rates?from&amp;to&amp;materialId&amp;bucket</div>
+      <p><b>Why.</b> The POC "Rate Analysis" page (overall and material-wise weighted average buying and selling price, difference in ₹ and %, a "check one material" view), plus the UI doc's rate trend chart (page 30, "Medium").</p>
+<pre>{ <span class="s">"period"</span>: { <span class="s">"from"</span>: <span class="s">"2026-09-01"</span>, <span class="s">"to"</span>: <span class="s">"2026-09-30"</span> },
+  <span class="s">"overall"</span>: { <span class="s">"purchasedTons"</span>: <span class="s">"…"</span>, <span class="s">"purchaseValue"</span>: <span class="s">"…"</span>, <span class="s">"averageBuyingRate"</span>: <span class="s">"36120.40"</span>,
+              <span class="s">"soldTons"</span>: <span class="s">"…"</span>, <span class="s">"salesValue"</span>: <span class="s">"…"</span>, <span class="s">"averageSellingRate"</span>: <span class="s">"41210.75"</span>,
+              <span class="s">"difference"</span>: <span class="s">"5090.35"</span>, <span class="s">"differencePct"</span>: <span class="s">"14.09"</span>, <span class="s">"blended"</span>: true },
+  <span class="s">"materials"</span>: [ { <span class="s">"materialId"</span>: <span class="s">"…"</span>, <span class="s">"materialName"</span>: <span class="s">"HMS 1"</span>, <span class="s">"purchasedTons"</span>: <span class="s">"…"</span>, <span class="s">"purchaseValue"</span>: <span class="s">"…"</span>,
+                  <span class="s">"averageBuyingRate"</span>: <span class="s">"34310.00"</span>, <span class="s">"soldTons"</span>: <span class="s">"…"</span>, <span class="s">"salesValue"</span>: <span class="s">"…"</span>,
+                  <span class="s">"averageSellingRate"</span>: <span class="s">"38500.00"</span>, <span class="s">"difference"</span>: <span class="s">"4190.00"</span>, <span class="s">"differencePct"</span>: <span class="s">"12.21"</span> }, … ],
+  <span class="s">"series"</span>: [ { <span class="s">"start"</span>: <span class="s">"…"</span>, <span class="s">"end"</span>: <span class="s">"…"</span>, <span class="s">"averageBuyingRate"</span>: <span class="s">"…"</span>, <span class="s">"averageSellingRate"</span>: <span class="s">"…"</span> }, … ] }  <span class="c">// only with bucket + materialId</span></pre>
+      <ul>
+        <li>All averages are weighted (value ÷ tons) with <code>avgRate()</code>. <code>difference</code> and <code>differencePct</code> are <code>null</code> unless both bought and sold tons are &gt; 0 in the period (POC <code>hasBoth</code>). <code>differencePct</code> = difference ÷ averageBuyingRate × 100, 2 dp.</li>
+        <li>Selling value uses the stored <code>totalAmount</code>, which is the rate actually billed (<code>poRateAtSale</code>), not the live PO rate. This follows decision D1 and differs from the POC.</li>
+        <li><code>overall.blended: true</code> tells the UI to label the overall difference "Blended (mixed materials)" (decision D3).</li>
+        <li><code>series</code> reuses B11's bucketing; it requires <code>materialId</code>, because a series across materials would be the blended number again.</li>
+      </ul>
+      <p class="small"><b>Tests:</b> weighted average vs simple average differ and the weighted one is returned; one-sided material gives null difference; rounding at 2 dp; the series bucket average equals the period average when there is one bucket.</p>
+    </div>
+  </div>
+
+  <!-- ============ B13 ============ -->
+  <div class="spec">
+    <div class="head"><span class="id">B13</span><span class="name">Migration 002</span><span class="tag p1">P1</span><span class="tag be">BE</span></div>
+    <div class="body">
+      <p>New file <code>src/db/migrations/002-activity-and-idempotency.js</code>, appended to the list in <code>migrations/index.js</code> (never edit 001).</p>
+<pre><span class="k">export const</span> id = <span class="s">'002-activity-and-idempotency'</span>;
+<span class="k">export const</span> description = <span class="s">'createdAt indexes for the activity feed; idempotency key collection'</span>;
+<span class="k">export async function</span> up() {
+  <span class="k">for</span> (<span class="k">const</span> model <span class="k">of</span> [Purchase, SalesPO, Sale, IdempotencyKey]) {
+    <span class="k">await</span> model.createCollection();
+    <span class="k">await</span> model.syncIndexes();
+  }
+}</pre>
+      <div class="callout warn">
+        <h4>Declare every index in the schema, not only in the migration</h4>
+        <p class="small">Migration 001 uses <code>syncIndexes()</code>, which <b>drops</b> any index not declared in the Mongoose schema. So <code>schema.index({ createdAt: -1, _id: -1 })</code> is added to <code>Purchase</code>, <code>SalesPO</code> and <code>Sale</code>, and 002 syncs them. An index created only inside the migration would be silently removed by the next sync.</p>
+      </div>
+      <p class="small">The <code>IdempotencyKey</code> model belongs to B17. If B17 is postponed, ship 002 without it and add 003 later. <b>Tests:</b> <code>database.test.js</code> asserts the new indexes exist and that running the migrator twice is a no-op.</p>
+    </div>
+  </div>
+</section>

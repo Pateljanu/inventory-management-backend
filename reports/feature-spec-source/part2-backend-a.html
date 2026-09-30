@@ -1,0 +1,170 @@
+<!-- =============================== 4. BACKEND PHASE A =============================== -->
+<section class="chapter">
+  <div class="eyebrow">4 · Backend · Phase A</div>
+  <h1>Safe daily work (P0)</h1>
+  <p class="lead">These five items unblock the UI doc's top priorities: the live delivery limits panel, list summaries, the Open tab and badge, sortable columns, and the "last rate" default. None of them writes data.</p>
+
+  <!-- ============ B1 ============ -->
+  <div class="spec">
+    <div class="head"><span class="id">B1</span><span class="name">Delivery capacity endpoint</span><span class="tag p0">P0</span><span class="tag be">BE</span></div>
+    <div class="body">
+      <div class="endpoint"><span class="tag get">GET</span>/api/v1/sales/capacity?poId&amp;sourceCompanyId&amp;saleDate&amp;excludeSaleId</div>
+      <p><b>Why.</b> The delivery form must show the same limits the server enforces, before the user presses Save (UI doc P0-1, pages 3 and 12–13). Today the numbers only arrive inside a 409 error after a failed save.</p>
+
+      <h4>Query</h4>
+      <table class="tight">
+        <thead><tr><th style="width:24%">Param</th><th style="width:22%">Rule</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>poId</code></td><td>required, <code>objectId</code></td><td>The sales order being delivered.</td></tr>
+          <tr><td><code>sourceCompanyId</code></td><td>optional, <code>objectId</code></td><td>Chosen "Stock from" supplier. Without it the supplier limit is omitted and only the <code>sources</code> list is returned.</td></tr>
+          <tr><td><code>saleDate</code></td><td>optional, <code>businessDate</code></td><td>Defaults to <code>businessToday(BUSINESS_TIMEZONE)</code>.</td></tr>
+          <tr><td><code>excludeSaleId</code></td><td>optional, <code>objectId</code></td><td>When editing a delivery, that delivery is not counted against its own limits (same rule as <code>assertCapacity</code>).</td></tr>
+        </tbody>
+      </table>
+
+      <h4>The key rule: use the ledger floor, not only the balance on the day</h4>
+      <p>A save is accepted only if (1) quantity ≤ PO remaining, ≤ yard stock <i>as of the sale date</i>, ≤ supplier stock <i>as of the sale date</i>, <b>and</b> (2) the ledger replay after the save never goes negative on any later day (<code>assertMaterialLedgerNonNegative</code> / <code>assertSourceLedgerNonNegative</code>). For a backdated delivery, (2) can be stricter than (1). So the endpoint returns the <b>floor</b>: the lowest balance on any day from <code>saleDate</code> onwards. The floor is never higher than the balance on the day, so <code>maxAllowedTons</code> = min(PO remaining, yard floor, supplier floor), floored at zero. That is exactly the largest quantity the server will accept.</p>
+
+      <h4>Response <span class="muted small">(200)</span></h4>
+<pre>{ <span class="s">"success"</span>: true, <span class="s">"data"</span>: {
+  <span class="s">"saleDate"</span>: <span class="s">"2026-09-27"</span>,
+  <span class="s">"po"</span>: { <span class="s">"_id"</span>: <span class="s">"66f…142"</span>, <span class="s">"poNumber"</span>: <span class="s">"PO-0142"</span>, <span class="s">"poDate"</span>: <span class="s">"2026-09-09"</span>,
+          <span class="s">"company"</span>: { <span class="s">"_id"</span>: <span class="s">"66f…b01"</span>, <span class="s">"name"</span>: <span class="s">"Bharat Castings Pvt Ltd"</span> },
+          <span class="s">"material"</span>: { <span class="s">"_id"</span>: <span class="s">"66f…201"</span>, <span class="s">"name"</span>: <span class="s">"HMS 1"</span> },
+          <span class="s">"ratePerTon"</span>: <span class="s">"38500.00"</span>, <span class="s">"quantityTons"</span>: <span class="s">"30.000"</span>, <span class="s">"deliveredTons"</span>: <span class="s">"18.250"</span>,
+          <span class="s">"lifecycleStatus"</span>: <span class="s">"ACTIVE"</span>, <span class="s">"displayStatus"</span>: <span class="s">"PARTIALLY_SUPPLIED"</span> },
+  <span class="s">"limits"</span>: {
+    <span class="s">"poRemainingTons"</span>: <span class="s">"11.750"</span>,
+    <span class="s">"yardStockTons"</span>: <span class="s">"71.500"</span>,      <span class="c">// balance at end of saleDate</span>
+    <span class="s">"yardFloorTons"</span>: <span class="s">"71.500"</span>,      <span class="c">// lowest balance on saleDate or any later day</span>
+    <span class="s">"sourceStockTons"</span>: <span class="s">"9.200"</span>,     <span class="c">// null when sourceCompanyId is absent</span>
+    <span class="s">"sourceFloorTons"</span>: <span class="s">"9.200"</span>
+  },
+  <span class="s">"maxAllowedTons"</span>: <span class="s">"9.200"</span>,
+  <span class="s">"bindingLimit"</span>: <span class="s">"SOURCE_STOCK"</span>,     <span class="c">// PO_REMAINING | YARD_STOCK | SOURCE_STOCK</span>
+  <span class="s">"blockers"</span>: [],                     <span class="c">// see table below; non-empty means maxAllowedTons = "0.000"</span>
+  <span class="s">"sources"</span>: [ { <span class="s">"sourceCompanyId"</span>: <span class="s">"66f…c11"</span>, <span class="s">"name"</span>: <span class="s">"Shree Ganesh Metals"</span>,
+                 <span class="s">"availableTons"</span>: <span class="s">"9.200"</span>, <span class="s">"floorTons"</span>: <span class="s">"9.200"</span> }, … ],
+  <span class="s">"hiddenEmptySources"</span>: 2
+} }</pre>
+
+      <h4>Blockers (returned, not thrown)</h4>
+      <table class="tight">
+        <thead><tr><th style="width:34%">Code</th><th>When</th></tr></thead>
+        <tbody>
+          <tr><td><code>PO_NOT_AVAILABLE</code></td><td>PO lifecycle is CANCELLED (unless editing a sale already on this PO without raising quantity; the form handles that).</td></tr>
+          <tr><td><code>PO_COMPLETED</code> <span class="tag both">new, read-only</span></td><td>PO remaining is 0.</td></tr>
+          <tr><td><code>SALE_BEFORE_PO_DATE</code></td><td><code>saleDate</code> &lt; <code>po.poDate</code>.</td></tr>
+          <tr><td><code>INVALID_SOURCE_COMPANY</code></td><td>Supplier is inactive or not PURCHASE/BOTH.</td></tr>
+          <tr><td><code>INVALID_SALE_COMPANY</code> / <code>INVALID_MATERIAL</code></td><td>Customer or material on the PO has been deactivated.</td></tr>
+        </tbody>
+      </table>
+      <p class="small">Blockers are returned in the 200 body so the panel can explain them without an error state. Only a missing PO (404 <code>PO_NOT_FOUND</code>) and bad input (422) are thrown.</p>
+
+      <h4>Implementation</h4>
+      <ul>
+        <li><b><code>stock.service.js</code></b>: add <code>ledgerFloor(openingBalance, inflowDays, outflowDays, fromDate)</code> next to <code>findFirstNegativeDay</code>. It replays the same day map and returns the minimum balance over all days ≥ <code>fromDate</code>, starting with the balance at end of <code>fromDate</code>. Add <code>getMaterialFloor(materialId, fromDate, {excludeSaleId})</code> and <code>getSourceFloors(materialId, fromDate, {excludeSaleId, sourceCompanyId?})</code>. The second uses <b>two</b> aggregations grouped by <code>(company, day)</code> for purchases and <code>(sourceCompanyId, day)</code> for sales of that material, then replays each supplier in memory. That is one round trip for every supplier.</li>
+        <li><b><code>sale.service.js</code></b>: extract the body of <code>assertCapacity</code> into <code>computeCapacity({ po, sourceCompanyId, saleDate, excludeSaleId, session })</code>, returning the limits above. <code>assertCapacity</code> calls it and throws exactly the same three codes as today. The 409 <code>details</code> gain <code>yardFloorTons</code>/<code>sourceFloorTons</code>, and <code>maxAllowedTons</code> becomes floor-based. That is additive and more accurate. Add <code>saleService.capacity(query)</code>: load the PO with <code>salesPORepository.findWithPosition</code>, collect blockers, call <code>computeCapacity</code> without a session (read-only), attach <code>sources</code>.</li>
+        <li><b><code>sale.validation.js</code></b>: <code>saleCapacitySchema</code>. <b><code>sale.controller.js</code></b>: <code>saleCapacity</code>. <b><code>sale.routes.js</code></b>: <code>router.get('/capacity', validate(saleCapacitySchema), asyncHandler(saleCapacity))</code> placed <b>above</b> <code>'/:id'</code>.</li>
+      </ul>
+
+      <div class="callout warn">
+        <h4>Race with other users</h4>
+        <p class="small">Capacity is a read. Another save can land between the read and the user's Save. The server still enforces every limit inside the transaction, so this cannot corrupt data. The frontend refetches capacity on any 409 and after a successful save (F1).</p>
+      </div>
+
+      <h4>Tests <span class="muted small">(tests/integration/sales-capacity.test.js)</span></h4>
+      <ul class="small">
+        <li>Parity: create a sale at exactly <code>maxAllowedTons</code> → 201; at <code>maxAllowedTons + 0.001</code> → 409. Run it three times, once for each binding limit.</li>
+        <li>Backdated case: a later delivery exists, so <code>yardFloorTons</code> &lt; <code>yardStockTons</code>. Saving above the floor returns <code>NEGATIVE_STOCK_HISTORY</code>; saving at the floor succeeds.</li>
+        <li><code>excludeSaleId</code>: editing a 5 t sale on a PO with 0 t left reports 5 t available.</li>
+        <li>Blockers: cancelled PO, completed PO, date before PO, inactive supplier. Each gives 200, a non-empty <code>blockers</code> list and <code>"0.000"</code>.</li>
+        <li><code>/sales/capacity</code> is not swallowed by <code>/:id</code>. VIEWER gets 200. Unknown query key → 422.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ B2 ============ -->
+  <div class="spec">
+    <div class="head"><span class="id">B2</span><span class="name">Totals for the whole filtered list</span><span class="tag p0">P0</span><span class="tag be">BE</span></div>
+    <div class="body">
+      <p><b>Why.</b> The Purchases mockup shows "6 purchases · 54.195 t · ₹22,15,130.00" computed on the server, because a page-only total would mislead (UI doc page 9). Deliveries and Sales Orders need the same.</p>
+      <h4>Contract (additive to existing list responses)</h4>
+<pre><span class="c">// GET /api/v1/purchases?from=2026-09-01&amp;to=2026-09-30&amp;companyId=66f…c11</span>
+<span class="s">"meta"</span>: { <span class="s">"page"</span>: 1, <span class="s">"limit"</span>: 25, <span class="s">"total"</span>: 6, <span class="s">"totalPages"</span>: 1,
+          <span class="s">"summary"</span>: { <span class="s">"quantityTons"</span>: <span class="s">"54.195"</span>, <span class="s">"totalAmount"</span>: <span class="s">"2215130.00"</span>, <span class="s">"averageRate"</span>: <span class="s">"40873.33"</span> } }
+
+<span class="c">// GET /api/v1/sales … same shape: quantityTons, totalAmount, averageRate</span>
+<span class="c">// GET /api/v1/sales-pos … quantityTons, deliveredTons, remainingTons, totalPOAmount</span></pre>
+      <p class="small"><code>averageRate</code> is the weighted average (totalAmount ÷ quantityTons, 2 dp, <code>"0.00"</code> when there is no quantity). <code>total</code> already carries the count, so it is not repeated.</p>
+      <h4>Implementation</h4>
+      <ul>
+        <li><code>base.repository.js</code>: add <code>summarize(match, fields)</code>, which is <code>groupTotals(match, null, fields)</code> returning one row of Decimals (zeros when empty).</li>
+        <li><code>purchase.service.js</code> / <code>sale.service.js</code> <code>list()</code>: build the filter with <code>toObjectId()</code> for every id (the current filter passes strings, which <code>find()</code> casts but <code>aggregate()</code> would not). Run <code>paginate</code> and <code>summarize</code> in <code>Promise.all</code>. Return <code>{ items, page, limit, total, summary }</code>.</li>
+        <li><code>salesPO.repository.js</code> <code>listWithPosition</code>: add a <code>summary</code> branch to the existing <code>$facet</code>. It must run <b>after</b> <code>positionStages</code>, because delivered and remaining are computed, so the unfiltered branch applies <code>positionStages</code> inside the summary facet only.</li>
+        <li>Controllers: <code>ok(res, result.items, { ...pageMeta(result), summary: result.summary })</code>. <code>pageMeta</code> is unchanged.</li>
+      </ul>
+      <p class="small"><b>Tests:</b> summary equals the sum of all pages (seed 30 rows, <code>limit=10</code>); a filter by company changes the summary; an empty result gives zero strings; decimals stay exact (<code>0.1 + 0.2 = "0.300"</code>).</p>
+    </div>
+  </div>
+
+  <!-- ============ B3 ============ -->
+  <div class="spec">
+    <div class="head"><span class="id">B3</span><span class="name">Multi-status filter and Sales Order status summary</span><span class="tag p0">P0</span><span class="tag be">BE</span></div>
+    <div class="body">
+      <div class="endpoint"><span class="tag get">GET</span>/api/v1/sales-pos?status=PENDING,PARTIALLY_SUPPLIED</div>
+      <div class="endpoint"><span class="tag get">GET</span>/api/v1/sales-pos/summary?companyId&amp;materialId&amp;from&amp;to</div>
+      <p><b>Why.</b> The Open tab, the dashboard drill-down and the sidebar badge all mean "Pending + Partly delivered" (UI doc pages 5 and 8). The delivery form must list only open POs for the chosen customer (POC <code>refreshSalePOs</code>). Tabs show counts ("Open · 14, Partly delivered · 5").</p>
+      <h4>Filter change</h4>
+      <p><code>status</code> accepts one value or a comma-separated list. It is backward compatible, because a single value still works. The alias <code>status=OPEN</code> expands to <code>PENDING,PARTIALLY_SUPPLIED</code>.</p>
+<pre><span class="c">// validations/salesPO.validation.js</span>
+<span class="k">const</span> displayStatusList = z.string().transform((v) =&gt; v.split(<span class="s">','</span>).map((s) =&gt; s.trim().toUpperCase()))
+  .transform((list) =&gt; list.flatMap((s) =&gt; (s === <span class="s">'OPEN'</span> ? [PENDING, PARTIALLY_SUPPLIED] : [s])))
+  .pipe(z.array(z.enum(Object.values(PO_DISPLAY_STATUS))).min(1).max(4));
+<span class="c">// repository: { $match: { displayStatus: { $in: statuses } } } replaces { $match: { displayStatus } }</span></pre>
+      <h4>Summary endpoint response</h4>
+<pre>{ <span class="s">"counts"</span>: { <span class="s">"PENDING"</span>: 9, <span class="s">"PARTIALLY_SUPPLIED"</span>: 5, <span class="s">"COMPLETED"</span>: 31, <span class="s">"CANCELLED"</span>: 2, <span class="s">"OPEN"</span>: 14, <span class="s">"ALL"</span>: 47 },
+  <span class="s">"open"</span>: { <span class="s">"remainingTons"</span>: <span class="s">"212.300"</span>, <span class="s">"oldestPoDate"</span>: <span class="s">"2026-09-02"</span> } }</pre>
+      <p class="small">One aggregation: <code>$match</code> (same filter builder as <code>list</code>, ids cast), <code>positionStages</code>, then <code>$group</code> by <code>displayStatus</code>. Route <code>/summary</code> goes above <code>/:id</code>. <b>Tests:</b> list with two statuses; <code>OPEN</code> alias; invalid status → 422; counts add up to <code>ALL</code>; summary respects <code>companyId</code>.</p>
+    </div>
+  </div>
+
+  <!-- ============ B4 ============ -->
+  <div class="spec">
+    <div class="head"><span class="id">B4</span><span class="name">Server-side sorting</span><span class="tag p0">P0</span><span class="tag be">BE</span></div>
+    <div class="body">
+      <div class="endpoint"><span class="tag get">GET</span>/api/v1/purchases?sort=-totalAmount</div>
+      <p><b>Why.</b> The DataTable runs in server mode with sortable headers and <code>aria-sort</code> (UI doc page 10). "Orders waiting, oldest first" on the dashboard needs <code>sort=poDate</code>. Today every list has a fixed order.</p>
+      <p><code>sort</code> takes one field, optionally prefixed with <code>-</code> for descending. The default is today's order, so nothing changes when <code>sort</code> is absent. <code>_id</code> is always appended as a tie-breaker so paging is stable. Decimal128 fields sort numerically in MongoDB.</p>
+      <table class="tight">
+        <thead><tr><th style="width:18%">List</th><th>Allowed fields</th><th style="width:22%">Default</th></tr></thead>
+        <tbody>
+          <tr><td>purchases</td><td><code>purchaseDate quantityTons ratePerTon totalAmount createdAt</code></td><td><code>-purchaseDate</code></td></tr>
+          <tr><td>sales</td><td><code>saleDate quantityTons totalAmount createdAt</code></td><td><code>-saleDate</code></td></tr>
+          <tr><td>sales-pos</td><td><code>poDate poNumber quantityTons ratePerTon remainingQuantityTons</code></td><td><code>-poDate</code></td></tr>
+          <tr><td>companies</td><td><code>name createdAt</code></td><td><code>name</code></td></tr>
+          <tr><td>materials</td><td><code>name createdAt</code></td><td><code>name</code></td></tr>
+        </tbody>
+      </table>
+<pre><span class="c">// validations/common.js</span>
+<span class="k">export const</span> sortQuery = (fields) =&gt; z.string()
+  .regex(<span class="k">new</span> RegExp(<span class="s">`^-?(${fields.join('|')})$`</span>), <span class="s">`sort must be one of: ${fields.join(', ')} (prefix - for descending)`</span>)
+  .transform((v) =&gt; (v.startsWith(<span class="s">'-'</span>) ? { [v.slice(1)]: -1 } : { [v]: 1 }));
+<span class="c">// service: sort: { ...(query.sort ?? DEFAULT_SORT), _id: -1 }</span></pre>
+      <p class="small"><b>Sales POs:</b> sorting by <code>remainingQuantityTons</code> needs the position first. In <code>listWithPosition</code>, when that sort is requested, take the branch that runs <code>positionStages</code> before <code>$sort</code> (the same branch the status filter uses). <b>Tests:</b> each list asc/desc, invalid field → 422, tie-break stable across pages.</p>
+    </div>
+  </div>
+
+  <!-- ============ B5 ============ -->
+  <div class="spec">
+    <div class="head"><span class="id">B5</span><span class="name">Last purchase rate</span><span class="tag p0">P0</span><span class="tag be">BE</span></div>
+    <div class="body">
+      <div class="endpoint"><span class="tag get">GET</span>/api/v1/purchases/last-rate?companyId&amp;materialId</div>
+      <p><b>Why.</b> Smart defaults ("last supplier / material / rate") make a purchase a 2-click task (UI doc P0-3, page 30 "High").</p>
+<pre>{ <span class="s">"ratePerTon"</span>: <span class="s">"34500.00"</span>, <span class="s">"purchaseDate"</span>: <span class="s">"2026-09-27"</span>, <span class="s">"purchaseId"</span>: <span class="s">"66f…"</span>, <span class="s">"scope"</span>: <span class="s">"SUPPLIER_MATERIAL"</span> }
+<span class="c">// scope: SUPPLIER_MATERIAL (both given, match found) | MATERIAL (fell back to any supplier) | null result</span>
+<span class="c">// data is null when the material has never been bought</span></pre>
+      <p class="small"><code>materialId</code> required, <code>companyId</code> optional. Query: <code>Purchase.findOne({companyId, materialId}).sort({purchaseDate:-1, createdAt:-1}).select('ratePerTon purchaseDate')</code>, served by the existing <code>{companyId, materialId, purchaseDate}</code> index. If nothing matches, fall back to material only. Route above <code>/:id</code>. <b>Tests:</b> exact match, fallback, never bought → <code>data: null</code>, backdated purchase does not win over a newer business date.</p>
+    </div>
+  </div>
+</section>

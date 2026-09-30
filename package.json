@@ -1,0 +1,49 @@
+{
+  "name": "metal-scrap-management-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Metal Scrap Management System - backend API (Node.js + Express + MongoDB)",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "migrate": "node scripts/migrate.js",
+    "migrate:status": "node scripts/migrate.js --status",
+    "create-owner": "node scripts/create-owner.js",
+    "reconcile": "node scripts/reconcile.js",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "npm run lint && npm test"
+  },
+  "dependencies": {
+    "argon2": "^0.41.1",
+    "compression": "^1.8.2",
+    "cors": "^2.8.6",
+    "decimal.js": "^10.6.0",
+    "dotenv": "^16.6.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^7.5.1",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^8.24.4",
+    "pino": "^9.14.0",
+    "pino-http": "^10.5.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "globals": "^17.12.0",
+    "mongodb-memory-server": "^10.4.3",
+    "nodemon": "^3.1.14",
+    "pino-pretty": "^13.1.3",
+    "prettier": "^3.9.9",
+    "supertest": "^7.3.0",
+    "vitest": "^5.0.2"
+  }
+}

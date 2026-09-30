@@ -1,0 +1,342 @@
+<!-- =============================== 16. LOADING & EMPTY (landscape) =============================== -->
+<section class="page landscape">
+  <div class="eyebrow">States and feedback · Mockup S6</div>
+  <h1 class="title">Loading and empty states: never a blank or confusing screen</h1>
+  <p class="lead">Under 1 s show nothing; skeletons for whole pages (only after 500 ms), spinners for single parts, and old rows stay visible while new ones load. Empty states always say why and offer one way forward.</p>
+  <div class="grid3" style="gap:5mm">
+    <div>
+      <div class="ui card" style="zoom:.66; padding:14px">
+        <div class="flex gap2"><div class="input" style="width:200px"><svg class="i t-muted"><use href="#i-search"/></svg><span class="ph">Supplier, vehicle…</span></div><span class="btn outline sm">This month</span></div>
+        <div style="margin-top:12px"><span class="sk" style="width:280px;height:14px"></span></div>
+        <table class="t" style="margin-top:6px"><thead><tr><th>Date</th><th>Supplier</th><th>Material</th><th class="num">Tons (t)</th><th class="num">Amount (₹)</th></tr></thead>
+        <tbody>
+          <tr><td><span class="sk" style="width:70px"></span></td><td><span class="sk" style="width:140px"></span></td><td><span class="sk" style="width:90px"></span></td><td class="num"><span class="sk" style="width:56px"></span></td><td class="num"><span class="sk" style="width:80px"></span></td></tr>
+          <tr><td><span class="sk" style="width:70px"></span></td><td><span class="sk" style="width:120px"></span></td><td><span class="sk" style="width:100px"></span></td><td class="num"><span class="sk" style="width:56px"></span></td><td class="num"><span class="sk" style="width:80px"></span></td></tr>
+          <tr><td><span class="sk" style="width:70px"></span></td><td><span class="sk" style="width:150px"></span></td><td><span class="sk" style="width:80px"></span></td><td class="num"><span class="sk" style="width:56px"></span></td><td class="num"><span class="sk" style="width:80px"></span></td></tr>
+        </tbody></table>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">L1 · First load</h3>
+      <p class="small">Header, filters and column titles are live at once; skeleton rows match real row height and column widths. Static or a slow 2 s pulse, no shimmer.</p>
+    </div>
+    <div>
+      <div class="ui card" style="zoom:.66; padding:14px; position:relative">
+        <div class="flex gap2"><span class="chip">Supplier: Sharma Traders <svg class="i sm"><use href="#i-x"/></svg></span></div>
+        <div style="height:2px;background:var(--muted);margin-top:10px;position:relative;overflow:hidden"><div style="position:absolute;left:20%;width:35%;height:2px;background:var(--primary)"></div></div>
+        <div class="t-sm" style="margin-top:8px">Updating…</div>
+        <table class="t" style="margin-top:6px"><thead><tr><th>Date</th><th>Supplier</th><th class="num">Tons (t)</th><th class="num">Amount (₹)</th></tr></thead>
+        <tbody>
+          <tr class="dim"><td>27/09/2026</td><td>Shree Ganesh Metals</td><td class="num">12.450</td><td class="num">4,29,525.00</td></tr>
+          <tr class="dim"><td>27/09/2026</td><td>Sharma Traders</td><td class="num">1.275</td><td class="num">10,00,875.00</td></tr>
+          <tr class="dim"><td>26/09/2026</td><td>Patel Scrap Co.</td><td class="num">2.140</td><td class="num">10,52,880.00</td></tr>
+        </tbody></table>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">L2 · Filter or page change</h3>
+      <p class="small">Old rows stay at 60% opacity with a 2 px progress line; the summary then reads "12 purchases · 118.400 t". The screen never blanks, even on slow yard data.</p>
+    </div>
+    <div>
+      <div class="ui card" style="zoom:.66; padding:18px">
+        <div class="flex gap2">
+          <span class="btn primary" style="min-width:170px"><svg class="i"><use href="#i-loader"/></svg>Saving…</span>
+          <span class="btn primary" style="min-width:170px;background:var(--success)"><svg class="i"><use href="#i-check"/></svg>Saved</span>
+        </div>
+        <div class="t-xs t-muted" style="margin-top:10px">Same width in every state · aria-busy · focus stays on the button · double submit blocked</div>
+        <div style="margin-top:16px" class="t-xs t-muted fw5">Dashboard card loading on its own</div>
+        <div class="card" style="padding:14px;margin-top:6px"><span class="sk" style="width:96px"></span><div style="margin-top:10px"><span class="sk" style="width:120px;height:26px"></span></div><div style="margin-top:10px"><span class="sk" style="width:160px"></span></div></div>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">L3 / L4 · Parts and buttons</h3>
+      <p class="small">A section loads inside its own card only. Save shows a spinner immediately, then a check for 1.2 s, then returns to its label.</p>
+    </div>
+    <div>
+      <div class="ui card empty" style="zoom:.66">
+        <div class="media"><svg class="i xl"><use href="#i-truck"/></svg></div>
+        <h5>No deliveries yet</h5>
+        <p>When scrap goes out to a buyer, record it here. Stock updates automatically.</p>
+        <div class="flex gap3"><span class="btn primary"><svg class="i"><use href="#i-plus"/></svg>Record delivery</span><span class="btn link">How deliveries work</span></div>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">E1 · First use</h3>
+      <p class="small">Explains what the page is for and gives the one next step. VIEWERs see "Deliveries will appear here once the owner adds them" with no button.</p>
+    </div>
+    <div>
+      <div class="ui card empty" style="zoom:.66; border-style:dashed">
+        <div class="media"><svg class="i xl"><use href="#i-filter"/></svg></div>
+        <h5>No purchases match these filters</h5>
+        <p>Showing: Copper wire (Berry) · 01/08/2026 – 15/08/2026 · Supplier: Sharma Traders</p>
+        <div class="flex gap2"><span class="btn primary">Clear filters</span><span class="btn outline">Change dates</span></div>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">E2 · No results</h3>
+      <p class="small">Shown inside the table body: header and filters stay so the user sees <i>what</i> is filtering. Search variant: "No results for 'bras'. Check the spelling, or search by GSTIN."</p>
+    </div>
+    <div>
+      <div class="ui card" style="zoom:.66; padding:16px 18px">
+        <div class="t-xs t-muted fw6">BUY NEEDED</div>
+        <div class="flex gap2 t-success" style="margin-top:10px"><svg class="i lg"><use href="#i-ok"/></svg><span class="fw5">All materials are stocked.</span></div>
+        <div class="t-sm t-muted" style="margin-top:4px">Nothing needs to be purchased for open orders right now.</div>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">E4 · All done</h3>
+      <p class="small">A positive empty state with no action. Never guilt-inducing ("You haven't…"). Empty states render only after a successful load with zero rows, never during loading or after an error.</p>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · States and feedback</div>
+</section>
+
+<!-- =============================== 17. ERRORS, SUCCESS, CONFIRM (landscape) =============================== -->
+<section class="page landscape">
+  <div class="eyebrow">States and feedback · Mockup S6</div>
+  <h1 class="title">Errors, success and confirmations</h1>
+  <p class="lead">Errors sit next to their cause, in plain words, and keep what the user typed. Success is shown in the page first; the toast only confirms. Confirmations are rare and name the action.</p>
+  <div class="grid3" style="gap:5mm">
+    <div>
+      <div class="ui alert danger" style="zoom:.7; display:flex">
+        <svg class="i lg"><use href="#i-errc"/></svg>
+        <div><div class="a-title">Purchase not saved</div><div class="t-sm" style="margin-top:2px">Something went wrong on our side and this purchase was not saved. Try again. If it keeps happening, share this reference with support.</div>
+        <div class="flex gap2" style="margin-top:8px"><span style="font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border);border-radius:5px;padding:2px 6px">Reference: 7f3a9c2e</span><svg class="i t-muted"><use href="#i-copy"/></svg></div>
+        <div class="flex gap2" style="margin-top:10px"><span class="btn outline sm">Try again</span><span class="btn ghost sm">Copy reference</span></div></div>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">Er4 · Server error (500)</h3>
+      <p class="small">Persistent inline alert in the form, never a vanishing toast. The requestId is the only technical token users ever see.</p>
+    </div>
+    <div>
+      <div class="ui" style="zoom:.7; border:1px solid var(--border); border-radius:10px; overflow:hidden">
+        <div class="flex gap2" style="height:40px;padding:0 14px;background:color-mix(in oklch,var(--warning) 22%,white);color:var(--warning-fg)"><svg class="i"><use href="#i-wifioff"/></svg><span class="t-sm fw5">You're offline. Changes can't be saved until the connection is back.</span></div>
+        <div style="padding:14px" class="t-sm t-muted">Page content stays usable for reading; the form keeps its entries.</div>
+      </div>
+      <div class="ui dialog" style="zoom:.7; margin-top:10px; width:420px; padding:20px">
+        <div class="fw6 t-lg">Your session has ended</div><div class="t-sm t-muted" style="margin-top:4px">Log in again to save this delivery. Your entries are kept.</div>
+        <div class="input" style="margin-top:12px"><span class="ph">Password</span></div><div style="text-align:right;margin-top:12px"><span class="btn primary">Log in</span></div>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">Er5 / Er7 · Offline and session ended</h3>
+      <p class="small">A non-dismissible banner while offline ("Back online" for 3 s after). An expired session opens a small login dialog <i>over</i> the form instead of redirecting.</p>
+    </div>
+    <div>
+      <div class="ui empty" style="zoom:.7; border:1px solid var(--border); border-radius:12px">
+        <div class="media"><svg class="i xl"><use href="#i-fileq"/></svg></div>
+        <h5>We couldn't find this sales order</h5>
+        <p>The link may be wrong, or the order number was typed incorrectly.</p>
+        <span class="btn primary">Go to Sales Orders</span>
+      </div>
+      <div class="ui card" style="zoom:.7; padding:16px; margin-top:10px">
+        <div class="card-title">Stock by material</div>
+        <div class="flex gap2 t-muted" style="margin-top:12px"><svg class="i lg"><use href="#i-cloudoff"/></svg><span class="t-sm">Couldn't load stock by material. Check your connection and try again.</span></div>
+        <span class="btn outline sm" style="margin-top:10px">Try again</span>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">Er6 / Er1 · Not found and section error</h3>
+      <p class="small">A failed section fails alone, inside its card, with its own "Try again"; the rest of the dashboard keeps working.</p>
+    </div>
+    <div>
+      <div class="ui dialog" style="zoom:.7; width:448px">
+        <div class="flex gap3" style="align-items:flex-start"><div style="width:40px;height:40px;border-radius:50%;background:color-mix(in oklch,var(--destructive) 12%,white);color:var(--destructive);display:flex;align-items:center;justify-content:center;flex:none"><svg class="i lg"><use href="#i-ban"/></svg></div>
+        <div><div class="fw6 t-lg">Cancel order PO-0151?</div><div class="t-sm t-muted" style="margin-top:6px">Kutch Foundry Works ordered 20.000 t of Brass honey. Nothing has been delivered yet. After cancelling, no deliveries can be recorded against this order.</div></div></div>
+        <div class="flex gap2" style="justify-content:flex-end;margin-top:18px"><span class="btn outline" style="outline:2px solid var(--ring);outline-offset:2px">Keep order</span><span class="btn destructive">Cancel order</span></div>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">C1 · Confirm a serious action</h3>
+      <p class="small">Names the record and the consequence; buttons are verbs ("Keep order" / "Cancel order", never "Cancel" / "OK"); focus starts on the safe button.</p>
+    </div>
+    <div>
+      <div class="ui toast" style="zoom:.7">
+        <svg class="i lg t-success"><use href="#i-ok"/></svg>
+        <div class="grow"><div class="fw6">Delivery saved</div><div class="t-sm t-muted">6.000 t of HMS 1 to Bharat Castings Pvt Ltd</div><div class="flex gap2" style="margin-top:8px"><span class="btn outline sm">View</span><span class="btn ghost sm">Add another</span></div></div>
+        <svg class="i t-muted"><use href="#i-x"/></svg>
+      </div>
+      <div class="ui" style="zoom:.7; margin-top:10px">
+        <table class="t" style="border:1px solid var(--border)"><tbody><tr class="new"><td>27/09/2026</td><td>DC-0352</td><td>Shree Ganesh Metals</td><td class="num">6.000</td></tr><tr><td>24/09/2026</td><td>DC-0340</td><td>Shree Ganesh Metals</td><td class="num">4.500</td></tr></tbody></table>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">S1 · Success</h3>
+      <p class="small">The sheet closes, the new row is tinted and focused, <i>then</i> a toast confirms. Toasts with actions stay 10 s with a close button; plain ones 4 s.</p>
+    </div>
+    <div>
+      <div class="ui card" style="zoom:.7; padding:16px">
+        <div class="flex gap3"><span class="btn outline"><svg class="i t-success"><use href="#i-check"/></svg>Copied</span><span class="t-sm t-muted">icon swaps for 1.5 s, "Link copied" announced</span></div>
+        <div class="flex gap3" style="margin-top:12px"><span class="btn primary" style="background:var(--success)"><svg class="i"><use href="#i-check"/></svg>Saved</span><span class="t-sm t-muted">inline save confirmation, 1.2 s</span></div>
+        <div class="alert info" style="margin-top:12px"><svg class="i t-info"><use href="#i-info"/></svg><div class="t-sm">All 30.000 t delivered on 26/09/2026.</div></div>
+      </div>
+      <h3 style="font-size:10pt;margin-top:2mm">S2 / S3 · Small confirmations</h3>
+      <p class="small">Tiny successes don't need a toast: the control itself confirms. Persistent facts use an in-page Alert with icon + word, not only colour.</p>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · States and feedback</div>
+</section>
+
+<!-- =============================== 18. ERROR MAPPING =============================== -->
+<section class="page">
+  <div class="eyebrow">States and feedback</div>
+  <h1 class="title">Every API error, mapped to the screen</h1>
+  <p class="lead">One dictionary keyed by <code>error.code</code> turns every failure into plain words that reuse the server's own numbers, plus a one-tap fix.</p>
+  <table class="doc compact" style="font-size:8.1pt">
+    <tr><th style="width:22%">Backend response</th><th style="width:20%">Where it appears</th><th>What the user reads</th><th style="width:16%">One-tap fix</th></tr>
+    <tr><td><b>422</b> field issues</td><td>Under each field + focused "There is a problem" summary</td><td>"Enter tons as a number, like 12.450" · "Choose a supplier"</td><td>Summary links jump to fields</td></tr>
+    <tr><td><b>409</b> PO_QUANTITY_EXCEEDED</td><td>Tons field + alert; limits panel refreshed</td><td>"PO-0142 has only 11.750 t left to deliver. You entered 12.000 t."</td><td>Use 11.750 t</td></tr>
+    <tr><td><b>409</b> INSUFFICIENT_STOCK</td><td>Same</td><td>"Only 71.500 t of HMS 1 is in the yard. Enter 71.500 t or less."</td><td>Use 71.500 t</td></tr>
+    <tr><td><b>409</b> INSUFFICIENT_SOURCE_STOCK</td><td>Same + supplier field highlighted</td><td>"Only 9.200 t of HMS 1 from Shree Ganesh Metals is left. Enter 9.200 t or less, or choose another supplier."</td><td>Use 9.200 t · Choose another supplier</td></tr>
+    <tr><td><b>409</b> DUPLICATE_VALUE</td><td>The offending field</td><td>"Invoice number ST/26-27/418 is already used on another purchase."</td><td>Open that purchase</td></tr>
+    <tr><td><b>409</b> NEGATIVE_STOCK_HISTORY</td><td>Alert inside the edit form</td><td>"This change would make HMS 1 stock go below zero on 18/09/2026. Change the quantity or date, or edit the later deliveries first."</td><td>View stock history</td></tr>
+    <tr><td><b>403</b></td><td>Prevented by hiding actions; inline alert if it happens</td><td>"You have view-only access. Ask the owner if you need to make changes."</td><td>—</td></tr>
+    <tr><td><b>404</b></td><td>Full-page state</td><td>"We couldn't find this sales order. The link may be wrong."</td><td>Go to Sales Orders</td></tr>
+    <tr><td><b>401</b></td><td>Silent refresh; else login dialog over the form</td><td>"Your session has ended. Log in again to save this delivery. Your entries are kept."</td><td>Log in</td></tr>
+    <tr><td><b>429</b></td><td>Non-blocking warning</td><td>"Too many requests in a short time. Wait a few seconds and try again."</td><td>Try again</td></tr>
+    <tr><td><b>500</b></td><td>Persistent inline alert</td><td>"Something went wrong on our side and this purchase was not saved…" + Reference</td><td>Try again · Copy reference</td></tr>
+    <tr><td>Network / offline</td><td>Inline + global banner</td><td>"No internet connection. Your entries are still here. Try again when you're back online."</td><td>Try again</td></tr>
+    <tr><td>Render crash</td><td>Route / widget error boundary</td><td>"This page stopped working. Reload the page. Your saved records are safe."</td><td>Reload</td></tr>
+  </table>
+  <div class="grid2">
+    <div>
+      <h3 class="mt0">Rules for all messages</h3>
+      <ul class="clean small" style="color:var(--doc-fg)">
+        <li>Say what happened and how to fix it; never show raw codes.</li>
+        <li>No "invalid", "please", "sorry", "oops"; no blame.</li>
+        <li>Errors use <code>role="alert"</code>; results use <code>role="status"</code> (WCAG 4.1.3).</li>
+              </ul>
+    </div>
+    <div>
+      <h3 class="mt0">Confirm only these four</h3>
+      <ul class="clean small" style="color:var(--doc-fg)">
+        <li>Cancelling a sales order</li>
+        <li>Deactivating a company or material</li>
+        <li>Saving a backdated edit that changes stock history (impact shown first)</li>
+        <li>Leaving a form with unsaved changes</li>
+      </ul>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · States and feedback</div>
+</section>
+
+<!-- =============================== 19. MICRO-INTERACTIONS & MOTION =============================== -->
+<section class="page">
+  <div class="eyebrow">Interaction</div>
+  <h1 class="title">Micro-interactions and motion</h1>
+  <p class="lead">A micro-interaction is a trigger plus its feedback. Motion exists only to give feedback, show a change of state, or show where something came from: subtle, brief, and never in the way of typing.</p>
+
+  <div class="do-dont">
+    <div class="do"><h4>Keep these six</h4><ul>
+      <li><b>Press:</b> buttons shift 1 px down; no ripple</li>
+      <li><b>Save:</b> spinner → check for 1.2 s → label</li>
+      <li><b>Meters:</b> progress and limit fills glide to the new value (300 ms)</li>
+      <li><b>Copy:</b> icon swaps to a check + "Copied" for 1.5 s</li>
+      <li><b>Just saved:</b> new/edited row tints green, fades over 1.5 s</li>
+      <li><b>Overlays:</b> shadcn's default menu, sheet, dialog, accordion, tab motion</li>
+    </ul></div>
+    <div class="dont"><h4>Reject these</h4><ul>
+      <li>KPI count-up numbers (delay reading the real value)</li>
+      <li>Shaking fields on error (vestibular trigger; never the only signal)</li>
+      <li>Shimmer skeletons (use static or slow pulse)</li>
+      <li>Confetti, parallax, pull-to-refresh, animated illustrations</li>
+      <li>Animation on typing, keyboard focus, or re-sorting large tables</li>
+    </ul></div>
+  </div>
+
+  <h2>Duration and easing tokens</h2>
+  <div class="row" style="gap:6mm">
+    <svg viewBox="0 0 330 150" width="54%">
+      <g font-size="10" fill="#5b6270">
+        <line x1="30" y1="130" x2="320" y2="130" stroke="#dfe3e8"/>
+        <g font-weight="600" fill="#17191c">
+          <rect x="30" y="10" width="29" height="16" rx="3" fill="oklch(0.85 0.05 235)"/><text x="64" y="22">100 ms · fast: hover, press, checkbox</text>
+          <rect x="30" y="32" width="43" height="16" rx="3" fill="oklch(0.75 0.08 235)"/><text x="78" y="44">150 ms · base: menus, tooltips, route fade</text>
+          <rect x="30" y="54" width="58" height="16" rx="3" fill="oklch(0.62 0.10 235)"/><text x="93" y="66">200 ms · moderate: dialog, accordion</text>
+          <rect x="30" y="76" width="87" height="16" rx="3" fill="oklch(0.50 0.10 235)"/><text x="122" y="88">300 ms · slow: sheet, drawer, meters</text>
+          <rect x="30" y="98" width="116" height="16" rx="3" fill="oklch(0.62 0.21 30)"/><text x="151" y="110">400 ms · hard ceiling</text>
+        </g>
+        <text x="30" y="144">0</text><text x="146" y="144">400 ms</text><text x="210" y="144">(500 ms = "a real drag")</text>
+      </g>
+    </svg>
+    <svg viewBox="0 0 250 150" width="42%">
+      <g font-size="9.5">
+        <rect x="20" y="10" width="100" height="100" fill="#f5f7f9" stroke="#dfe3e8"/>
+        <path d="M20 110 C20 110 58 10 120 10" fill="none" stroke="oklch(0.55 0.13 240)" stroke-width="2.5"/>
+        <path d="M20 110 C40 110 120 18 120 10" fill="none" stroke="oklch(0.70 0.16 55)" stroke-width="2.5" stroke-dasharray="5 3"/>
+        <path d="M20 110 C25 40 30 10 120 10" fill="none" stroke="oklch(0.50 0.12 150)" stroke-width="2"/>
+        <text x="130" y="30" fill="oklch(0.45 0.13 240)" font-weight="700">Enter</text><text x="130" y="42" fill="#5b6270">(0, 0, .38, .9)</text>
+        <text x="130" y="62" fill="oklch(0.55 0.16 55)" font-weight="700">Exit</text><text x="130" y="74" fill="#5b6270">(.2, 0, 1, .9)</text>
+        <text x="130" y="94" fill="oklch(0.42 0.12 150)" font-weight="700">Sheets (M3)</text><text x="130" y="106" fill="#5b6270">(.05, .7, .1, 1)</text>
+        <text x="20" y="126" fill="#5b6270">Enter decelerates; exits are faster</text><text x="20" y="138" fill="#5b6270">(0.7–0.8× the entrance).</text>
+      </g>
+    </svg>
+  </div>
+
+  <table class="doc compact" style="font-size:8.4pt">
+    <tr><th>Element</th><th>What moves</th><th class="num">Enter</th><th class="num">Exit</th><th>Reduced motion</th></tr>
+    <tr><td>Button hover / press</td><td>colour; press translateY(1px)</td><td class="num">100 ms</td><td class="num">100 ms</td><td>colour only</td></tr>
+    <tr><td>Tooltip, menu, popover, combobox</td><td>opacity + scale 0.95→1</td><td class="num">150 ms</td><td class="num">100 ms</td><td>fade 100 ms</td></tr>
+    <tr><td>Dialog / AlertDialog</td><td>backdrop fade; panel fade + scale</td><td class="num">200 ms</td><td class="num">150 ms</td><td>fade; no blur on phones</td></tr>
+    <tr><td>Sheet (right) / Drawer (bottom)</td><td>slide in from the edge</td><td class="num">300 ms</td><td class="num">200 ms</td><td>fade 100 ms</td></tr>
+    <tr><td>Progress / limit meter</td><td>scaleX to new value</td><td class="num">300 ms</td><td class="num">—</td><td>instant</td></tr>
+    <tr><td>Route change</td><td>React <code>&lt;ViewTransition&gt;</code> cross-fade</td><td class="num">150 ms</td><td class="num">150 ms</td><td>none</td></tr>
+    <tr><td>New-row highlight</td><td>background colour (not motion)</td><td class="num">instant</td><td class="num">1.5 s</td><td>same</td></tr>
+  </table>
+  <div class="callout"><h4>Performance rules for low-end Android</h4><p>Animate only <code>transform</code> and <code>opacity</code>; remove shadcn's backdrop blur on phones; honour <code>prefers-reduced-motion</code> <b>and</b> offer a "Reduce animations" switch in the user menu. Feedback must paint in the very next frame (INP ≤ 200 ms) or users click twice.</p></div>
+  <div class="runhead">Metalix UI/UX System · Interaction</div>
+</section>
+
+<!-- =============================== 20. INTERACTION STATES =============================== -->
+<section class="page">
+  <div class="eyebrow">Interaction</div>
+  <h1 class="title">Hover, focus, active, disabled and other states</h1>
+  <p class="lead">One state vocabulary for every control. Focus is always a solid 2 px ring with a 2 px gap (not shadcn's 50% transparent ring, which can miss the 3:1 contrast rule).</p>
+
+  <div class="ui" style="zoom:.74; border:1px solid var(--border); border-radius:12px; padding:18px; background:#fff">
+    <div style="display:grid; grid-template-columns:130px repeat(6, 1fr); gap:14px 10px; align-items:center; font-size:13px">
+      <span></span><span class="t-xs t-muted fw6">DEFAULT</span><span class="t-xs t-muted fw6">HOVER</span><span class="t-xs t-muted fw6">FOCUS (keyboard)</span><span class="t-xs t-muted fw6">PRESSED</span><span class="t-xs t-muted fw6">LOADING</span><span class="t-xs t-muted fw6">DISABLED*</span>
+
+      <span class="fw5">Primary button</span>
+      <span class="btn primary">Save</span>
+      <span class="btn primary" style="background:color-mix(in oklch,var(--primary) 88%,white)">Save</span>
+      <span class="btn primary" style="outline:2px solid var(--ring);outline-offset:2px">Save</span>
+      <span class="btn primary" style="transform:translateY(1px);background:color-mix(in oklch,var(--primary) 85%,black)">Save</span>
+      <span class="btn primary"><svg class="i"><use href="#i-loader"/></svg>Saving…</span>
+      <span class="btn primary" style="opacity:.5">Save</span>
+
+      <span class="fw5">Outline button</span>
+      <span class="btn outline">Export</span>
+      <span class="btn outline" style="background:var(--muted)">Export</span>
+      <span class="btn outline" style="outline:2px solid var(--ring);outline-offset:2px">Export</span>
+      <span class="btn outline" style="background:var(--muted);transform:translateY(1px)">Export</span>
+      <span class="btn outline"><svg class="i"><use href="#i-loader"/></svg>Export</span>
+      <span class="btn outline" style="opacity:.5">Export</span>
+
+      <span class="fw5">Tons input</span>
+      <div class="input"><span class="grow num">6.000</span><span class="addon">t</span></div>
+      <div class="input" style="border-color:oklch(0.55 0 0)"><span class="grow num">6.000</span><span class="addon">t</span></div>
+      <div class="input focus"><span class="grow num">6.000</span><span class="addon">t</span></div>
+      <div class="input focus"><span class="grow num">6.0|</span><span class="addon">t</span></div>
+      <div class="input"><span class="grow num">6.000</span><svg class="i t-muted"><use href="#i-loader"/></svg></div>
+      <div class="input readonly"><svg class="i t-muted"><use href="#i-lock"/></svg><span class="grow num">6.000</span></div>
+
+      <span class="fw5">Table row</span>
+      <div style="height:36px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 8px">PO-0142</div>
+      <div style="height:36px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 8px;background:var(--muted)">PO-0142</div>
+      <div style="height:36px;display:flex;align-items:center;padding:0 8px;outline:2px solid var(--ring);outline-offset:-2px;border-radius:4px">PO-0142</div>
+      <div style="height:36px;display:flex;align-items:center;padding:0 8px;background:color-mix(in oklch,var(--muted) 60%,oklch(0.9 0 0))">PO-0142</div>
+      <div style="height:36px;display:flex;align-items:center;padding:0 8px;opacity:.6">PO-0142</div>
+      <div style="height:36px;display:flex;align-items:center;padding:0 8px;color:var(--muted-fg)">PO-0139 <span class="badge b-cancel" style="margin-left:6px;height:18px;font-size:11px">Cancelled</span></div>
+
+      <span class="fw5">Sidebar item</span>
+      <div class="sb-item"><svg class="i"><use href="#i-in"/></svg>Purchases</div>
+      <div class="sb-item" style="background:var(--sidebar-accent)"><svg class="i"><use href="#i-in"/></svg>Purchases</div>
+      <div class="sb-item" style="outline:2px solid var(--ring);outline-offset:1px"><svg class="i"><use href="#i-in"/></svg>Purchases</div>
+      <div class="sb-item active" style="margin-left:8px"><svg class="i"><use href="#i-in"/></svg>Purchases</div>
+      <span class="t-xs t-muted">— (selected shown left)</span>
+      <span class="t-xs t-muted">hidden for VIEWER</span>
+    </div>
+  </div>
+  <p class="small mt2">* "Pressed" for the sidebar item shows the <b>selected</b> state (tint + bold + 3 px bar + <code>aria-current="page"</code>). Disabled is avoided wherever possible; when unavoidable use <code>aria-disabled</code> + a visible reason, because a disabled button can't show a tooltip or receive focus.</p>
+
+  <div class="grid2">
+    <div>
+      <h3 class="mt0">Invalid</h3>
+      <div class="ui" style="zoom:.8"><div class="field"><span class="flabel">Tons</span><div class="input invalid" style="width:180px"><span class="grow num">10.000</span><span class="addon">t</span></div><span class="err"><svg class="i sm"><use href="#i-errc"/></svg>Enter 9.200 t or less</span></div></div>
+      <p class="small">Red border + soft red ring + icon + message linked with <code>aria-describedby</code>; value kept.</p>
+    </div>
+    <div>
+      <h3 class="mt0">Read-only (VIEWER, locked PO)</h3>
+      <div class="ui" style="zoom:.8"><div class="field"><span class="flabel">Sales order</span><div class="input readonly" style="width:260px"><svg class="i t-muted"><use href="#i-lock"/></svg><span class="grow">PO-0142 · Bharat Castings</span></div></div></div>
+      <p class="small">Muted background + lock icon; still focusable and copyable; no hover or focus border change.</p>
+    </div>
+  </div>
+  <table class="doc compact" style="font-size:8.4pt">
+    <tr><th>Rule</th><th>Value</th></tr>
+    <tr><td>Focus ring</td><td><code>outline-2 outline-offset-2 outline-ring</code>, <code>:focus-visible</code> only; ≥ 3:1 contrast</td></tr>
+    <tr><td>Hover</td><td>Pointer devices only; 100 ms colour change; never the only way to find information</td></tr>
+    <tr><td>Selected</td><td>Colour <b>plus</b> a non-colour cue (check, bar, bold) and the right ARIA attribute</td></tr>
+    <tr><td>Cursor</td><td>Restore <code>cursor-pointer</code> on buttons (Tailwind v4 changed the default)</td></tr>
+  </table>
+  <div class="runhead">Metalix UI/UX System · Interaction</div>
+</section>

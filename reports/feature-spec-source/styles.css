@@ -1,0 +1,153 @@
+/* =====================================================================
+   Metalix Feature Additions Spec — print stylesheet (flowing A4 layout)
+   Page numbers and running title use CSS @page margin boxes (Chromium 131+).
+   ===================================================================== */
+
+@page {
+  size: A4 portrait;
+  margin: 16mm 16mm 18mm;
+  @bottom-left { content: "Metalix · Feature additions and integration spec"; font: 8pt "Segoe UI", sans-serif; color: #6b7280; }
+  @bottom-right { content: counter(page) " / " counter(pages); font: 8pt "Segoe UI", sans-serif; color: #6b7280; }
+}
+@page cover { margin: 0; @bottom-left { content: none; } @bottom-right { content: none; } }
+
+:root {
+  --fg: #16181d;
+  --muted: #5b6270;
+  --line: #e2e5ea;
+  --soft: #f5f7f9;
+  --accent: #1f4f7a;
+  --accent-soft: #eaf1f8;
+  --amber: #b7791f;
+  --amber-soft: #fdf6e7;
+  --red: #b42318;
+  --red-soft: #fdeceb;
+  --green: #1d7a4f;
+  --green-soft: #e9f6ef;
+  --violet: #5b3fa8;
+  --violet-soft: #f1edfb;
+  --font: "Segoe UI", "Inter", system-ui, sans-serif;
+  --mono: "Cascadia Mono", Consolas, "Courier New", monospace;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; font-family: var(--font); color: var(--fg); font-size: 9.8pt; line-height: 1.5; background: #fff; }
+
+/* ---------- Cover ---------- */
+.cover {
+  page: cover; height: 100vh; padding: 26mm 22mm 20mm; break-after: page;
+  background: linear-gradient(160deg, #0f2a44 0%, #1f4f7a 55%, #2d6a9f 100%); color: #fff;
+  display: flex; flex-direction: column;
+}
+.cover .brand { display: flex; align-items: center; gap: 3mm; font-weight: 600; font-size: 11pt; opacity: .95; }
+.cover .brand .m { width: 9mm; height: 9mm; border-radius: 2mm; background: #fff; color: #1f4f7a; display: flex; align-items: center; justify-content: center; font-weight: 800; }
+.cover h1 { font-size: 30pt; line-height: 1.12; margin: 34mm 0 6mm; letter-spacing: -0.02em; }
+.cover .sub { font-size: 12.5pt; max-width: 150mm; opacity: .92; margin: 0; }
+.cover .facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4mm; margin-top: 18mm; }
+.cover .fact { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25); border-radius: 3mm; padding: 4mm; }
+.cover .fact b { display: block; font-size: 20pt; line-height: 1.1; }
+.cover .fact span { font-size: 8.5pt; opacity: .9; }
+.cover .sources { margin-top: 14mm; font-size: 9pt; opacity: .92; }
+.cover .sources div { margin-bottom: 1.2mm; }
+.cover .meta { margin-top: auto; display: flex; justify-content: space-between; font-size: 9pt; opacity: .85; border-top: 1px solid rgba(255,255,255,.3); padding-top: 4mm; }
+
+/* ---------- Sections & typography ---------- */
+section.chapter { break-before: page; }
+section.chapter.first { break-before: auto; }
+.eyebrow { font-size: 8pt; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5mm; }
+h1 { font-size: 20pt; margin: 0 0 2.5mm; letter-spacing: -0.015em; line-height: 1.15; }
+h2 { font-size: 13pt; margin: 7mm 0 2mm; line-height: 1.25; break-after: avoid; }
+h3 { font-size: 10.8pt; margin: 5mm 0 1.5mm; break-after: avoid; }
+h4 { font-size: 9.6pt; margin: 3.5mm 0 1mm; break-after: avoid; color: var(--accent); }
+p { margin: 0 0 2.4mm; }
+.lead { font-size: 11pt; color: var(--muted); margin-bottom: 5mm; }
+ul, ol { margin: 0 0 2.6mm; padding-left: 5.5mm; }
+li { margin-bottom: 1mm; }
+code { font-family: var(--mono); font-size: 8.4pt; background: var(--soft); border: 1px solid var(--line); padding: 0 1mm; border-radius: 1mm; white-space: nowrap; }
+pre {
+  font-family: var(--mono); font-size: 7.9pt; line-height: 1.45; background: #0f1720; color: #e6edf3;
+  padding: 3mm 3.5mm; border-radius: 2mm; margin: 1.5mm 0 3.5mm; white-space: pre-wrap; break-inside: avoid;
+}
+pre .c { color: #8b98a5; }
+pre .k { color: #ffb86b; }
+pre .s { color: #a5e3a1; }
+.muted { color: var(--muted); }
+.small { font-size: 8.6pt; }
+b, strong { font-weight: 650; }
+
+/* ---------- Tables ---------- */
+table { width: 100%; border-collapse: collapse; font-size: 8.6pt; margin: 1.5mm 0 4mm; }
+thead { display: table-header-group; }
+tr { break-inside: avoid; }
+th { text-align: left; font-weight: 650; font-size: 7.6pt; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); border-bottom: 1.5px solid var(--fg); padding: 1.4mm 1.8mm; }
+td { border-bottom: 1px solid var(--line); padding: 1.5mm 1.8mm; vertical-align: top; }
+td code { white-space: normal; word-break: break-word; }
+table.kv td:first-child { width: 32mm; color: var(--muted); font-weight: 600; }
+table.tight td { padding: 1mm 1.8mm; }
+
+/* ---------- Tags / pills ---------- */
+.tag { display: inline-block; font-size: 7.2pt; font-weight: 700; padding: .3mm 1.6mm; border-radius: 5mm; letter-spacing: .02em; white-space: nowrap; }
+.p0 { background: var(--red-soft); color: var(--red); }
+.p1 { background: var(--amber-soft); color: var(--amber); }
+.p2 { background: var(--accent-soft); color: var(--accent); }
+.be { background: var(--violet-soft); color: var(--violet); }
+.fe { background: var(--green-soft); color: var(--green); }
+.both { background: #eef0f3; color: #374151; }
+.get { background: var(--green-soft); color: var(--green); }
+.post { background: var(--accent-soft); color: var(--accent); }
+.patch { background: var(--amber-soft); color: var(--amber); }
+
+/* ---------- Callouts ---------- */
+.callout { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 2.6mm 3.5mm; border-radius: 0 2mm 2mm 0; margin: 2.5mm 0 3.5mm; break-inside: avoid; }
+.callout.warn { border-color: var(--amber); background: var(--amber-soft); }
+.callout.bad { border-color: var(--red); background: var(--red-soft); }
+.callout.good { border-color: var(--green); background: var(--green-soft); }
+.callout h4 { margin: 0 0 1mm; color: inherit; }
+.callout p:last-child, .callout ul:last-child { margin-bottom: 0; }
+
+/* ---------- Feature spec card ---------- */
+.spec { border: 1px solid var(--line); border-radius: 2.5mm; margin: 4mm 0 5mm; overflow: hidden; }
+.spec > .head { display: flex; align-items: center; gap: 2.5mm; background: var(--soft); border-bottom: 1px solid var(--line); padding: 2.4mm 3.5mm; break-after: avoid; }
+.spec > .head .id { font-family: var(--mono); font-weight: 700; font-size: 9pt; color: var(--accent); }
+.spec > .head .name { font-weight: 700; font-size: 10.6pt; flex: 1; }
+.spec > .body { padding: 2.5mm 3.5mm 1mm; }
+.endpoint { font-family: var(--mono); font-size: 9pt; font-weight: 600; margin: 1mm 0 2mm; }
+.endpoint .tag { font-family: var(--font); margin-right: 1.5mm; }
+
+/* ---------- Grids ---------- */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
+.box { border: 1px solid var(--line); border-radius: 2mm; padding: 3mm 3.5mm; break-inside: avoid; }
+.box h4 { margin-top: 0; }
+
+/* ---------- Contents ---------- */
+.toc { columns: 2; column-gap: 10mm; margin-top: 4mm; }
+.toc .part { break-inside: avoid; margin-bottom: 4mm; }
+.toc .part h4 { margin: 0 0 1.2mm; font-size: 8pt; text-transform: uppercase; letter-spacing: .07em; color: var(--accent); }
+.toc .item { display: flex; justify-content: space-between; gap: 3mm; font-size: 9.2pt; border-bottom: 1px dotted #cfd4db; padding: .9mm 0; }
+
+/* ---------- Phase timeline ---------- */
+.phases { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; margin: 3mm 0 4mm; }
+.phase { border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: 2mm; padding: 2.5mm 3mm; font-size: 8.6pt; break-inside: avoid; }
+.phase b { display: block; font-size: 9.6pt; margin-bottom: 1mm; }
+.phase ul { padding-left: 4mm; margin: 0; }
+
+/* ---------- Wireframes ---------- */
+.wire { border: 1px solid #cfd6df; border-radius: 2.5mm; padding: 3mm; background: #fbfcfd; margin: 2mm 0 4mm; break-inside: avoid; font-size: 8.4pt; }
+.wire .wt { font-weight: 700; font-size: 10pt; margin-bottom: .5mm; }
+.wire .ws { color: var(--muted); font-size: 8pt; margin-bottom: 2.5mm; }
+.wire .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2mm; margin-bottom: 2.5mm; }
+.wire .card { background: #fff; border: 1px solid var(--line); border-radius: 1.8mm; padding: 2mm 2.4mm; }
+.wire .card .l { font-size: 7pt; color: var(--muted); text-transform: uppercase; font-weight: 700; letter-spacing: .03em; }
+.wire .card .v { font-size: 12.5pt; font-weight: 750; margin-top: .6mm; font-variant-numeric: tabular-nums; }
+.wire .card .d { font-size: 7.2pt; color: var(--muted); }
+.wire table { background: #fff; font-size: 7.8pt; margin: 0; }
+.wire td, .wire th { padding: 1mm 1.6mm; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.pos { color: var(--green); font-weight: 700; }
+.neg { color: var(--red); font-weight: 700; }
+.meter { height: 2mm; background: #e9edf2; border-radius: 2mm; overflow: hidden; margin: .8mm 0 1.6mm; }
+.meter span { display: block; height: 100%; background: var(--accent); }
+.meter.tight span { background: var(--amber); }
+.avoid { break-inside: avoid; }

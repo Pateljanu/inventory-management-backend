@@ -1,0 +1,305 @@
+<!-- =============================== 5. APP SHELL (landscape) =============================== -->
+<section class="page landscape">
+  <div class="eyebrow">Foundations · Mockup S1</div>
+  <h1 class="title">App shell: the frame around every page</h1>
+  <p class="lead">shadcn <code>Sidebar</code> (collapsible to a 48 px icon rail, Ctrl+B, state remembered 7 days). Below 768 px it becomes a bottom bar (page 22).</p>
+  <div class="fig" style="width:872px">
+    <div class="browser">
+      <div class="bar"><i></i><i></i><i></i><div class="url">metalix.app/sales-orders?status=open</div></div>
+      <div class="ui shell" style="zoom:.68; width:1280px; height:700px">
+        <aside class="sidebar">
+          <div class="sb-head"><div class="logo">M</div><div><div class="fw6">Metalix</div><div class="t-xs t-muted">Scrap management</div></div></div>
+          <div class="sb-group"><div class="sb-label">Overview</div>
+            <div class="sb-item"><svg class="i"><use href="#i-dash"/></svg>Dashboard</div></div>
+          <div class="sb-group"><div class="sb-label">Daily work</div>
+            <div class="sb-item"><svg class="i"><use href="#i-in"/></svg>Purchases</div>
+            <div class="sb-item active"><svg class="i"><use href="#i-clip"/></svg>Sales Orders<span class="sb-badge">14</span></div>
+            <div class="sb-item"><svg class="i"><use href="#i-truck"/></svg>Deliveries</div></div>
+          <div class="sb-group"><div class="sb-label">Stock &amp; reports</div>
+            <div class="sb-item"><svg class="i"><use href="#i-ware"/></svg>Supplier stock</div>
+            <div class="sb-item"><svg class="i"><use href="#i-report"/></svg>Company report</div></div>
+          <div class="sb-group"><div class="sb-label">Setup</div>
+            <div class="sb-item"><svg class="i"><use href="#i-bldg"/></svg>Companies</div>
+            <div class="sb-item"><svg class="i"><use href="#i-layers"/></svg>Materials</div></div>
+          <div class="sb-foot">
+            <div class="sb-item"><svg class="i"><use href="#i-help"/></svg>Help &amp; shortcuts</div>
+            <div class="flex gap2" style="padding:8px"><div class="avatar">RP</div><div class="grow"><div class="fw5">Rajesh Patel</div><span class="badge b-outline" style="height:18px;font-size:11px;padding:0 6px">Owner</span></div><svg class="i t-muted"><use href="#i-updown"/></svg></div>
+          </div>
+        </aside>
+        <main class="inset" style="position:relative">
+          <div class="topbar">
+            <span class="btn ghost icon"><svg class="i"><use href="#i-panel"/></svg></span><span class="vsep"></span>
+            <div class="crumbs"><b>Sales Orders</b></div>
+            <span class="grow"></span>
+            <div class="searchbtn"><svg class="i"><use href="#i-search"/></svg><span class="grow">Search or jump to…</span><span class="kb">Ctrl K</span></div>
+            <span class="btn primary"><svg class="i"><use href="#i-plus"/></svg>New<svg class="i"><use href="#i-down"/></svg></span>
+          </div>
+          <!-- New menu open -->
+          <div class="card elevated" style="position:absolute; right:16px; top:52px; width:230px; padding:4px; box-shadow:0 8px 24px rgba(0,0,0,.12); z-index:3">
+            <div class="flex gap2" style="height:34px;padding:0 8px;border-radius:6px;background:var(--accent)"><svg class="i"><use href="#i-in"/></svg><span class="grow">Purchase</span><span class="kb">Alt P</span></div>
+            <div class="flex gap2" style="height:34px;padding:0 8px"><svg class="i"><use href="#i-clip"/></svg><span class="grow">Sales order</span><span class="kb">Alt O</span></div>
+            <div class="flex gap2" style="height:34px;padding:0 8px"><svg class="i"><use href="#i-truck"/></svg><span class="grow">Delivery</span><span class="kb">Alt D</span></div>
+            <div style="height:1px;background:var(--border);margin:4px 0"></div>
+            <div class="flex gap2" style="height:34px;padding:0 8px"><svg class="i"><use href="#i-bldg"/></svg>Company</div>
+            <div class="flex gap2" style="height:34px;padding:0 8px"><svg class="i"><use href="#i-layers"/></svg>Material</div>
+          </div>
+          <div class="content">
+            <div class="flex between">
+              <div><div style="font-size:24px;line-height:32px;font-weight:600">Sales Orders</div><div class="t-muted">Orders from buyers. Record deliveries against them.</div></div>
+              <span class="btn primary" style="margin-top:-40px;opacity:0">.</span>
+            </div>
+            <div class="flex between" style="margin-top:18px">
+              <div class="toggle"><span class="on">Open · 14</span><span>Partly delivered · 5</span><span>Completed</span><span>All</span></div>
+              <span class="btn primary"><svg class="i"><use href="#i-plus"/></svg>New sales order <span class="kbd-in">Alt O</span></span>
+            </div>
+            <table class="t" style="margin-top:14px">
+              <thead><tr><th>PO no.</th><th>Date</th><th>Customer</th><th>Material</th><th class="num">Ordered (t)</th><th class="num">Left (t)</th><th style="width:150px">Progress</th><th>Status</th><th></th></tr></thead>
+              <tbody>
+                <tr><td class="fw5">PO-0142</td><td>09/09/2026</td><td>Bharat Castings Pvt Ltd</td><td>HMS 1</td><td class="num">30.000</td><td class="num fw6">11.750</td><td><div class="bar info"><i style="width:61%"></i></div></td><td><span class="badge b-partial"><svg class="i"><use href="#i-truck"/></svg>Partly delivered</span></td><td><span class="btn outline sm">Deliver</span></td></tr>
+                <tr class="hover"><td class="fw5">PO-0147</td><td>15/09/2026</td><td>Rajkot Alloys</td><td>MS turnings</td><td class="num">22.000</td><td class="num fw6">22.000</td><td><div class="bar"><i style="width:0"></i></div></td><td><span class="badge b-pending"><svg class="i"><use href="#i-clock"/></svg>Pending</span></td><td><span class="btn outline sm">Deliver</span></td></tr>
+                <tr><td class="fw5">PO-0151</td><td>20/09/2026</td><td>Kutch Foundry Works</td><td>Brass honey</td><td class="num">20.000</td><td class="num fw6">20.000</td><td><div class="bar"><i style="width:0"></i></div></td><td><span class="badge b-pending"><svg class="i"><use href="#i-clock"/></svg>Pending</span></td><td><span class="btn outline sm">Deliver</span></td></tr>
+                <tr><td class="fw5">PO-0149</td><td>18/09/2026</td><td>Bharat Castings Pvt Ltd</td><td>CRC bundle</td><td class="num">40.000</td><td class="num fw6">16.140</td><td><div class="bar info"><i style="width:60%"></i></div></td><td><span class="badge b-partial"><svg class="i"><use href="#i-truck"/></svg>Partly delivered</span></td><td><span class="btn outline sm">Deliver</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </main>
+      </div>
+    </div>
+    <span class="mk" style="left:102px;top:40px">1</span>
+    <span class="mk" style="left:112px;top:118px">2</span>
+    <span class="mk" style="left:160px;top:151px">3</span>
+    <span class="mk" style="left:292px;top:40px">4</span>
+    <span class="mk" style="left:598px;top:40px">5</span>
+    <span class="mk" style="left:700px;top:64px">6</span>
+    <span class="mk" style="left:160px;top:462px">7</span>
+    <span class="mk" style="left:802px;top:252px">8</span>
+    <span class="mk" style="left:447px;top:136px">9</span>
+  </div>
+  <div class="legend c3">
+    <div><span class="dot">1</span><span>Logo + business name. In the 48 px rail only the "M" square shows.</span></div>
+    <div><span class="dot">2</span><span>Four groups by frequency of use; icon + text label on every item.</span></div>
+    <div><span class="dot">3</span><span>Active item: tinted background, 3 px blue bar, <code>aria-current="page"</code>. Badge = open orders.</span></div>
+    <div><span class="dot">4</span><span>Sidebar toggle (Ctrl+B) and breadcrumb; detail pages read "Sales Orders › PO-0142".</span></div>
+    <div><span class="dot">5</span><span>Visible search button with a "Ctrl K" chip so occasional users discover the palette.</span></div>
+    <div><span class="dot">6</span><span>"+ New" creates anything from anywhere, with Tally-style Alt shortcuts. Hidden for VIEWER.</span></div>
+    <div><span class="dot">7</span><span>User row shows the role ("Owner" / "View only"); menu holds Theme incl. Sunlight, Reduce animations, Log out.</span></div>
+    <div><span class="dot">8</span><span>One visible "Deliver" button on open orders: the most frequent action, one click away.</span></div>
+    <div><span class="dot">9</span><span>Quick-view tabs instead of a status filter; exactly one primary action per page.</span></div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Foundations</div>
+</section>
+
+<!-- =============================== 6. PAGE ANATOMY & CONTAINERS =============================== -->
+<section class="page">
+  <div class="eyebrow">Foundations</div>
+  <h1 class="title">Page anatomy, containers and shortcuts</h1>
+  <p class="lead">Every page is built the same way, and every create/edit form opens in the same kind of container. Users stop hunting for buttons after the first day.</p>
+
+  <div class="g-1-2">
+    <div>
+      <h3 class="mt0">One page anatomy</h3>
+      <svg viewBox="0 0 220 300" width="100%">
+        <rect x="1" y="1" width="218" height="298" rx="8" fill="#fff" stroke="#cfd4db"/>
+        <rect x="1" y="1" width="218" height="26" rx="8" fill="#f1f3f5"/><text x="10" y="18" font-size="9" fill="#5b6270">Header: ≡ · breadcrumb · search · + New</text>
+        <rect x="12" y="38" width="120" height="12" rx="3" fill="#17191c"/><rect x="12" y="55" width="150" height="7" rx="3" fill="#c3c9d1"/>
+        <rect x="160" y="38" width="48" height="16" rx="4" fill="oklch(0.45 0.10 235)"/><text x="184" y="49" font-size="7.5" fill="#fff" text-anchor="middle">Primary</text>
+        <text x="12" y="80" font-size="8.5" fill="oklch(0.45 0.10 235)" font-weight="700">① Title · description · 1 primary action</text>
+        <rect x="12" y="88" width="196" height="18" rx="4" fill="#f5f7f9" stroke="#dfe3e8"/><text x="18" y="100" font-size="8" fill="#5b6270">🔍 search · date · supplier · material</text>
+        <text x="12" y="120" font-size="8.5" fill="oklch(0.45 0.10 235)" font-weight="700">② Filter bar (+ chips when active)</text>
+        <rect x="12" y="127" width="196" height="12" rx="3" fill="oklch(0.95 0.02 235)"/><text x="18" y="136" font-size="7.5" fill="#17191c">46 purchases · 412.380 t · ₹1,84,62,310.00</text>
+        <text x="12" y="152" font-size="8.5" fill="oklch(0.45 0.10 235)" font-weight="700">③ Summary strip (whole filtered set)</text>
+        <g fill="#eef0f3"><rect x="12" y="160" width="196" height="12"/><rect x="12" y="175" width="196" height="12"/><rect x="12" y="190" width="196" height="12"/><rect x="12" y="205" width="196" height="12"/><rect x="12" y="220" width="196" height="12"/></g>
+        <text x="12" y="248" font-size="8.5" fill="oklch(0.45 0.10 235)" font-weight="700">④ Content: DataTable / cards / stat cards</text>
+        <rect x="12" y="258" width="196" height="16" rx="3" fill="#f5f7f9"/><text x="18" y="269" font-size="7.5" fill="#5b6270">Showing 1–25 of 46     ‹ 1 2 ›</text>
+        <text x="12" y="290" font-size="8.5" fill="oklch(0.45 0.10 235)" font-weight="700">⑤ Pagination / footer actions</text>
+      </svg>
+      <p class="small">Padding 24 px (16 px on phones). Lists use the full width; forms stay ≈ 560–640 px wide; detail pages split 2/3 + 1/3 from 1024 px.</p>
+    </div>
+    <div>
+      <h3 class="mt0">Which container for which job</h3>
+      <svg viewBox="0 0 420 150" width="100%">
+        <g font-size="10">
+          <rect x="4" y="4" width="128" height="86" rx="6" fill="#f5f7f9" stroke="#cfd4db"/><rect x="70" y="4" width="62" height="86" rx="0" fill="#fff" stroke="oklch(0.45 0.10 235)" stroke-width="1.5"/>
+          <text x="68" y="108" text-anchor="middle" font-weight="700">Right Sheet</text><text x="68" y="122" text-anchor="middle" fill="#5b6270">create / edit records</text><text x="68" y="135" text-anchor="middle" fill="#5b6270">512–576 px (768 delivery)</text>
+          <rect x="146" y="4" width="128" height="86" rx="6" fill="#f5f7f9" stroke="#cfd4db"/><rect x="176" y="28" width="68" height="40" rx="5" fill="#fff" stroke="oklch(0.45 0.10 235)" stroke-width="1.5"/>
+          <text x="210" y="108" text-anchor="middle" font-weight="700">Small Dialog</text><text x="210" y="122" text-anchor="middle" fill="#5b6270">add company from a picker;</text><text x="210" y="135" text-anchor="middle" fill="#5b6270">AlertDialog = confirm only</text>
+          <rect x="288" y="4" width="128" height="86" rx="6" fill="#fff" stroke="oklch(0.45 0.10 235)" stroke-width="1.5"/><rect x="298" y="14" width="60" height="7" rx="2" fill="#17191c"/><g fill="#e8ebef"><rect x="298" y="28" width="30" height="16" rx="2"/><rect x="332" y="28" width="30" height="16" rx="2"/><rect x="366" y="28" width="40" height="16" rx="2"/><rect x="298" y="50" width="108" height="32" rx="2"/></g>
+          <text x="352" y="108" text-anchor="middle" font-weight="700">Full page (own URL)</text><text x="352" y="122" text-anchor="middle" fill="#5b6270">details with related records:</text><text x="352" y="135" text-anchor="middle" fill="#5b6270">sales order, company, material</text>
+        </g>
+      </svg>
+      <ul class="clean small" style="color:var(--doc-fg)">
+        <li>Sheets keep the list visible behind them, so users never lose their place (NN/g: modals make people forget details they need).</li>
+        <li>Sheets have URLs (<code>/sales/new?poId=0142</code>): refreshing never loses the form, and drafts are saved locally.</li>
+        <li>On phones every Sheet and Dialog becomes a bottom <b>Drawer</b>.</li>
+      </ul>
+
+      <h3>Keyboard: Tally-speed for accountants</h3>
+      <table class="doc compact">
+        <tr><td><span class="kbd">Ctrl</span> <span class="kbd">K</span></td><td>Command palette: go to, create, search, recent</td></tr>
+        <tr><td><span class="kbd">Alt</span> <span class="kbd">P</span> / <span class="kbd">O</span> / <span class="kbd">D</span></td><td>New purchase / sales order / delivery (F9, F8 as aliases)</td></tr>
+        <tr><td><span class="kbd">Alt</span> <span class="kbd">C</span></td><td>Inside a picker: add the typed company or material</td></tr>
+        <tr><td><span class="kbd">Enter</span> · <span class="kbd">Ctrl</span> <span class="kbd">↵</span></td><td>Next field · save the form</td></tr>
+        <tr><td><span class="kbd">/</span> · <span class="kbd">Esc</span> · <span class="kbd">?</span></td><td>Focus table search · close overlay · show all shortcuts</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <h3>Command palette (Ctrl+K)</h3>
+  <div class="ui dialog" style="width:520px; padding:0; margin-top:2mm; zoom:.9">
+    <div class="flex gap2" style="height:48px; padding:0 14px; border-bottom:1px solid var(--border)"><svg class="i t-muted"><use href="#i-search"/></svg><span>shree</span><span class="grow"></span><span class="kb">Esc</span></div>
+    <div style="padding:6px">
+      <div class="t-xs t-muted fw5" style="padding:6px 8px">Companies</div>
+      <div class="flex gap2" style="height:36px;padding:0 8px;border-radius:6px;background:var(--accent)"><svg class="i"><use href="#i-bldg"/></svg><span class="grow"><b>Shree</b> Ganesh Metals</span><span class="t-xs t-muted">Supplier · Rajkot</span></div>
+      <div class="t-xs t-muted fw5" style="padding:6px 8px">Create</div>
+      <div class="flex gap2" style="height:36px;padding:0 8px"><svg class="i"><use href="#i-in"/></svg><span class="grow">New purchase from Shree Ganesh Metals</span><span class="kb">Alt P</span></div>
+      <div class="t-xs t-muted fw5" style="padding:6px 8px">Recent</div>
+      <div class="flex gap2" style="height:36px;padding:0 8px"><svg class="i"><use href="#i-clip"/></svg><span class="grow">PO-0142 · Bharat Castings Pvt Ltd</span><span class="t-xs t-muted">opened 10 min ago</span></div>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Foundations</div>
+</section>
+
+<!-- =============================== 7. DASHBOARD (landscape) =============================== -->
+<section class="page landscape">
+  <div class="eyebrow">Dashboard · Mockup S2</div>
+  <h1 class="title">Dashboard: "what do I buy, what can I deliver" on one screen</h1>
+  <div class="row" style="gap:5mm; margin-top:2mm">
+    <div class="fig" style="flex:none; width:778px">
+      <div class="browser">
+        <div class="bar"><i></i><i></i><i></i><div class="url">metalix.app/?period=this-month</div></div>
+        <div class="ui" style="zoom:.6; width:1280px; padding:24px 24px 20px">
+          <div class="flex between">
+            <div><div style="font-size:24px;line-height:32px;font-weight:600">Dashboard</div><div class="t-muted">Good afternoon, Rajesh. Here's September so far.</div></div>
+            <div style="text-align:right">
+              <div class="toggle"><span>Today</span><span>This week</span><span class="on">This month</span><span>This FY</span><span>Custom <svg class="i sm"><use href="#i-down"/></svg></span></div>
+              <div class="t-xs t-muted" style="margin-top:6px">01/09/2026 – 27/09/2026 · compared with 01/08/2026 – 27/08/2026 · Updated 2 min ago <svg class="i sm"><use href="#i-refresh"/></svg></div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:18px">
+            <div class="card card-p stat"><div class="label">Stock in yard</div><div class="value">286.5 t</div><div class="delta">▲ 31.520 t since 01/09/2026</div><div class="foot">6 materials · View stock →</div></div>
+            <div class="card card-p stat" style="border-color:color-mix(in oklch,var(--warning) 70%,transparent)"><div class="label">Buy needed <svg class="i t-warn"><use href="#i-alert"/></svg></div><div class="value">38.8 t</div><div class="delta t-warn fw5">3 materials are short of open orders</div><div class="foot">HMS 1 24.500 t · Brass honey 13.000 t · Copper 1.250 t</div></div>
+            <div class="card card-p stat"><div class="label">Open sales orders</div><div class="value">14</div><div class="delta">212.300 t left to deliver</div><div class="foot">9 pending · 5 partly delivered</div></div>
+            <div class="card card-p stat"><div class="label">Delivered this month</div><div class="value">₹1.96 Cr</div><div class="delta t-success"><svg class="i sm"><use href="#i-trend"/></svg> ▲ 8% vs Aug (₹1.82 Cr)</div><div class="foot">380.860 t in 41 deliveries</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:8fr 4fr;gap:16px;margin-top:16px">
+            <div class="card" style="padding:16px 20px">
+              <div class="card-title">Needs attention</div><div class="t-xs t-muted">Things to act on today</div>
+              <div class="t-xs t-muted fw6" style="margin-top:12px">BUY NEEDED (3)</div>
+              <div class="flex gap3" style="height:40px;border-bottom:1px solid var(--border)"><svg class="i t-warn"><use href="#i-alert"/></svg><span class="fw5" style="width:170px">HMS 1</span><span class="grow">short <b>24.500 t</b> <span class="t-muted t-xs">· Orders 96.000 t · in yard 71.500 t</span></span><span class="btn outline sm"><svg class="i sm"><use href="#i-plus"/></svg>Purchase</span></div>
+              <div class="flex gap3" style="height:40px;border-bottom:1px solid var(--border)"><svg class="i t-warn"><use href="#i-alert"/></svg><span class="fw5" style="width:170px">Brass honey</span><span class="grow">short <b>13.000 t</b> <span class="t-muted t-xs">· Orders 22.800 t · in yard 9.800 t</span></span><span class="btn outline sm"><svg class="i sm"><use href="#i-plus"/></svg>Purchase</span></div>
+              <div class="t-xs t-muted fw6" style="margin-top:12px">ORDERS WAITING (oldest first · 3 of 14)</div>
+              <div class="flex gap3" style="height:40px;border-bottom:1px solid var(--border)"><span class="fw5" style="width:70px">PO-0142</span><span style="width:190px">Bharat Castings Pvt Ltd</span><span class="grow"><b>11.750 t</b> left · <span class="t-muted">HMS 1</span></span><span class="badge b-partial">Partly delivered · 18 days</span><span class="btn outline sm">Deliver</span></div>
+              <div class="flex gap3" style="height:40px;border-bottom:1px solid var(--border)"><span class="fw5" style="width:70px">PO-0147</span><span style="width:190px">Rajkot Alloys</span><span class="grow"><b>22.000 t</b> left · <span class="t-muted">MS turnings</span></span><span class="badge b-pending">Pending · 12 days</span><span class="btn outline sm">Deliver</span></div>
+              <div class="t-xs t-muted fw6" style="margin-top:12px">LOW SUPPLIER STOCK</div>
+              <div class="flex gap3" style="height:36px"><span class="fw5">Sharma Traders</span><span class="t-muted">Copper wire (Berry)</span><span class="grow"><b>0.420 t</b> left</span><span class="btn link">View all 14 open orders →</span></div>
+            </div>
+            <div class="card" style="padding:16px 20px">
+              <div class="card-title">Stock vs open orders (t)</div>
+              <svg viewBox="0 0 380 250" width="100%" style="margin-top:6px">
+                <g font-size="11" fill="#17191c">
+                  <text x="0" y="16" font-size="10" fill="oklch(0.55 0.13 240)" font-weight="600">■ In yard</text><text x="70" y="16" font-size="10" fill="oklch(0.62 0.16 55)" font-weight="600">■ Open orders</text>
+                  <g transform="translate(0,30)">
+                    <text x="0" y="13">HMS 1</text><rect x="100" y="2" width="113" height="8" rx="2" fill="oklch(0.55 0.13 240)"/><rect x="100" y="12" width="152" height="8" rx="2" fill="oklch(0.70 0.16 55)"/><text x="258" y="16" fill="oklch(0.42 0.10 60)" font-weight="600">⚠ Short 24.5</text>
+                  </g>
+                  <g transform="translate(0,66)"><text x="0" y="13">Brass honey</text><rect x="100" y="2" width="16" height="8" rx="2" fill="oklch(0.55 0.13 240)"/><rect x="100" y="12" width="36" height="8" rx="2" fill="oklch(0.70 0.16 55)"/><text x="142" y="16" fill="oklch(0.42 0.10 60)" font-weight="600">⚠ Short 13.0</text></g>
+                  <g transform="translate(0,102)"><text x="0" y="13">Copper wire</text><rect x="100" y="2" width="4" height="8" rx="1" fill="oklch(0.55 0.13 240)"/><rect x="100" y="12" width="6" height="8" rx="1" fill="oklch(0.70 0.16 55)"/><text x="112" y="16" fill="oklch(0.42 0.10 60)" font-weight="600">⚠ Short 1.3</text></g>
+                  <g transform="translate(0,138)"><text x="0" y="13">Aluminium ext.</text><rect x="100" y="2" width="30" height="8" rx="2" fill="oklch(0.55 0.13 240)"/><rect x="100" y="12" width="19" height="8" rx="2" fill="oklch(0.70 0.16 55)"/><text x="136" y="16" fill="#5b6270">Extra 6.9</text></g>
+                  <g transform="translate(0,174)"><text x="0" y="13">MS turnings</text><rect x="100" y="2" width="102" height="8" rx="2" fill="oklch(0.55 0.13 240)"/><rect x="100" y="12" width="35" height="8" rx="2" fill="oklch(0.70 0.16 55)"/><text x="208" y="16" fill="#5b6270">Extra 42.3</text></g>
+                  <g transform="translate(0,210)"><text x="0" y="13">CRC bundle</text><rect x="100" y="2" width="190" height="8" rx="2" fill="oklch(0.55 0.13 240)"/><rect x="100" y="12" width="89" height="8" rx="2" fill="oklch(0.70 0.16 55)"/><text x="296" y="16" fill="#5b6270">Extra 63.7</text></g>
+                  <line x1="100" y1="26" x2="100" y2="248" stroke="#c3c9d1"/>
+                </g>
+              </svg>
+              <div class="t-xs t-primary" style="text-align:right">View as table</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:7fr 5fr;gap:16px;margin-top:16px">
+            <div class="card" style="padding:16px 20px">
+              <div class="card-title">Bought vs delivered per week (t)</div>
+              <svg viewBox="0 0 640 190" width="100%">
+                <g font-size="11" fill="#5b6270">
+                  <line x1="40" y1="170" x2="600" y2="170" stroke="#dfe3e8"/><line x1="40" y1="110" x2="600" y2="110" stroke="#f0f2f4"/><line x1="40" y1="50" x2="600" y2="50" stroke="#f0f2f4"/>
+                  <text x="30" y="174" text-anchor="end">80</text><text x="30" y="114" text-anchor="end">100</text><text x="30" y="54" text-anchor="end">120</text>
+                  <text x="80" y="186" text-anchor="middle">01–06 Sep</text><text x="240" y="186" text-anchor="middle">07–13 Sep</text><text x="400" y="186" text-anchor="middle">14–20 Sep</text><text x="540" y="186" text-anchor="middle">21–27 Sep</text>
+                  <polyline points="80,120.8 240,83.3 400,72.5 540,126.3" fill="none" stroke="oklch(0.55 0.13 240)" stroke-width="3"/>
+                  <polyline points="80,132.8 240,106.1 400,121.2 540,137.3" fill="none" stroke="oklch(0.70 0.16 55)" stroke-width="3" stroke-dasharray="7 5"/>
+                  <text x="548" y="122" fill="oklch(0.45 0.13 240)" font-weight="700">Bought</text><text x="548" y="146" fill="oklch(0.55 0.16 55)" font-weight="700">Delivered</text>
+                </g>
+              </svg>
+            </div>
+            <div class="card" style="padding:16px 20px">
+              <div class="card-title">Recent activity</div>
+              <div class="flex gap3" style="height:44px;border-bottom:1px solid var(--border)"><svg class="i t-muted"><use href="#i-in"/></svg><div class="grow"><div class="fw5">Shree Ganesh Metals</div><div class="t-xs t-muted">27/09 · HMS 1 · 12.450 t</div></div><span class="num">₹4,29,525.00</span></div>
+              <div class="flex gap3" style="height:44px;border-bottom:1px solid var(--border)"><svg class="i t-muted"><use href="#i-in"/></svg><div class="grow"><div class="fw5">Sharma Traders</div><div class="t-xs t-muted">27/09 · Copper wire (Berry) · 1.275 t</div></div><span class="num">₹10,00,875.00</span></div>
+              <div class="flex gap3" style="height:44px;border-bottom:1px solid var(--border)"><svg class="i t-muted"><use href="#i-truck"/></svg><div class="grow"><div class="fw5">PO-0138 · Rajkot Alloys</div><div class="t-xs t-muted">26/09 · MS turnings · 15.000 t · now Completed</div></div><span class="num">₹5,32,500.00</span></div>
+              <div class="flex gap3" style="height:44px"><svg class="i t-muted"><use href="#i-in"/></svg><div class="grow"><div class="fw5">Patel Scrap Co.</div><div class="t-xs t-muted">26/09 · Brass honey · 2.140 t</div></div><span class="num">₹10,52,880.00</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="mk" style="left:540px;top:30px">1</span>
+      <span class="mk" style="left:-8px;top:86px">2</span>
+      <span class="mk" style="left:300px;top:112px">3</span>
+      <span class="mk" style="left:-8px;top:180px">4</span>
+      <span class="mk" style="left:448px;top:228px">5</span>
+      <span class="mk" style="left:520px;top:180px">6</span>
+      <span class="mk" style="left:-8px;top:392px">7</span>
+    </div>
+    <div class="legend" style="grid-template-columns:1fr; margin-top:0; font-size:8.8pt">
+      <div><span class="dot">1</span><span><b>Period control</b> with Indian presets, resolved dates in words, comparison period and "Updated 2 min ago". Refetch every 60 s.</span></div>
+      <div><span class="dot">2</span><span><b>Four KPI cards only.</b> Each has a comparison ("▲ 8% vs Aug") and links to the filtered list behind it.</span></div>
+      <div><span class="dot">3</span><span><b>"Buy needed"</b> = open-order demand minus stock, per material. The most actionable number; the only card with colour.</span></div>
+      <div><span class="dot">4</span><span><b>Needs attention</b>: materials to buy, oldest orders waiting, low supplier stock, each with its one-click action.</span></div>
+      <div><span class="dot">5</span><span>Inline actions open the Sheet with material / PO already filled in. Hidden for VIEWER.</span></div>
+      <div><span class="dot">6</span><span><b>Horizontal bars</b> sorted by shortage, end-labelled "Short 24.5". Axis starts at zero. "View as table" for exact values.</span></div>
+      <div><span class="dot">7</span><span>Trend as two lines, <b>labelled at the line ends</b> (no colour legend), solid vs dashed as a second cue.</span></div>
+      <div class="callout warn" style="display:block;margin-top:2mm;font-size:8.5pt">No pies, donuts, gauges or 3-D. KPI numbers never "count up". A margin card waits for a per-material rate endpoint.</div>
+    </div>
+  </div>
+  <div class="runhead">Metalix UI/UX System · Dashboard</div>
+</section>
+
+<!-- =============================== 8. DASHBOARD RULES =============================== -->
+<section class="page">
+  <div class="eyebrow">Dashboard</div>
+  <h1 class="title">Dashboard rules and data visualisation</h1>
+  <p class="lead">A dashboard is the most important information "arranged on a single screen so it can be monitored at a glance" (Stephen Few). Every number needs context to show whether it is good or bad, and every number should lead somewhere.</p>
+
+  <h2 class="mt0">The four KPI cards</h2>
+  <table class="doc">
+    <tr><th>Card</th><th>Value</th><th>Context line</th><th>Click goes to</th></tr>
+    <tr><td><b>Stock in yard</b></td><td class="tnum">286.5 t <span class="muted">(tooltip 286.450 t)</span></td><td>▲ 31.520 t since 01/09/2026</td><td><code>/reports/source-stock</code></td></tr>
+    <tr><td><b>Buy needed</b> ⚠</td><td class="tnum">38.8 t</td><td>3 materials are short of open orders</td><td><code>/reports/stock?view=shortfall</code></td></tr>
+    <tr><td><b>Open sales orders</b></td><td class="tnum">14</td><td>212.300 t left to deliver</td><td><code>/sales-orders?status=PENDING,PARTIALLY_SUPPLIED</code></td></tr>
+    <tr><td><b>Delivered this month</b></td><td class="tnum">₹1.96 Cr</td><td>▲ 8% vs Aug (₹1.82 Cr)</td><td><code>/sales?from=2026-09-01&amp;to=2026-09-30</code></td></tr>
+  </table>
+
+  <h2>Pick the chart by the question</h2>
+  <table class="doc">
+    <tr><th>Question</th><th>Chart</th><th>Design rule</th></tr>
+    <tr><td>Do I have enough of each material for open orders?</td><td>Horizontal grouped bars</td><td>Sorted by shortage; end labels "Short 24.500 t"; axis starts at 0</td></tr>
+    <tr><td>How far is this order delivered?</td><td>Progress / bullet bar</td><td>"18.250 of 30.000 t · 61%"</td></tr>
+    <tr><td>Are we buying faster than we deliver?</td><td>Two-line chart</td><td>Direct labels at line ends; solid vs dashed</td></tr>
+    <tr><td>Are buy and sell rates moving? <span class="muted">(later)</span></td><td>Rate trend line</td><td>Needs a per-material rates endpoint first</td></tr>
+    <tr><td>Exact values for many materials</td><td>Table with inline bars</td><td>Switch automatically when there are more than 8 materials</td></tr>
+  </table>
+
+  <div class="do-dont">
+    <div class="do"><h4>Do</h4><ul>
+      <li>Label data directly on bars and line ends</li>
+      <li>Use colour only to flag attention (amber/red) plus an icon and words</li>
+      <li>Give every number a comparison: "▲ 8% vs Aug"</li>
+      <li>Make every card, row and bar a link to its filtered list</li>
+      <li>On phones print values on the bars; tooltips don't work on touch</li>
+    </ul></div>
+    <div class="dont"><h4>Don't</h4><ul>
+      <li>Pie, donut, gauge or 3-D charts</li>
+      <li>A legend that relies on colour alone (fails WCAG 1.4.1)</li>
+      <li>Animated count-up numbers (slow to read, noisy for screen readers)</li>
+      <li>More than 4 KPI cards or more than 2 charts above the fold</li>
+      <li>An averaged margin across copper and HMS: it is meaningless</li>
+    </ul></div>
+  </div>
+
+  <p class="small">Layout order (see page 7): period control → 4 KPI cards → Needs attention + stock bars → weekly trend + recent activity. Phones: KPI cards 2 × 2, then Needs attention (most useful in the yard), then charts.</p>
+  <div class="runhead">Metalix UI/UX System · Dashboard</div>
+</section>
