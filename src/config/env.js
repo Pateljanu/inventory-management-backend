@@ -5,6 +5,15 @@ const schema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   PORT: z.coerce.number().int().positive().default(4000),
   MONGODB_URI: z.string().min(1, 'MONGODB_URI is required'),
+  // Optional: database to use instead of the one named in MONGODB_URI. Set it only on a
+  // developer machine (e.g. metal_scrap_dev) so local testing never touches live data, even
+  // with the same Atlas connection string. Never set it on the live server.
+  MONGODB_DB_NAME: z
+    .string()
+    .trim()
+    .regex(/^[A-Za-z0-9_-]{1,63}$/, 'Letters, digits, _ and - only')
+    .optional()
+    .or(z.literal('').transform(() => undefined)),
   JWT_ACCESS_SECRET: z.string().min(32, 'JWT_ACCESS_SECRET must be at least 32 characters'),
   JWT_ACCESS_TTL: z.string().default('15m'),
   REFRESH_TOKEN_TTL_DAYS: z.coerce.number().int().positive().default(7),

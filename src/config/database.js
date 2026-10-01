@@ -22,7 +22,7 @@ function attachListeners() {
  * Indexes are created by versioned migrations (npm run migrate), never implicitly in production,
  * so an application restart can never trigger an unexpected expensive index build.
  */
-export async function connectDatabase(uri = env.MONGODB_URI, { dbName } = {}) {
+export async function connectDatabase(uri = env.MONGODB_URI, { dbName = env.MONGODB_DB_NAME } = {}) {
   attachListeners();
   closing = false;
   await mongoose.connect(uri, {

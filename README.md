@@ -47,6 +47,28 @@ In `.env`:
 
 In Atlas, the database user needs `readWrite` on `metal_scrap` only, and your IP must be in *Network Access*.
 
+### Separate database for local testing
+
+Your computer and the live server can share the same Atlas connection string and still use
+different databases. In your **local** `.env` only, add:
+
+```
+MONGODB_DB_NAME=metal_scrap_dev
+```
+
+Everything run on this machine (`npm run dev`, `migrate`, `create-owner`, `reconcile`) then uses
+`metal_scrap_dev`, and live data in `metal_scrap` is never read or changed. Set the new database
+up once, then log in locally with this owner:
+
+```bash
+npm run migrate
+node scripts/create-owner.js you@example.com "Your-Strong-Password"
+```
+
+The startup log line `MongoDB connected` shows which database is in use. Never set
+`MONGODB_DB_NAME` on the live server. If the Atlas user is limited to `metal_scrap`, also give it
+`readWrite` on `metal_scrap_dev`.
+
 Check it is running:
 
 ```bash
@@ -91,6 +113,7 @@ Validated at startup — the process exits immediately if anything is missing or
 | `NODE_ENV` | `development` | `production` in deployed environments |
 | `PORT` | `4000` | |
 | `MONGODB_URI` | — | Replica set / Atlas URI with database name. Secret. |
+| `MONGODB_DB_NAME` | — | Optional. Uses this database instead of the one in `MONGODB_URI`. Local `.env` only (e.g. `metal_scrap_dev`), never on the live server |
 | `JWT_ACCESS_SECRET` | — | ≥ 32 chars. Secret. Placeholder value is rejected in production. |
 | `JWT_ACCESS_TTL` | `15m` | Access-token lifetime |
 | `REFRESH_TOKEN_TTL_DAYS` | `7` | Refresh-session lifetime |
@@ -128,6 +151,14 @@ quantity ≤ stock of the selected source company for that material as of saleDa
 Source-company stock = purchases from that company for the material − sales allocated to it
 (pool accounting, not FIFO / per-invoice). **Opening stock never counts toward any source company** — record
 supplier-traceable go-live stock as Purchase records instead.
+
+**Settling a supplier pool.** A purchase is often booked on the supplier's estimate (say 30 t) while
+the trucks load less (28 t), leaving stock that never existed. `POST /purchases/settle` sets one
+supplier + material pool to zero: the leftover is taken off that supplier's purchases, **latest
+first**, so each purchase ends at what was really delivered. The rate stays and the amount is
+recalculated (`28 × rate`). The original quantity is kept in `bookedTons` the first time a purchase
+is trimmed; a purchase may end at `0.000` t. Stock, supplier stock and every report follow
+automatically because they are computed from purchases.
 
 **History is protected.** Every create/edit of a purchase, sale, PO material change, or opening-stock change
 replays the full ledger of each affected material *and* each affected source-company pool; if any past day
@@ -175,6 +206,11 @@ Login is limited to 10 **failed** attempts per 15 minutes per IP.
 | `/purchases` | `from, to, companyId, materialId, search` | ✓ | ✓ | ✓ |
 | `/sales-pos` | `from, to, companyId, materialId, lifecycleStatus, status, search` | ✓ (+ position) | ✓ | ✓ |
 | `/sales` | `from, to, companyId, sourceCompanyId, materialId, poId, search` | ✓ | ✓ | ✓ |
+
+`GET /purchases/settle?companyId=&materialId=` (OWNER and VIEWER) previews a settle and
+`POST /purchases/settle` with body `{ companyId, materialId }` (OWNER) applies it. Both return
+`purchasedTons`, `usedTons`, `leftTons` and `changes[{ purchaseId, purchaseDate, invoiceNumber,
+vehicleNumber, ratePerTon, bookedTons, fromTons, toTons, fromAmount, toAmount }]`.
 
 PATCH accepts any subset of the create fields. On optional code fields (`gstNumber`, `vehicleNumber`,
 `invoiceNumber`, `challanNumber`) an empty string `""` clears the value. There are no DELETE endpoints —
@@ -261,7 +297,7 @@ Sale-capacity errors include `remainingQuantityTons`, `availableStockTons`, `ava
 | 401 | `UNAUTHENTICATED`, `INVALID_CREDENTIALS`, `TOKEN_EXPIRED`, `INVALID_REFRESH_TOKEN` |
 | 403 | `FORBIDDEN` |
 | 404 | `NOT_FOUND`, `COMPANY_NOT_FOUND`, `MATERIAL_NOT_FOUND`, `PURCHASE_NOT_FOUND`, `PO_NOT_FOUND`, `SALE_NOT_FOUND` |
-| 409 | `DUPLICATE_VALUE`, `PO_QUANTITY_EXCEEDED`, `INSUFFICIENT_STOCK`, `INSUFFICIENT_SOURCE_STOCK`, `NEGATIVE_STOCK_HISTORY`, `NEGATIVE_SOURCE_STOCK_HISTORY`, `PO_QTY_BELOW_SOLD`, `COMPANY_TYPE_IN_USE` |
+| 409 | `DUPLICATE_VALUE`, `PO_QUANTITY_EXCEEDED`, `INSUFFICIENT_STOCK`, `INSUFFICIENT_SOURCE_STOCK`, `NEGATIVE_STOCK_HISTORY`, `NEGATIVE_SOURCE_STOCK_HISTORY`, `PO_QTY_BELOW_SOLD`, `COMPANY_TYPE_IN_USE`, `NOTHING_TO_SETTLE` |
 | 413 | `PAYLOAD_TOO_LARGE` (body > 1 MB) |
 | 422 | `VALIDATION_ERROR` (with `details.issues[{ path, message }]`), `INVALID_PURCHASE_COMPANY`, `INVALID_SALE_COMPANY`, `INVALID_SOURCE_COMPANY`, `INVALID_MATERIAL`, `PO_NOT_AVAILABLE`, `SALE_BEFORE_PO_DATE`, `PO_DATE_AFTER_SALES` |
 | 429 | `TOO_MANY_REQUESTS`, `TOO_MANY_AUTH_ATTEMPTS` |

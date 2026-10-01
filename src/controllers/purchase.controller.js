@@ -18,3 +18,11 @@ export async function listPurchases(req, res) {
   const result = await purchaseService.list(req.validated.query);
   return ok(res, result.items, pageMeta(result));
 }
+
+export async function previewSettle(req, res) {
+  return ok(res, await purchaseService.settlePreview(req.validated.query));
+}
+
+export async function settlePurchases(req, res) {
+  return ok(res, await purchaseService.settle(req.validated.body, req.user._id));
+}

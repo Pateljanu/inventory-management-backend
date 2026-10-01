@@ -1,12 +1,13 @@
 import { AppError } from '../errors/AppError.js';
-import { amountFrom, d128, MONEY_SCALE, QTY_SCALE, RATE_SCALE } from '../utils/decimal.js';
-import { dateFilter } from '../utils/date.js';
+import { amountFrom, D, d128, Decimal, maxZero, MONEY_SCALE, QTY_SCALE, RATE_SCALE } from '../utils/decimal.js';
+import { dateFilter, toDateOnlyString } from '../utils/date.js';
 import { normalizeCode, normalizeText, searchRegex } from '../utils/normalize.js';
-import { sameId } from '../utils/objectId.js';
+import { sameId, toObjectId } from '../utils/objectId.js';
 import { pagination } from '../utils/pagination.js';
 import { withTransaction } from '../utils/transaction.js';
 import { purchaseRepository } from '../repositories/purchase.repository.js';
 import { materialRepository } from '../repositories/material.repository.js';
+import { saleRepository } from '../repositories/sale.repository.js';
 import { assertActiveMaterial, assertPurchaseCompany } from './references.js';
 import { stockService } from './stock.service.js';
 
@@ -44,6 +45,63 @@ function toUpdate(data) {
 
   if (data.notes !== undefined) $set.notes = data.notes;
   return { $set, ...(Object.keys($unset).length ? { $unset } : {}) };
+}
+
+/**
+ * What settling one supplier pool would do. The tons still left in the pool (bought from the
+ * supplier minus delivered from it) never really arrived, so they are taken off that supplier's
+ * purchases, latest first, until nothing is left. The rate stays; the amount follows the tons.
+ *
+ * Latest first keeps every day of the pool's history non-negative: after the earliest trimmed
+ * purchase only deliveries remain, and they now end exactly at zero.
+ */
+async function planSettle(companyId, materialId, session) {
+  const company = toObjectId(companyId);
+  const material = toObjectId(materialId);
+  const [purchases, used] = await Promise.all([
+    purchaseRepository.model
+      .find({ companyId: company, materialId: material })
+      .sort({ purchaseDate: -1, _id: -1 })
+      .select('purchaseDate invoiceNumber vehicleNumber quantityTons ratePerTon totalAmount bookedTons')
+      .session(session ?? null)
+      .lean(),
+    saleRepository.sumField({ sourceCompanyId: company, materialId: material }, 'quantityTons', { session })
+  ]);
+  const purchased = purchases.reduce((sum, p) => sum.plus(D(p.quantityTons)), D(0));
+  const left = maxZero(purchased.minus(used));
+
+  let toRemove = left;
+  const changes = [];
+  for (const p of purchases) {
+    if (!toRemove.gt(0)) break;
+    const before = D(p.quantityTons);
+    const cut = Decimal.min(before, toRemove);
+    if (cut.isZero()) continue;
+    toRemove = toRemove.minus(cut);
+    const after = before.minus(cut);
+    changes.push({
+      purchaseId: String(p._id),
+      purchaseDate: toDateOnlyString(p.purchaseDate),
+      invoiceNumber: p.invoiceNumber ?? null,
+      vehicleNumber: p.vehicleNumber ?? null,
+      ratePerTon: D(p.ratePerTon).toFixed(RATE_SCALE),
+      // The first settle remembers the original booking; a later one keeps it.
+      bookedTons: D(p.bookedTons ?? p.quantityTons).toFixed(QTY_SCALE),
+      fromTons: before.toFixed(QTY_SCALE),
+      toTons: after.toFixed(QTY_SCALE),
+      fromAmount: D(p.totalAmount).toFixed(MONEY_SCALE),
+      toAmount: amountFrom(after, p.ratePerTon)
+    });
+  }
+
+  return {
+    companyId: String(companyId),
+    materialId: String(materialId),
+    purchasedTons: purchased.toFixed(QTY_SCALE),
+    usedTons: D(used).toFixed(QTY_SCALE),
+    leftTons: left.toFixed(QTY_SCALE),
+    changes
+  };
 }
 
 export const purchaseService = {
@@ -101,6 +159,46 @@ export const purchaseService = {
         await stockService.assertSourceLedgerNonNegative(companyId, materialId, { session });
       }
       return updated;
+    });
+  },
+
+  /** Read-only: the purchases a settle would change right now. */
+  async settlePreview({ companyId, materialId }) {
+    return planSettle(companyId, materialId);
+  },
+
+  /**
+   * Sets one supplier pool to zero by trimming its purchases to what deliveries actually used
+   * (see planSettle). Runs under the material lock, so a delivery saved at the same moment is
+   * either fully counted or waits; both ledgers are replayed before commit as with any edit.
+   */
+  async settle({ companyId, materialId }, userId) {
+    return withTransaction(async (session) => {
+      await materialRepository.lock(materialId, { session });
+      const plan = await planSettle(companyId, materialId, session);
+      if (!plan.changes.length) {
+        throw new AppError(409, 'NOTHING_TO_SETTLE', 'No stock is left from this supplier for this material', {
+          companyId: plan.companyId,
+          materialId: plan.materialId
+        });
+      }
+      for (const change of plan.changes) {
+        await purchaseRepository.updateById(
+          change.purchaseId,
+          {
+            $set: {
+              quantityTons: d128(change.toTons, QTY_SCALE),
+              totalAmount: d128(change.toAmount, MONEY_SCALE),
+              bookedTons: d128(change.bookedTons, QTY_SCALE),
+              updatedBy: userId
+            }
+          },
+          { session }
+        );
+      }
+      await stockService.assertMaterialLedgerNonNegative(materialId, { session });
+      await stockService.assertSourceLedgerNonNegative(companyId, materialId, { session });
+      return plan;
     });
   },
 

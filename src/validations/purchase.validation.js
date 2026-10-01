@@ -44,3 +44,10 @@ export const purchaseListSchema = z.object({
     })
   )
 });
+
+/** One supplier stock pool: the purchase company and the material. */
+const pool = z.object({ companyId: objectId, materialId: objectId });
+
+export const purchaseSettlePreviewSchema = z.object({ body: empty, params: empty, query: pool });
+
+export const purchaseSettleSchema = z.object({ body: pool, params: empty, query: empty });

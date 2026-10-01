@@ -13,6 +13,9 @@ const schema = new mongoose.Schema(
     ratePerTon: { type: Decimal128, required: true },
     // Always calculated by the backend: quantityTons x ratePerTon.
     totalAmount: { type: Decimal128, required: true },
+    // Tons first booked with the supplier, kept when "settle" trims quantityTons down to what
+    // deliveries actually used. Absent on purchases that were never settled.
+    bookedTons: { type: Decimal128 },
     vehicleNumber: { type: String, trim: true, uppercase: true },
     invoiceNumber: { type: String, trim: true },
     normalizedInvoiceNumber: { type: String },
