@@ -3,6 +3,7 @@ import { PO_LIFECYCLE } from '../constants/poStatus.js';
 import { PURCHASE_COMPANY_TYPES } from '../constants/companyTypes.js';
 import { amountFrom, D, d128, Decimal, maxZero, MONEY_SCALE, QTY_SCALE, RATE_SCALE } from '../utils/decimal.js';
 import { dateFilter, toDateOnlyString } from '../utils/date.js';
+import { maxDeliverableTons } from '../utils/poTolerance.js';
 import { normalizeCode, normalizeText, searchRegex } from '../utils/normalize.js';
 import { sameId } from '../utils/objectId.js';
 import { pagination } from '../utils/pagination.js';
@@ -45,7 +46,8 @@ function assertNotBeforePO(saleDate, po) {
 
 /**
  * The three business limits on a delivery, evaluated inside the locked transaction:
- *   quantity <= PO remaining, <= overall material stock as of saleDate,
+ *   quantity <= PO remaining (ordered tons plus the order's tolerance, minus what is delivered),
+ *   <= overall material stock as of saleDate,
  *   and <= the selected source company's material stock as of saleDate.
  * When editing, the sale itself is excluded so it is not counted against its own capacity.
  */
@@ -55,6 +57,7 @@ async function assertCapacity({ po, sourceCompanyId, saleDate, quantityTons, exc
 
   const sold = await saleRepository.soldForPO(po._id, opts);
   const poRemaining = D(po.quantityTons).minus(sold);
+  const poAllowance = maxDeliverableTons(po.quantityTons, po.tolerancePercent).minus(sold);
   const overallStock = await stockService.getStockAsOf(po.materialId, saleDate, opts);
   const sourceStock = await stockService.getSourceCompanyStockAsOf(sourceCompanyId, po.materialId, saleDate, opts);
 
@@ -64,14 +67,20 @@ async function assertCapacity({ po, sourceCompanyId, saleDate, quantityTons, exc
     poId: String(po._id),
     sourceCompanyId: String(sourceCompanyId),
     materialId: String(po.materialId),
-    remainingQuantityTons: poRemaining.toFixed(3),
+    remainingQuantityTons: maxZero(poRemaining).toFixed(3),
+    poAllowanceTons: maxZero(poAllowance).toFixed(3),
     availableStockTons: overallStock.toFixed(3),
     availableSourceStockTons: sourceStock.toFixed(3),
-    maxAllowedTons: Decimal.max(Decimal.min(poRemaining, overallStock, sourceStock), 0).toFixed(3)
+    maxAllowedTons: Decimal.max(Decimal.min(poAllowance, overallStock, sourceStock), 0).toFixed(3)
   };
 
-  if (requested.gt(poRemaining)) {
-    throw new AppError(409, 'PO_QUANTITY_EXCEEDED', 'Sale quantity exceeds remaining PO quantity', details);
+  if (requested.gt(poAllowance)) {
+    throw new AppError(
+      409,
+      'PO_QUANTITY_EXCEEDED',
+      'Sale quantity exceeds remaining PO quantity (including its tolerance)',
+      details
+    );
   }
   if (requested.gt(overallStock)) {
     throw new AppError(
@@ -252,10 +261,11 @@ export const saleService = {
       stockService.sourcePoolsByCompany(po.materialId, saleDate, opts)
     ]);
     const remaining = D(po.quantityTons).minus(sold);
+    const allowance = maxDeliverableTons(po.quantityTons, po.tolerancePercent).minus(sold);
     const selected = sourceCompanyId ? String(sourceCompanyId) : null;
     const sourceStock = selected ? (pools.get(selected)?.available ?? D(0)) : null;
 
-    const limits = [['PO', remaining], ['STOCK', stock], ...(sourceStock ? [['SOURCE_STOCK', sourceStock]] : [])];
+    const limits = [['PO', allowance], ['STOCK', stock], ...(sourceStock ? [['SOURCE_STOCK', sourceStock]] : [])];
     const [limitedBy, lowest] = limits.reduce((a, b) => (b[1].lt(a[1]) ? b : a));
 
     const candidates = [...pools.keys()].filter((id) => pools.get(id).available.gt(0) || id === selected);
@@ -287,7 +297,10 @@ export const saleService = {
       poOpen: po.lifecycleStatus === PO_LIFECYCLE.ACTIVE,
       materialId: String(po.materialId),
       saleDate: toDateOnlyString(saleDate),
-      remainingQuantityTons: remaining.toFixed(QTY_SCALE),
+      // Ordered tons not delivered yet; poAllowanceTons adds the order's tolerance and is the limit.
+      remainingQuantityTons: maxZero(remaining).toFixed(QTY_SCALE),
+      tolerancePercent: D(po.tolerancePercent).toFixed(RATE_SCALE),
+      poAllowanceTons: maxZero(allowance).toFixed(QTY_SCALE),
       availableStockTons: stock.toFixed(QTY_SCALE),
       availableSourceStockTons: sourceStock ? sourceStock.toFixed(QTY_SCALE) : null,
       maxAllowedTons: maxZero(lowest).toFixed(QTY_SCALE),

@@ -4,6 +4,8 @@ import { SalesPO } from '../models/SalesPO.js';
 import { PO_DISPLAY_STATUS, PO_LIFECYCLE } from '../constants/poStatus.js';
 
 const ZERO = mongoose.Types.Decimal128.fromString('0');
+// Clamped positions keep the quantity scale ("0.000"), like the values they replace.
+const ZERO_TONS = mongoose.Types.Decimal128.fromString('0.000');
 
 /** Resolves a reference to { _id, name } like populate(), inside an aggregation. */
 const lookupName = (from, field) => [
@@ -12,7 +14,7 @@ const lookupName = (from, field) => [
 ];
 
 /**
- * Adds soldQuantityTons, remainingQuantityTons and the derived displayStatus from the Sale
+ * Adds soldQuantityTons, remainingQuantityTons, extraQuantityTons and the derived displayStatus from the Sale
  * collection. Status is computed, never stored, so it can never drift from the actual deliveries.
  */
 const positionStages = [
@@ -26,7 +28,13 @@ const positionStages = [
     }
   },
   { $set: { soldQuantityTons: { $ifNull: [{ $first: '$delivered.sold' }, ZERO] } } },
-  { $set: { remainingQuantityTons: { $max: [{ $subtract: ['$quantityTons', '$soldQuantityTons'] }, ZERO] } } },
+  {
+    $set: {
+      remainingQuantityTons: { $max: [{ $subtract: ['$quantityTons', '$soldQuantityTons'] }, ZERO_TONS] },
+      // Delivered beyond the ordered tons, within the order's tolerance.
+      extraQuantityTons: { $max: [{ $subtract: ['$soldQuantityTons', '$quantityTons'] }, ZERO_TONS] }
+    }
+  },
   {
     $set: {
       displayStatus: {

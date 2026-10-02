@@ -1,5 +1,7 @@
 import { AppError } from '../errors/AppError.js';
 import { amountFrom, D, d128, MONEY_SCALE, QTY_SCALE, RATE_SCALE } from '../utils/decimal.js';
+import { maxDeliverableTons } from '../utils/poTolerance.js';
+import { PO_LIFECYCLE } from '../constants/poStatus.js';
 import { dateFilter } from '../utils/date.js';
 import { normalizeCode, normalizeText, searchRegex } from '../utils/normalize.js';
 import { sameId, toObjectId } from '../utils/objectId.js';
@@ -23,6 +25,7 @@ function toSet(data) {
     quantityTons: d128(data.quantityTons, QTY_SCALE),
     ratePerTon: d128(data.ratePerTon, RATE_SCALE),
     totalPOAmount: d128(amountFrom(data.quantityTons, data.ratePerTon), MONEY_SCALE),
+    tolerancePercent: d128(data.tolerancePercent ?? 0, RATE_SCALE),
     ...(data.lifecycleStatus !== undefined ? { lifecycleStatus: data.lifecycleStatus } : {}),
     ...(data.notes !== undefined ? { notes: data.notes } : {})
   };
@@ -56,6 +59,7 @@ export const salesPOService = {
         materialId: data.materialId ?? existing.materialId,
         quantityTons: data.quantityTons ?? existing.quantityTons,
         ratePerTon: data.ratePerTon ?? existing.ratePerTon,
+        tolerancePercent: data.tolerancePercent ?? existing.tolerancePercent,
         lifecycleStatus: data.lifecycleStatus,
         notes: data.notes
       };
@@ -64,10 +68,13 @@ export const salesPOService = {
       if (companyChanged) await assertSaleCompany(merged.companyId, session);
       if (materialChanged) await assertActiveMaterial(merged.materialId, session);
 
+      // Deliveries may already use part of the tolerance, so the limit is ordered + tolerance.
       const sold = await saleRepository.soldForPO(id, { session });
-      if (D(merged.quantityTons).lt(sold)) {
+      const maxTons = maxDeliverableTons(merged.quantityTons, merged.tolerancePercent);
+      if (maxTons.lt(sold)) {
         throw new AppError(409, 'PO_QTY_BELOW_SOLD', 'PO quantity cannot be lower than quantity already delivered', {
-          soldQuantityTons: sold.toFixed(3)
+          soldQuantityTons: sold.toFixed(3),
+          maxDeliverableTons: maxTons.toFixed(3)
         });
       }
 
@@ -106,6 +113,46 @@ export const salesPOService = {
       }
       return updated;
     });
+  },
+
+  /**
+   * Closes a short-delivered order: the ordered tons become what was delivered, so nothing is
+   * left, the order shows as completed and stops counting as open demand. The rate stays and the
+   * order value follows the tons; the first ordered quantity is kept in originalQuantityTons. To
+   * deliver more later, edit the quantity back up.
+   */
+  async settle(id, userId) {
+    await withTransaction(async (session) => {
+      // Same lock as deliveries, so a delivery saved at the same moment is counted or waits.
+      await salesPORepository.lock(id, { session });
+      const po = await salesPORepository.findById(id, { session, lean: true });
+      if (!po) throw notFound();
+      if (po.lifecycleStatus !== PO_LIFECYCLE.ACTIVE) {
+        throw new AppError(422, 'PO_NOT_AVAILABLE', 'A cancelled order cannot be settled', { poId: String(id) });
+      }
+      const sold = await saleRepository.soldForPO(id, { session });
+      if (!sold.gt(0)) {
+        throw new AppError(409, 'NOTHING_TO_SETTLE', 'Nothing has been delivered yet; cancel the order instead', {
+          poId: String(id)
+        });
+      }
+      if (!D(po.quantityTons).gt(sold)) {
+        throw new AppError(409, 'NOTHING_TO_SETTLE', 'The order is already fully delivered', { poId: String(id) });
+      }
+      await salesPORepository.updateById(
+        id,
+        {
+          $set: {
+            quantityTons: d128(sold, QTY_SCALE),
+            totalPOAmount: d128(amountFrom(sold, po.ratePerTon), MONEY_SCALE),
+            originalQuantityTons: d128(po.originalQuantityTons ?? po.quantityTons, QTY_SCALE),
+            updatedBy: userId
+          }
+        },
+        { session }
+      );
+    });
+    return salesPORepository.findWithPosition(id);
   },
 
   async get(id) {

@@ -18,3 +18,7 @@ export async function listSalesPOs(req, res) {
   const result = await salesPOService.list(req.validated.query);
   return ok(res, result.items, pageMeta(result));
 }
+
+export async function settleSalesPO(req, res) {
+  return ok(res, await salesPOService.settle(req.validated.params.id, req.user._id));
+}

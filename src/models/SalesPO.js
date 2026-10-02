@@ -15,6 +15,10 @@ const schema = new mongoose.Schema(
     // Live PO rate used for future sales; existing sales keep their poRateAtSale snapshot.
     ratePerTon: { type: Decimal128, required: true },
     totalPOAmount: { type: Decimal128, required: true },
+    // ± share of quantityTons that may be delivered beyond it (see utils/poTolerance.js).
+    tolerancePercent: { type: Decimal128 },
+    // Tons first ordered, kept when "settle" sets quantityTons to what was delivered.
+    originalQuantityTons: { type: Decimal128 },
     // Only the persistent lifecycle is stored; PENDING/PARTIALLY_SUPPLIED/COMPLETED are derived
     // from Sale records so there is no second delivered counter to drift out of sync.
     lifecycleStatus: { type: String, enum: Object.values(PO_LIFECYCLE), default: PO_LIFECYCLE.ACTIVE },

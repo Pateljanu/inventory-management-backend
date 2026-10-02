@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { parseBusinessDate } from '../utils/date.js';
 import { QTY_SCALE, RATE_SCALE } from '../utils/decimal.js';
+import { MAX_PO_TOLERANCE_PERCENT } from '../constants/poStatus.js';
 
 export const objectId = z.string().regex(/^[a-f\d]{24}$/i, 'Invalid id');
 
@@ -30,6 +31,11 @@ function decimal(scale, { allowZero }) {
 export const quantityTons = decimal(QTY_SCALE, { allowZero: false });
 export const nonNegativeQuantityTons = decimal(QTY_SCALE, { allowZero: true });
 export const ratePerTon = decimal(RATE_SCALE, { allowZero: false });
+/** Order tolerance in percent, 0 to MAX_PO_TOLERANCE_PERCENT, at most 2 decimals. */
+export const tolerancePercent = decimal(RATE_SCALE, { allowZero: true }).refine(
+  (v) => Number(v) <= MAX_PO_TOLERANCE_PERCENT,
+  `Must be ${MAX_PO_TOLERANCE_PERCENT}% or less`
+);
 
 export const optionalText = (max = 1000) => z.string().trim().max(max).optional();
 

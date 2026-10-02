@@ -10,6 +10,7 @@ import {
   paginationQuery,
   quantityTons,
   ratePerTon,
+  tolerancePercent,
   withDateRange
 } from './common.js';
 
@@ -20,6 +21,7 @@ const body = z.object({
   materialId: objectId,
   quantityTons,
   ratePerTon,
+  tolerancePercent: tolerancePercent.optional(),
   lifecycleStatus: z.enum(Object.values(PO_LIFECYCLE)).optional(),
   notes: optionalText(1000)
 });
@@ -27,6 +29,8 @@ const body = z.object({
 export const salesPOCreateSchema = z.object({ body, params: empty, query: empty });
 
 export const salesPOUpdateSchema = z.object({ body: nonEmptyPatch(body), params: idParams, query: empty });
+
+export const salesPOSettleSchema = z.object({ body: empty, params: idParams, query: empty });
 
 export const salesPOGetSchema = z.object({ body: empty, params: idParams, query: empty });
 

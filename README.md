@@ -164,7 +164,17 @@ automatically because they are computed from purchases.
 replays the full ledger of each affected material *and* each affected source-company pool; if any past day
 would go negative the whole change is rolled back (`NEGATIVE_STOCK_HISTORY` / `NEGATIVE_SOURCE_STOCK_HISTORY`).
 
-**POs.** Quantity cannot go below delivered; `poDate` cannot move after the first delivery; a rate change
+**PO tolerance.** Each PO has an optional `tolerancePercent` (0–50, default 0 through the API; the web
+form pre-fills 5). Deliveries may total up to `quantityTons × (1 + tolerance/100)`, rounded down to
+3 dp, so an order of 30 t at 5% takes up to 31.5 t. Extra tons are billed at the same rate. An
+over-delivered order shows `extraQuantityTons` and counts as `COMPLETED`.
+
+**Settling a PO.** `POST /sales-pos/:id/settle` closes a short-delivered order (some delivered, less
+than ordered): `quantityTons` becomes the delivered tons, the rate stays, `totalPOAmount` follows,
+and the first ordered quantity is kept in `originalQuantityTons`. The order is then `COMPLETED` and
+no longer counts as open demand. To deliver more later, edit the quantity back up.
+
+**POs.** Quantity (plus its tolerance) cannot go below delivered; `poDate` cannot move after the first delivery; a rate change
 affects only future sales (existing sales keep `poRateAtSale`); customer/material changes cascade to linked
 sales. Status `PENDING / PARTIALLY_SUPPLIED / COMPLETED / CANCELLED` is **derived** from deliveries, never stored.
 
@@ -216,12 +226,14 @@ PATCH accepts any subset of the create fields. On optional code fields (`gstNumb
 `invoiceNumber`, `challanNumber`) an empty string `""` clears the value. There are no DELETE endpoints —
 records are corrected by editing or deactivated with `isActive: false`.
 
-Sales-PO list/detail rows include `soldQuantityTons`, `remainingQuantityTons` and `displayStatus`;
-`?status=PENDING,PARTIALLY_SUPPLIED` (a comma list) is convenient for a "select open PO" picker.
+Sales-PO list/detail rows include `soldQuantityTons`, `remainingQuantityTons`, `extraQuantityTons` and
+`displayStatus`; `?status=PENDING,PARTIALLY_SUPPLIED` (a comma list) is convenient for a "select open PO" picker.
+`POST /sales-pos/:id/settle` (OWNER) closes a short-delivered order and returns it with its position.
 
 `GET /sales/capacity?poId=&saleDate=&sourceCompanyId=&excludeSaleId=` returns the live limits for the
 delivery form before saving: `remainingQuantityTons`, `availableStockTons`, `availableSourceStockTons`,
-`maxAllowedTons`, `limitedBy` (`PO | STOCK | SOURCE_STOCK`), `poOpen`, `poDate`, and `sources` (every
+`maxAllowedTons`, `limitedBy` (`PO | STOCK | SOURCE_STOCK`), `tolerancePercent`, `poAllowanceTons`
+(ordered + tolerance − delivered: the PO limit; `remainingQuantityTons` stays ordered − delivered), `poOpen`, `poDate`, and `sources` (every
 supplier pool of the PO's material with stock left, largest first). Stock figures are the headroom from
 `saleDate` onward (the lowest balance on that day or any later day), so a backdated delivery within
 `maxAllowedTons` also passes the historical ledger check. Pass `excludeSaleId` when editing a delivery.

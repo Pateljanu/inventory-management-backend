@@ -1,6 +1,7 @@
 import { AppError } from '../errors/AppError.js';
 import { PURCHASE_COMPANY_TYPES } from '../constants/companyTypes.js';
 import { amountFrom, D } from '../utils/decimal.js';
+import { maxDeliverableTons } from '../utils/poTolerance.js';
 import { Company, Material, Purchase, SalesPO, Sale } from '../models/index.js';
 import { stockService } from './stock.service.js';
 
@@ -52,6 +53,7 @@ async function checkPOs(issues) {
         companyId: 1,
         materialId: 1,
         quantityTons: 1,
+        tolerancePercent: 1,
         sold: { $sum: '$sales.quantityTons' },
         mismatched: {
           $filter: {
@@ -63,7 +65,7 @@ async function checkPOs(issues) {
     }
   ]);
   for (const po of rows) {
-    if (D(po.sold).gt(D(po.quantityTons))) {
+    if (D(po.sold).gt(maxDeliverableTons(po.quantityTons, po.tolerancePercent))) {
       issues.push({
         type: 'PO_OVER_DELIVERED',
         poId: String(po._id),
