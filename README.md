@@ -122,6 +122,7 @@ Validated at startup — the process exits immediately if anything is missing or
 | `TRUST_PROXY` | `0` | Number of reverse-proxy hops (needed for correct client IPs / rate limits) |
 | `RATE_LIMIT_PER_MINUTE` | `300` | Global per-IP request budget |
 | `WEB_DIST_DIR` | — | Optional. Folder of the built frontend (`../Frontend/dist`) to serve from this same address; see [Production deployment](#11-production-deployment) |
+| `DEFAULT_PO_TOLERANCE_PERCENT` | `10` | How far deliveries may go beyond an order's tons when the order sets no tolerance (0–50) |
 | `BUSINESS_TIMEZONE` | `Asia/Kolkata` | Defines "today" for report defaults and current stock |
 
 ## 5. Business rules
@@ -164,8 +165,9 @@ automatically because they are computed from purchases.
 replays the full ledger of each affected material *and* each affected source-company pool; if any past day
 would go negative the whole change is rolled back (`NEGATIVE_STOCK_HISTORY` / `NEGATIVE_SOURCE_STOCK_HISTORY`).
 
-**PO tolerance.** Each PO has an optional `tolerancePercent` (0–50, default 0 through the API; the web
-form pre-fills 5). Deliveries may total up to `quantityTons × (1 + tolerance/100)`, rounded down to
+**PO tolerance.** Each PO has a `tolerancePercent` (0–50). When an order sets none (including orders
+saved before tolerance existed) it uses `DEFAULT_PO_TOLERANCE_PERCENT` (10 unless configured; the web
+form pre-fills 10). Deliveries may total up to `quantityTons × (1 + tolerance/100)`, rounded down to
 3 dp, so an order of 30 t at 5% takes up to 31.5 t. Extra tons are billed at the same rate. An
 over-delivered order shows `extraQuantityTons` and counts as `COMPLETED`.
 

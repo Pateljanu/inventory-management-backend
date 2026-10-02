@@ -1,12 +1,20 @@
+import { env } from '../config/env.js';
 import { D, Decimal, QTY_SCALE } from './decimal.js';
 
 /**
- * The most that may be delivered against an order: its tons plus its tolerance, rounded down to
- * the quantity scale so the limit never exceeds what the percentage allows. A missing tolerance
- * means none, so orders saved before tolerance existed keep their exact limit.
+ * The tolerance an order uses: its own when it has one, otherwise DEFAULT_PO_TOLERANCE_PERCENT.
+ * Orders saved before tolerance existed have none stored, so they follow the default.
  */
-export function maxDeliverableTons(quantityTons, tolerancePercent) {
+export function tolerancePercentOf(stored, fallback = env.DEFAULT_PO_TOLERANCE_PERCENT) {
+  return D(stored ?? fallback);
+}
+
+/**
+ * The most that may be delivered against an order: its tons plus its tolerance, rounded down to
+ * the quantity scale so the limit never exceeds what the percentage allows.
+ */
+export function maxDeliverableTons(quantityTons, tolerancePercent, fallback) {
   return D(quantityTons)
-    .mul(D(1).plus(D(tolerancePercent).div(100)))
+    .mul(D(1).plus(tolerancePercentOf(tolerancePercent, fallback).div(100)))
     .toDecimalPlaces(QTY_SCALE, Decimal.ROUND_DOWN);
 }

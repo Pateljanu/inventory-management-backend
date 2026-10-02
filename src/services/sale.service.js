@@ -3,7 +3,7 @@ import { PO_LIFECYCLE } from '../constants/poStatus.js';
 import { PURCHASE_COMPANY_TYPES } from '../constants/companyTypes.js';
 import { amountFrom, D, d128, Decimal, maxZero, MONEY_SCALE, QTY_SCALE, RATE_SCALE } from '../utils/decimal.js';
 import { dateFilter, toDateOnlyString } from '../utils/date.js';
-import { maxDeliverableTons } from '../utils/poTolerance.js';
+import { maxDeliverableTons, tolerancePercentOf } from '../utils/poTolerance.js';
 import { normalizeCode, normalizeText, searchRegex } from '../utils/normalize.js';
 import { sameId } from '../utils/objectId.js';
 import { pagination } from '../utils/pagination.js';
@@ -299,7 +299,7 @@ export const saleService = {
       saleDate: toDateOnlyString(saleDate),
       // Ordered tons not delivered yet; poAllowanceTons adds the order's tolerance and is the limit.
       remainingQuantityTons: maxZero(remaining).toFixed(QTY_SCALE),
-      tolerancePercent: D(po.tolerancePercent).toFixed(RATE_SCALE),
+      tolerancePercent: tolerancePercentOf(po.tolerancePercent).toFixed(RATE_SCALE),
       poAllowanceTons: maxZero(allowance).toFixed(QTY_SCALE),
       availableStockTons: stock.toFixed(QTY_SCALE),
       availableSourceStockTons: sourceStock ? sourceStock.toFixed(QTY_SCALE) : null,

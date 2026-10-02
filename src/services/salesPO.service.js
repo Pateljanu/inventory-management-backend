@@ -1,6 +1,6 @@
 import { AppError } from '../errors/AppError.js';
 import { amountFrom, D, d128, MONEY_SCALE, QTY_SCALE, RATE_SCALE } from '../utils/decimal.js';
-import { maxDeliverableTons } from '../utils/poTolerance.js';
+import { maxDeliverableTons, tolerancePercentOf } from '../utils/poTolerance.js';
 import { PO_LIFECYCLE } from '../constants/poStatus.js';
 import { dateFilter } from '../utils/date.js';
 import { normalizeCode, normalizeText, searchRegex } from '../utils/normalize.js';
@@ -25,7 +25,7 @@ function toSet(data) {
     quantityTons: d128(data.quantityTons, QTY_SCALE),
     ratePerTon: d128(data.ratePerTon, RATE_SCALE),
     totalPOAmount: d128(amountFrom(data.quantityTons, data.ratePerTon), MONEY_SCALE),
-    tolerancePercent: d128(data.tolerancePercent ?? 0, RATE_SCALE),
+    tolerancePercent: d128(tolerancePercentOf(data.tolerancePercent), RATE_SCALE),
     ...(data.lifecycleStatus !== undefined ? { lifecycleStatus: data.lifecycleStatus } : {}),
     ...(data.notes !== undefined ? { notes: data.notes } : {})
   };

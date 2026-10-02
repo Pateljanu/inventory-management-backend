@@ -27,6 +27,9 @@ const schema = z.object({
     .trim()
     .optional()
     .transform((v) => v || undefined),
+  // Share an order's deliveries may go beyond its ordered tons when the order sets none itself
+  // (an order of 20 t at 10% takes up to 22 t).
+  DEFAULT_PO_TOLERANCE_PERCENT: z.coerce.number().min(0).max(50).default(10),
   // Calendar used to decide what "today" is (report defaults, current stock).
   BUSINESS_TIMEZONE: z
     .string()

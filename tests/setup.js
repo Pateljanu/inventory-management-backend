@@ -8,3 +8,5 @@ process.env.REFRESH_TOKEN_TTL_DAYS = '7';
 process.env.CORS_ORIGINS = 'http://localhost:5173';
 // Scenario-heavy test files legitimately exceed the production per-IP budget.
 process.env.RATE_LIMIT_PER_MINUTE = '100000';
+// Exact order limits, as the scenario tests were written; tolerance has its own tests.
+process.env.DEFAULT_PO_TOLERANCE_PERCENT = '0';

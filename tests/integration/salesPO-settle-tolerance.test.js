@@ -25,7 +25,7 @@ beforeEach(async () => {
 });
 
 describe('order tolerance', () => {
-  it('defaults to none, so an order without one keeps its exact limit', async () => {
+  it('uses DEFAULT_PO_TOLERANCE_PERCENT when an order sets none (0 in tests)', async () => {
     const po = await f.po({ customer, material, qty: '30' });
     expect(po.tolerancePercent).toBe('0.00');
     const res = await f.sale({ po, source: supplier, qty: '30.001' });

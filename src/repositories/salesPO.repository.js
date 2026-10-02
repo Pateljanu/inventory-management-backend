@@ -2,8 +2,12 @@ import mongoose from 'mongoose';
 import { LockableRepository } from './base.repository.js';
 import { SalesPO } from '../models/SalesPO.js';
 import { PO_DISPLAY_STATUS, PO_LIFECYCLE } from '../constants/poStatus.js';
+import { RATE_SCALE } from '../utils/decimal.js';
+import { tolerancePercentOf } from '../utils/poTolerance.js';
 
 const ZERO = mongoose.Types.Decimal128.fromString('0');
+// Orders saved without a tolerance use the default, so every row shows the one that applies.
+const DEFAULT_TOLERANCE = mongoose.Types.Decimal128.fromString(tolerancePercentOf(null).toFixed(RATE_SCALE));
 // Clamped positions keep the quantity scale ("0.000"), like the values they replace.
 const ZERO_TONS = mongoose.Types.Decimal128.fromString('0.000');
 
@@ -27,7 +31,12 @@ const positionStages = [
       as: 'delivered'
     }
   },
-  { $set: { soldQuantityTons: { $ifNull: [{ $first: '$delivered.sold' }, ZERO] } } },
+  {
+    $set: {
+      soldQuantityTons: { $ifNull: [{ $first: '$delivered.sold' }, ZERO] },
+      tolerancePercent: { $ifNull: ['$tolerancePercent', DEFAULT_TOLERANCE] }
+    }
+  },
   {
     $set: {
       remainingQuantityTons: { $max: [{ $subtract: ['$quantityTons', '$soldQuantityTons'] }, ZERO_TONS] },
