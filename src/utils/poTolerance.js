@@ -4,6 +4,8 @@ import { D, Decimal, QTY_SCALE } from './decimal.js';
 /**
  * The tolerance an order uses: its own when it has one, otherwise DEFAULT_PO_TOLERANCE_PERCENT.
  * Orders saved before tolerance existed have none stored, so they follow the default.
+ * Purchases use the same rule for what a supplier may send beyond the bought tons, except that
+ * one saved before tolerance existed keeps none (callers pass a fallback of 0).
  */
 export function tolerancePercentOf(stored, fallback = env.DEFAULT_PO_TOLERANCE_PERCENT) {
   return D(stored ?? fallback);

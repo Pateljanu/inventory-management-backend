@@ -1,5 +1,5 @@
 import { AppError } from '../errors/AppError.js';
-import { D, Decimal } from '../utils/decimal.js';
+import { D, Decimal, QTY_SCALE } from '../utils/decimal.js';
 import { endOfDayUTC } from '../utils/date.js';
 import { toObjectId } from '../utils/objectId.js';
 import { materialRepository } from '../repositories/material.repository.js';
@@ -44,6 +44,23 @@ function headroomFrom(openingBalance, inflowDays, outflowDays, date) {
   return lowest ?? balance;
 }
 
+/**
+ * What deliveries may draw from a purchase: its tons plus its tolerance, rounded down to the
+ * quantity scale (the same rule as maxDeliverableTons). Every limit and ledger check counts this,
+ * so a supplier can send a little more than was bought; reported stock counts quantityTons.
+ */
+const RECEIVABLE_TONS = {
+  $trunc: [
+    {
+      $multiply: [
+        '$quantityTons',
+        { $add: [1, { $divide: [{ $ifNull: ['$tolerancePercent', { $toDecimal: '0' }] }, 100] }] }
+      ]
+    },
+    QTY_SCALE
+  ]
+};
+
 function saleExclusion(excludeSaleId) {
   return excludeSaleId ? { _id: { $ne: toObjectId(excludeSaleId) } } : {};
 }
@@ -55,13 +72,20 @@ async function loadMaterial(materialId, session) {
 }
 
 export const stockService = {
-  /** Overall material stock at end of `asOf`: opening + purchases - sales. */
-  async getStockAsOf(materialId, asOf, { session, excludeSaleId } = {}) {
+  /**
+   * Overall material stock at end of `asOf`: opening + purchases - sales. `withTolerance` counts
+   * each purchase up to its tolerance, which is what a delivery is limited by.
+   */
+  async getStockAsOf(materialId, asOf, { session, excludeSaleId, withTolerance = false } = {}) {
     const material = await loadMaterial(materialId, session);
     const cutoff = endOfDayUTC(asOf);
     const id = toObjectId(materialId);
     const [purchased, sold] = await Promise.all([
-      purchaseRepository.sumField({ materialId: id, purchaseDate: { $lte: cutoff } }, 'quantityTons', { session }),
+      purchaseRepository.sumField(
+        { materialId: id, purchaseDate: { $lte: cutoff } },
+        withTolerance ? RECEIVABLE_TONS : 'quantityTons',
+        { session }
+      ),
       saleRepository.sumField(
         { materialId: id, saleDate: { $lte: cutoff }, ...saleExclusion(excludeSaleId) },
         'quantityTons',
@@ -74,8 +98,8 @@ export const stockService = {
   },
 
   /**
-   * Company + Material source pool at end of `asOf`: purchases from that company minus sales
-   * allocated to it. Opening stock is intentionally excluded because it has no supplier identity;
+   * Company + Material source pool at end of `asOf`: purchases from that company (with their
+   * tolerance) minus sales allocated to it. Opening stock is intentionally excluded because it has no supplier identity;
    * supplier-traceable go-live stock must be entered as Purchase records.
    */
   async getSourceCompanyStockAsOf(sourceCompanyId, materialId, asOf, { session, excludeSaleId } = {}) {
@@ -83,9 +107,11 @@ export const stockService = {
     const companyId = toObjectId(sourceCompanyId);
     const material = toObjectId(materialId);
     const [purchased, allocated] = await Promise.all([
-      purchaseRepository.sumField({ companyId, materialId: material, purchaseDate: { $lte: cutoff } }, 'quantityTons', {
-        session
-      }),
+      purchaseRepository.sumField(
+        { companyId, materialId: material, purchaseDate: { $lte: cutoff } },
+        RECEIVABLE_TONS,
+        { session }
+      ),
       saleRepository.sumField(
         {
           sourceCompanyId: companyId,
@@ -124,7 +150,7 @@ export const stockService = {
     const material = await loadMaterial(materialId);
     const id = toObjectId(materialId);
     const [inflows, outflows] = await Promise.all([
-      purchaseRepository.dailyTotals({ materialId: id }, 'purchaseDate', 'quantityTons'),
+      purchaseRepository.dailyTotals({ materialId: id }, 'purchaseDate', RECEIVABLE_TONS),
       saleRepository.dailyTotals({ materialId: id, ...saleExclusion(excludeSaleId) }, 'saleDate', 'quantityTons')
     ]);
     return headroomFrom(material.openingStockTons, inflows, outflows, date);
@@ -132,13 +158,14 @@ export const stockService = {
 
   /**
    * Every supplier pool of one material, seen from a delivery on `date`: Map<companyId, pool>.
-   * `available` is headroom (see headroomFrom); `purchased` / `used` are totals up to the end of
-   * `date`; `firstPurchaseDate` is the earliest purchase ever and `lastPurchaseDate` the latest on
+   * `available` is headroom (see headroomFrom) including the purchases' tolerance; `purchased` /
+   * `used` are totals up to the end of `date` and `tolerance` is what may come on top of `purchased`; `firstPurchaseDate` is the earliest purchase ever and `lastPurchaseDate` the latest on
    * or before `date` (null when none).
    */
   async sourcePoolsByCompany(materialId, date, { excludeSaleId } = {}) {
     const id = toObjectId(materialId);
-    const [inflows, outflows] = await Promise.all([
+    const [inflows, booked, outflows] = await Promise.all([
+      purchaseRepository.dailyTotalsBy({ materialId: id }, '$companyId', 'purchaseDate', RECEIVABLE_TONS),
       purchaseRepository.dailyTotalsBy({ materialId: id }, '$companyId', 'purchaseDate', 'quantityTons'),
       saleRepository.dailyTotalsBy(
         { materialId: id, ...saleExclusion(excludeSaleId) },
@@ -156,11 +183,13 @@ export const stockService = {
         const bought = inflows.get(c) ?? [];
         const sold = outflows.get(c) ?? [];
         const boughtSoFar = upToDate(bought);
+        const purchased = total(upToDate(booked.get(c) ?? []));
         return [
           c,
           {
             available: headroomFrom(0, bought, sold, date),
-            purchased: total(boughtSoFar),
+            purchased,
+            tolerance: total(boughtSoFar).minus(purchased),
             used: total(upToDate(sold)),
             // Daily totals are sorted by date, ascending.
             firstPurchaseDate: bought[0]?.date ?? null,
@@ -176,7 +205,7 @@ export const stockService = {
     const material = await loadMaterial(materialId, session);
     const id = toObjectId(materialId);
     const [inflows, outflows] = await Promise.all([
-      purchaseRepository.dailyTotals({ materialId: id }, 'purchaseDate', 'quantityTons', { session }),
+      purchaseRepository.dailyTotals({ materialId: id }, 'purchaseDate', RECEIVABLE_TONS, { session }),
       saleRepository.dailyTotals({ materialId: id }, 'saleDate', 'quantityTons', { session })
     ]);
     const negative = findFirstNegativeDay(material.openingStockTons, inflows, outflows);
@@ -194,7 +223,7 @@ export const stockService = {
     const companyId = toObjectId(sourceCompanyId);
     const material = toObjectId(materialId);
     const [inflows, outflows] = await Promise.all([
-      purchaseRepository.dailyTotals({ companyId, materialId: material }, 'purchaseDate', 'quantityTons', { session }),
+      purchaseRepository.dailyTotals({ companyId, materialId: material }, 'purchaseDate', RECEIVABLE_TONS, { session }),
       saleRepository.dailyTotals({ sourceCompanyId: companyId, materialId: material }, 'saleDate', 'quantityTons', {
         session
       })
@@ -216,4 +245,4 @@ export const stockService = {
   }
 };
 
-export { findFirstNegativeDay, headroomFrom };
+export { findFirstNegativeDay, headroomFrom, RECEIVABLE_TONS };

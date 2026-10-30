@@ -1,5 +1,8 @@
 import { D } from '../utils/decimal.js';
 
+/** A summed field: a field name, or an aggregation expression for a derived quantity. */
+const ref = (field) => (typeof field === 'string' ? `$${field}` : field);
+
 /**
  * Reusable persistence access. Every method accepts an optional MongoDB session so the same
  * code works inside and outside transactions; inside a transaction the session is mandatory.
@@ -41,7 +44,7 @@ export class BaseRepository {
   /** Exact Decimal sum of a Decimal128 field. `match` must already contain ObjectIds (no casting). */
   async sumField(match, field, { session } = {}) {
     const [row] = await this.model
-      .aggregate([{ $match: match }, { $group: { _id: null, total: { $sum: `$${field}` } } }])
+      .aggregate([{ $match: match }, { $group: { _id: null, total: { $sum: ref(field) } } }])
       .session(session ?? null);
     return D(row?.total);
   }
@@ -52,7 +55,7 @@ export class BaseRepository {
    */
   async groupTotals(match, groupBy, fields) {
     const group = { _id: groupBy };
-    for (const [name, field] of Object.entries(fields)) group[name] = { $sum: `$${field}` };
+    for (const [name, field] of Object.entries(fields)) group[name] = { $sum: ref(field) };
     const rows = await this.model.aggregate([{ $match: match }, { $group: group }]);
     return rows.map((row) => {
       const out = { _id: row._id };
@@ -66,7 +69,7 @@ export class BaseRepository {
     const rows = await this.model
       .aggregate([
         { $match: match },
-        { $group: { _id: `$${dateField}`, total: { $sum: `$${field}` } } },
+        { $group: { _id: `$${dateField}`, total: { $sum: ref(field) } } },
         { $sort: { _id: 1 } }
       ])
       .session(session ?? null);
@@ -78,7 +81,7 @@ export class BaseRepository {
     const rows = await this.model
       .aggregate([
         { $match: match },
-        { $group: { _id: { key: keyExpression, date: `$${dateField}` }, total: { $sum: `$${field}` } } },
+        { $group: { _id: { key: keyExpression, date: `$${dateField}` }, total: { $sum: ref(field) } } },
         { $sort: { '_id.date': 1 } }
       ])
       .session(session ?? null);

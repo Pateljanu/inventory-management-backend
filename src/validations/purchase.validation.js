@@ -10,6 +10,7 @@ import {
   paginationQuery,
   quantityTons,
   ratePerTon,
+  tolerancePercent,
   withDateRange
 } from './common.js';
 
@@ -20,6 +21,7 @@ const body = z.object({
   materialId: objectId,
   quantityTons,
   ratePerTon,
+  tolerancePercent: tolerancePercent.optional(),
   vehicleNumber: optionalCode(30),
   invoiceNumber: optionalCode(80),
   notes: optionalText(1000)

@@ -68,7 +68,8 @@ describe('historical as-of semantics', () => {
         materialName: 'MS Scrap Fish Cut',
         purchasedTons: '100.000',
         usedForSalesTons: '30.000',
-        availableTons: '70.000'
+        availableTons: '70.000',
+        toleranceTons: '0.000'
       }
     ]);
     const before = await owner.get('/api/v1/reports/source-stock?asOf=2026-09-10');

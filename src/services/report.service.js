@@ -9,7 +9,7 @@ import { saleRepository } from '../repositories/sale.repository.js';
 import { salesPORepository } from '../repositories/salesPO.repository.js';
 import { materialRepository } from '../repositories/material.repository.js';
 import { companyRepository } from '../repositories/company.repository.js';
-import { stockService } from './stock.service.js';
+import { RECEIVABLE_TONS, stockService } from './stock.service.js';
 
 /*
  * Reporting semantics (never mix these two):
@@ -196,6 +196,8 @@ export const reportService = {
   /**
    * Purchase-company material pools as of a date: purchased from the company, allocated to sales
    * via sourceCompanyId, and available. Pool accounting, not per-invoice/FIFO allocation.
+   * availableTons is negative while deliveries use the purchases' tolerance (more was delivered
+   * than bought, until the pool is settled); toleranceTons is how far beyond purchasedTons it may go.
    */
   async sourceStock({ asOf, sourceCompanyId, materialId }) {
     const date = asOf ?? businessToday(env.BUSINESS_TIMEZONE);
@@ -215,7 +217,7 @@ export const reportService = {
       purchaseRepository.groupTotals(
         purchaseMatch,
         { sourceCompanyId: '$companyId', materialId: '$materialId' },
-        { quantity: 'quantityTons' }
+        { quantity: 'quantityTons', receivable: RECEIVABLE_TONS }
       ),
       saleRepository.groupTotals(
         saleMatch,
@@ -227,10 +229,10 @@ export const reportService = {
     const pools = new Map();
     const pool = (key) => {
       const id = `${key.sourceCompanyId}:${key.materialId}`;
-      if (!pools.has(id)) pools.set(id, { ...key, purchased: ZERO, used: ZERO });
+      if (!pools.has(id)) pools.set(id, { ...key, purchased: ZERO, receivable: ZERO, used: ZERO });
       return pools.get(id);
     };
-    for (const row of purchased) pool(row._id).purchased = row.quantity;
+    for (const row of purchased) Object.assign(pool(row._id), { purchased: row.quantity, receivable: row.receivable });
     for (const row of used) pool(row._id).used = row.quantity;
 
     const values = [...pools.values()];
@@ -249,7 +251,8 @@ export const reportService = {
         materialName: materialNames.get(String(p.materialId)) ?? null,
         purchasedTons: qtyStr(p.purchased),
         usedForSalesTons: qtyStr(p.used),
-        availableTons: qtyStr(p.purchased.minus(p.used))
+        availableTons: qtyStr(p.purchased.minus(p.used)),
+        toleranceTons: qtyStr(p.receivable.minus(p.purchased))
       }))
       .sort(
         (a, b) =>

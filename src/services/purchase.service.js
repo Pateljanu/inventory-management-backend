@@ -1,6 +1,7 @@
 import { AppError } from '../errors/AppError.js';
 import { amountFrom, D, d128, Decimal, maxZero, MONEY_SCALE, QTY_SCALE, RATE_SCALE } from '../utils/decimal.js';
 import { dateFilter, toDateOnlyString } from '../utils/date.js';
+import { maxDeliverableTons, tolerancePercentOf } from '../utils/poTolerance.js';
 import { normalizeCode, normalizeText, searchRegex } from '../utils/normalize.js';
 import { sameId, toObjectId } from '../utils/objectId.js';
 import { pagination } from '../utils/pagination.js';
@@ -29,7 +30,8 @@ function toUpdate(data) {
     materialId: data.materialId,
     quantityTons: d128(data.quantityTons, QTY_SCALE),
     ratePerTon: d128(data.ratePerTon, RATE_SCALE),
-    totalAmount: d128(amountFrom(data.quantityTons, data.ratePerTon), MONEY_SCALE)
+    totalAmount: d128(amountFrom(data.quantityTons, data.ratePerTon), MONEY_SCALE),
+    tolerancePercent: d128(tolerancePercentOf(data.tolerancePercent), RATE_SCALE)
   };
   const $unset = {};
 
@@ -48,9 +50,14 @@ function toUpdate(data) {
 }
 
 /**
- * What settling one supplier pool would do. The tons still left in the pool (bought from the
- * supplier minus delivered from it) never really arrived, so they are taken off that supplier's
- * purchases, latest first, until nothing is left. The rate stays; the amount follows the tons.
+ * What settling one supplier pool would do: its purchases are set to what deliveries actually
+ * took, so nothing is left and nothing is over. The rate stays; the amount follows the tons.
+ *
+ *  1. Where deliveries went beyond the purchases of that day (the supplier sent more, within the
+ *     tolerance), the purchases up to that day are raised, latest first, each at most to its limit.
+ *  2. The tons then still left never really arrived, so they are taken off the latest purchases
+ *     until nothing is left.
+ * A purchase that changes is final and loses its tolerance; to take more, edit it.
  *
  * Latest first keeps every day of the pool's history non-negative: after the earliest trimmed
  * purchase only deliveries remain, and they now end exactly at zero.
@@ -58,27 +65,56 @@ function toUpdate(data) {
 async function planSettle(companyId, materialId, session) {
   const company = toObjectId(companyId);
   const material = toObjectId(materialId);
-  const [purchases, used] = await Promise.all([
+  const [purchases, deliveryDays] = await Promise.all([
     purchaseRepository.model
       .find({ companyId: company, materialId: material })
-      .sort({ purchaseDate: -1, _id: -1 })
-      .select('purchaseDate invoiceNumber vehicleNumber quantityTons ratePerTon totalAmount bookedTons')
+      .sort({ purchaseDate: 1, _id: 1 })
+      .select(
+        'purchaseDate invoiceNumber vehicleNumber quantityTons ratePerTon totalAmount bookedTons tolerancePercent'
+      )
       .session(session ?? null)
       .lean(),
-    saleRepository.sumField({ sourceCompanyId: company, materialId: material }, 'quantityTons', { session })
+    saleRepository.dailyTotals({ sourceCompanyId: company, materialId: material }, 'saleDate', 'quantityTons', {
+      session
+    })
   ]);
-  const purchased = purchases.reduce((sum, p) => sum.plus(D(p.quantityTons)), D(0));
-  const left = maxZero(purchased.minus(used));
+  const tons = purchases.map((p) => D(p.quantityTons));
+  const limits = purchases.map((p) => maxDeliverableTons(p.quantityTons, p.tolerancePercent, 0));
+  const purchased = tons.reduce((sum, t) => sum.plus(t), D(0));
+  const used = deliveryDays.reduce((sum, d) => sum.plus(d.total), D(0));
 
+  let balance = D(0);
+  let arrived = 0;
+  let extra = D(0);
+  for (const day of deliveryDays) {
+    while (arrived < purchases.length && purchases[arrived].purchaseDate <= day.date) {
+      balance = balance.plus(tons[arrived++]);
+    }
+    balance = balance.minus(day.total);
+    for (let i = arrived - 1; i >= 0 && balance.isNegative(); i--) {
+      const add = Decimal.min(limits[i].minus(tons[i]), balance.abs());
+      if (!add.gt(0)) continue;
+      tons[i] = tons[i].plus(add);
+      balance = balance.plus(add);
+      extra = extra.plus(add);
+    }
+  }
+  while (arrived < purchases.length) balance = balance.plus(tons[arrived++]);
+
+  const left = maxZero(balance);
   let toRemove = left;
-  const changes = [];
-  for (const p of purchases) {
-    if (!toRemove.gt(0)) break;
-    const before = D(p.quantityTons);
-    const cut = Decimal.min(before, toRemove);
-    if (cut.isZero()) continue;
+  for (let i = purchases.length - 1; i >= 0 && toRemove.gt(0); i--) {
+    const cut = Decimal.min(tons[i], toRemove);
+    tons[i] = tons[i].minus(cut);
     toRemove = toRemove.minus(cut);
-    const after = before.minus(cut);
+  }
+
+  const changes = [];
+  for (let i = purchases.length - 1; i >= 0; i--) {
+    const p = purchases[i];
+    const before = D(p.quantityTons);
+    const after = tons[i];
+    if (after.eq(before)) continue;
     changes.push({
       purchaseId: String(p._id),
       purchaseDate: toDateOnlyString(p.purchaseDate),
@@ -98,8 +134,10 @@ async function planSettle(companyId, materialId, session) {
     companyId: String(companyId),
     materialId: String(materialId),
     purchasedTons: purchased.toFixed(QTY_SCALE),
-    usedTons: D(used).toFixed(QTY_SCALE),
+    usedTons: used.toFixed(QTY_SCALE),
+    // Taken off purchases, and added to purchases that the supplier over-filled.
     leftTons: left.toFixed(QTY_SCALE),
+    extraTons: extra.toFixed(QTY_SCALE),
     changes
   };
 }
@@ -132,6 +170,8 @@ export const purchaseService = {
         materialId: data.materialId ?? existing.materialId,
         quantityTons: data.quantityTons ?? existing.quantityTons,
         ratePerTon: data.ratePerTon ?? existing.ratePerTon,
+        // A purchase saved before tolerance existed keeps none until one is entered.
+        tolerancePercent: data.tolerancePercent ?? existing.tolerancePercent ?? 0,
         vehicleNumber: data.vehicleNumber,
         invoiceNumber: data.invoiceNumber,
         notes: data.notes
@@ -168,7 +208,7 @@ export const purchaseService = {
   },
 
   /**
-   * Sets one supplier pool to zero by trimming its purchases to what deliveries actually used
+   * Sets one supplier pool to zero by setting its purchases to what deliveries actually used
    * (see planSettle). Runs under the material lock, so a delivery saved at the same moment is
    * either fully counted or waits; both ledgers are replayed before commit as with any edit.
    */
@@ -177,7 +217,7 @@ export const purchaseService = {
       await materialRepository.lock(materialId, { session });
       const plan = await planSettle(companyId, materialId, session);
       if (!plan.changes.length) {
-        throw new AppError(409, 'NOTHING_TO_SETTLE', 'No stock is left from this supplier for this material', {
+        throw new AppError(409, 'NOTHING_TO_SETTLE', 'Purchases from this supplier already match what was delivered', {
           companyId: plan.companyId,
           materialId: plan.materialId
         });
@@ -188,6 +228,7 @@ export const purchaseService = {
           {
             $set: {
               quantityTons: d128(change.toTons, QTY_SCALE),
+              tolerancePercent: d128(0, RATE_SCALE),
               totalAmount: d128(change.toAmount, MONEY_SCALE),
               bookedTons: d128(change.bookedTons, QTY_SCALE),
               updatedBy: userId

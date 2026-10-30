@@ -176,6 +176,14 @@ than ordered): `quantityTons` becomes the delivered tons, the rate stays, `total
 and the first ordered quantity is kept in `originalQuantityTons`. The order is then `COMPLETED` and
 no longer counts as open demand. To deliver more later, edit the quantity back up.
 
+**Purchase tolerance.** Each purchase has a `tolerancePercent` (0–50; `DEFAULT_PO_TOLERANCE_PERCENT` when the
+request sets none; purchases saved before tolerance existed have none). The supplier may send up to
+`quantityTons × (1 + tolerance/100)`, so the stock limits on a delivery (yard and supplier) count each
+purchase up to that, while reported stock counts `quantityTons`: a supplier pool shows a negative
+`availableTons` while more was delivered than bought. `POST /purchases/settle` then raises the over-filled
+purchases to what was delivered (`extraTons`), trims unused ones (`leftTons`), and sets the tolerance of
+every changed purchase to 0.
+
 **POs.** Quantity (plus its tolerance) cannot go below delivered; `poDate` cannot move after the first delivery; a rate change
 affects only future sales (existing sales keep `poRateAtSale`); customer/material changes cascade to linked
 sales. Status `PENDING / PARTIALLY_SUPPLIED / COMPLETED / CANCELLED` is **derived** from deliveries, never stored.

@@ -345,6 +345,7 @@ describe('GET /sales/capacity: live limits for the delivery form', () => {
         availableTons: '60.000',
         purchasedTons: '60.000',
         usedTons: '0.000',
+        toleranceTons: '0.000',
         firstPurchaseDate: '2026-09-01',
         lastPurchaseDate: '2026-09-01'
       },
@@ -355,6 +356,7 @@ describe('GET /sales/capacity: live limits for the delivery form', () => {
         availableTons: '30.000',
         purchasedTons: '40.000',
         usedTons: '10.000',
+        toleranceTons: '0.000',
         firstPurchaseDate: '2026-09-01',
         lastPurchaseDate: '2026-09-01'
       }

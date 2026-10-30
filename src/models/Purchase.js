@@ -13,7 +13,11 @@ const schema = new mongoose.Schema(
     ratePerTon: { type: Decimal128, required: true },
     // Always calculated by the backend: quantityTons x ratePerTon.
     totalAmount: { type: Decimal128, required: true },
-    // Tons first booked with the supplier, kept when "settle" trims quantityTons down to what
+    // Share of quantityTons the supplier may send beyond it: stock limits count the purchase up
+    // to quantityTons plus this, reported stock counts quantityTons (see stock.service.js).
+    // Absent on purchases saved before tolerance existed, which have none; settle sets it to 0.
+    tolerancePercent: { type: Decimal128 },
+    // Tons first booked with the supplier, kept when "settle" sets quantityTons to what
     // deliveries actually used. Absent on purchases that were never settled.
     bookedTons: { type: Decimal128 },
     vehicleNumber: { type: String, trim: true, uppercase: true },

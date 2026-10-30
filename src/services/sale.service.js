@@ -49,6 +49,8 @@ function assertNotBeforePO(saleDate, po) {
  *   quantity <= PO remaining (ordered tons plus the order's tolerance, minus what is delivered),
  *   <= overall material stock as of saleDate,
  *   and <= the selected source company's material stock as of saleDate.
+ * Both stock limits count each purchase up to its tolerance, so a supplier can send a little more
+ * than was bought.
  * When editing, the sale itself is excluded so it is not counted against its own capacity.
  */
 async function assertCapacity({ po, sourceCompanyId, saleDate, quantityTons, excludeSaleId, session }) {
@@ -58,7 +60,7 @@ async function assertCapacity({ po, sourceCompanyId, saleDate, quantityTons, exc
   const sold = await saleRepository.soldForPO(po._id, opts);
   const poRemaining = D(po.quantityTons).minus(sold);
   const poAllowance = maxDeliverableTons(po.quantityTons, po.tolerancePercent).minus(sold);
-  const overallStock = await stockService.getStockAsOf(po.materialId, saleDate, opts);
+  const overallStock = await stockService.getStockAsOf(po.materialId, saleDate, { ...opts, withTolerance: true });
   const sourceStock = await stockService.getSourceCompanyStockAsOf(sourceCompanyId, po.materialId, saleDate, opts);
 
   // Every rejection carries all three limits, so a client can show the user exactly how much
@@ -284,6 +286,8 @@ export const saleService = {
           availableTons: maxZero(pool?.available ?? D(0)).toFixed(QTY_SCALE),
           purchasedTons: (pool?.purchased ?? D(0)).toFixed(QTY_SCALE),
           usedTons: (pool?.used ?? D(0)).toFixed(QTY_SCALE),
+          // What the supplier may send beyond purchasedTons; availableTons already includes it.
+          toleranceTons: (pool?.tolerance ?? D(0)).toFixed(QTY_SCALE),
           firstPurchaseDate: pool?.firstPurchaseDate ? toDateOnlyString(pool.firstPurchaseDate) : null,
           lastPurchaseDate: pool?.lastPurchaseDate ? toDateOnlyString(pool.lastPurchaseDate) : null
         };
