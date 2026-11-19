@@ -26,7 +26,12 @@ const body = z.object({
   notes: optionalText(1000)
 });
 
-export const salesPOCreateSchema = z.object({ body, params: empty, query: empty });
+// allowDuplicate: the user saw the POSSIBLE_DUPLICATE warning and confirmed this is a new order.
+export const salesPOCreateSchema = z.object({
+  body: body.extend({ allowDuplicate: z.boolean().optional() }),
+  params: empty,
+  query: empty
+});
 
 export const salesPOUpdateSchema = z.object({ body: nonEmptyPatch(body), params: idParams, query: empty });
 

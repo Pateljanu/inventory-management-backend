@@ -25,11 +25,22 @@ const body = z.object({
   notes: optionalText(1000)
 });
 
-export const saleCreateSchema = z.object({ body, params: empty, query: empty });
+// allowDuplicate: the user saw the POSSIBLE_DUPLICATE warning and confirmed this is a new delivery.
+export const saleCreateSchema = z.object({
+  body: body.extend({ allowDuplicate: z.boolean().optional() }),
+  params: empty,
+  query: empty
+});
 
 export const saleUpdateSchema = z.object({ body: nonEmptyPatch(body), params: idParams, query: empty });
 
 export const saleGetSchema = z.object({ body: empty, params: idParams, query: empty });
+
+export const saleVoidSchema = z.object({
+  body: z.object({ reason: z.string().trim().min(3, 'Write why this delivery is voided').max(500) }),
+  params: idParams,
+  query: empty
+});
 
 export const saleListSchema = z.object({
   body: empty,

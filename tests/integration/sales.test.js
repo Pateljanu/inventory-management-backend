@@ -3,6 +3,7 @@ import { useTestDatabase } from '../helpers/db.js';
 import { authedClient } from '../helpers/api.js';
 import { fixtures } from '../helpers/fixtures.js';
 import { Sale } from '../../src/models/Sale.js';
+import { SalesPO } from '../../src/models/SalesPO.js';
 
 const clearDatabase = useTestDatabase();
 let owner;
@@ -242,7 +243,8 @@ describe('edit sale', () => {
 
   it('allows corrections on a cancelled PO but not increases', async () => {
     const sale = await f.saleOk({ po, source: akshat, qty: '10' });
-    await owner.patch(`/api/v1/sales-pos/${po._id}`, { lifecycleStatus: 'CANCELLED' });
+    // Orders with deliveries can no longer be cancelled; older data may still hold such orders.
+    await SalesPO.updateOne({ _id: po._id }, { lifecycleStatus: 'CANCELLED' });
     expect((await owner.patch(`/api/v1/sales/${sale._id}`, { notes: 'weighbridge slip attached' })).status).toBe(200);
     expect((await owner.patch(`/api/v1/sales/${sale._id}`, { quantityTons: '9' })).status).toBe(200);
     const increase = await owner.patch(`/api/v1/sales/${sale._id}`, { quantityTons: '11' });

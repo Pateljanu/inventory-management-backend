@@ -22,3 +22,12 @@ export async function listSales(req, res) {
 export async function getSaleCapacity(req, res) {
   return ok(res, await saleService.capacity(req.validated.query));
 }
+
+export async function voidSale(req, res) {
+  return ok(res, await saleService.void(req.validated.params.id, req.validated.body, req.user._id));
+}
+
+export async function listVoidedSales(req, res) {
+  const result = await saleService.listVoided(req.validated.query);
+  return ok(res, result.items, pageMeta(result));
+}

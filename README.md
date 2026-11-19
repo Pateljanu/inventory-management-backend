@@ -188,6 +188,23 @@ every changed purchase to 0.
 affects only future sales (existing sales keep `poRateAtSale`); customer/material changes cascade to linked
 sales. Status `PENDING / PARTIALLY_SUPPLIED / COMPLETED / CANCELLED` is **derived** from deliveries, never stored.
 
+**Voiding a delivery.** There is still no delete. A delivery saved by mistake (for example the same
+truck saved twice) is voided with `POST /sales/:id/void` and a reason. It moves from `sales` to
+`voidedsales` (same `_id`, plus `voidedAt`, `voidedBy`, `voidReason`), so stock, supplier stock, its
+PO and every report stop counting it at once, and its challan number becomes free. Removing a delivery
+only ever raises stock, so a void is always allowed, also on cancelled orders and inactive masters.
+
+**Cancelling a PO** is only allowed while it has no deliveries (`PO_HAS_DELIVERIES`). A short order is
+settled instead; a delivery made by mistake is voided first. `npm run reconcile` reports older
+cancelled orders that still hold deliveries as `CANCELLED_PO_WITH_DELIVERIES`.
+
+**Duplicate warnings.** Creating a PO or a delivery that looks like one already saved returns
+`409 POSSIBLE_DUPLICATE` with `details.matches`; the client shows them and, if the user confirms, sends
+the same body again with `"allowDuplicate": true`.
+- PO: an `ACTIVE` order of the same buyer, material, `quantityTons` and `ratePerTon` dated within 7 days.
+- Delivery: one with the same vehicle number within 3 days, or the same buyer, material and exact
+  tons within 3 days (`sameVehicle` / `sameTons` say which). Checked after the three limits.
+
 **Concurrency.** Stock-affecting transactions increment a `lockVersion` on the Material and PO documents
 they depend on, so simultaneous requests are serialized by MongoDB and can never together oversell.
 
@@ -226,6 +243,11 @@ Login is limited to 10 **failed** attempts per 15 minutes per IP.
 | `/purchases` | `from, to, companyId, materialId, search` | ✓ | ✓ | ✓ |
 | `/sales-pos` | `from, to, companyId, materialId, lifecycleStatus, status, search` | ✓ (+ position) | ✓ | ✓ |
 | `/sales` | `from, to, companyId, sourceCompanyId, materialId, poId, search` | ✓ | ✓ | ✓ |
+
+`POST /sales/:id/void` (OWNER) with body `{ reason }` (3–500 characters) voids a delivery and returns
+it with `voidedAt`, `voidedBy`, `voidReason`. `GET /sales/voided` lists voided deliveries (same filters
+as `/sales`, newest void first). `POST /sales` and `POST /sales-pos` accept `allowDuplicate: true` to
+save past a `POSSIBLE_DUPLICATE` warning.
 
 `GET /purchases/settle?companyId=&materialId=` (OWNER and VIEWER) previews a settle and
 `POST /purchases/settle` with body `{ companyId, materialId }` (OWNER) applies it. Both return
@@ -319,7 +341,7 @@ Sale-capacity errors include `remainingQuantityTons`, `availableStockTons`, `ava
 | 401 | `UNAUTHENTICATED`, `INVALID_CREDENTIALS`, `TOKEN_EXPIRED`, `INVALID_REFRESH_TOKEN` |
 | 403 | `FORBIDDEN` |
 | 404 | `NOT_FOUND`, `COMPANY_NOT_FOUND`, `MATERIAL_NOT_FOUND`, `PURCHASE_NOT_FOUND`, `PO_NOT_FOUND`, `SALE_NOT_FOUND` |
-| 409 | `DUPLICATE_VALUE`, `PO_QUANTITY_EXCEEDED`, `INSUFFICIENT_STOCK`, `INSUFFICIENT_SOURCE_STOCK`, `NEGATIVE_STOCK_HISTORY`, `NEGATIVE_SOURCE_STOCK_HISTORY`, `PO_QTY_BELOW_SOLD`, `COMPANY_TYPE_IN_USE`, `NOTHING_TO_SETTLE` |
+| 409 | `DUPLICATE_VALUE`, `POSSIBLE_DUPLICATE`, `PO_HAS_DELIVERIES`, `PO_QUANTITY_EXCEEDED`, `INSUFFICIENT_STOCK`, `INSUFFICIENT_SOURCE_STOCK`, `NEGATIVE_STOCK_HISTORY`, `NEGATIVE_SOURCE_STOCK_HISTORY`, `PO_QTY_BELOW_SOLD`, `COMPANY_TYPE_IN_USE`, `NOTHING_TO_SETTLE` |
 | 413 | `PAYLOAD_TOO_LARGE` (body > 1 MB) |
 | 422 | `VALIDATION_ERROR` (with `details.issues[{ path, message }]`), `INVALID_PURCHASE_COMPANY`, `INVALID_SALE_COMPANY`, `INVALID_SOURCE_COMPANY`, `INVALID_MATERIAL`, `PO_NOT_AVAILABLE`, `SALE_BEFORE_PO_DATE`, `PO_DATE_AFTER_SALES` |
 | 429 | `TOO_MANY_REQUESTS`, `TOO_MANY_AUTH_ATTEMPTS` |

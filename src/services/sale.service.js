@@ -8,11 +8,13 @@ import { normalizeCode, normalizeText, searchRegex } from '../utils/normalize.js
 import { sameId } from '../utils/objectId.js';
 import { pagination } from '../utils/pagination.js';
 import { withTransaction } from '../utils/transaction.js';
+import { duplicateWindow } from '../utils/duplicates.js';
 import { saleRepository } from '../repositories/sale.repository.js';
 import { salesPORepository } from '../repositories/salesPO.repository.js';
 import { materialRepository } from '../repositories/material.repository.js';
 import { companyRepository } from '../repositories/company.repository.js';
 import { purchaseRepository } from '../repositories/purchase.repository.js';
+import { VoidedSale } from '../models/VoidedSale.js';
 import { assertActiveMaterial, assertSaleCompany, assertSourceCompany } from './references.js';
 import { stockService } from './stock.service.js';
 
@@ -126,6 +128,46 @@ function optionalFields(data) {
   return { $set, $unset };
 }
 
+// Deliveries this many days either side of a new one are compared for a possible duplicate.
+const SALE_DUPLICATE_DAYS = 3;
+
+/**
+ * A delivery that looks like one already saved: the same truck within a few days, or the same
+ * buyer, material and exact tons within a few days. Only a warning: the client may confirm and
+ * save anyway with `allowDuplicate: true` (a truck can make two trips).
+ */
+async function assertNotDuplicateSale({ po, saleDate, quantityTons, vehicleNumber }, session) {
+  const vehicle = vehicleNumber ? normalizeCode(vehicleNumber) : null;
+  const sameTons = { companyId: po.companyId, materialId: po.materialId, quantityTons: d128(quantityTons, QTY_SCALE) };
+  const candidates = await saleRepository.model
+    .find({
+      saleDate: duplicateWindow(saleDate, SALE_DUPLICATE_DAYS),
+      $or: [sameTons, ...(vehicle ? [{ vehicleNumber: vehicle }] : [])]
+    })
+    .sort({ saleDate: -1 })
+    .limit(5)
+    .populate([
+      { path: 'poId', select: 'poNumber' },
+      { path: 'companyId', select: 'name' }
+    ])
+    .session(session ?? null)
+    .lean();
+  if (!candidates.length) return;
+
+  const tons = D(quantityTons);
+  const matches = candidates.map((sale) => ({
+    saleId: String(sale._id),
+    saleDate: toDateOnlyString(sale.saleDate),
+    poNumber: sale.poId?.poNumber ?? null,
+    buyerName: sale.companyId?.name ?? null,
+    quantityTons: D(sale.quantityTons).toFixed(QTY_SCALE),
+    vehicleNumber: sale.vehicleNumber ?? null,
+    sameVehicle: Boolean(vehicle && sale.vehicleNumber === vehicle),
+    sameTons: D(sale.quantityTons).eq(tons) && sameId(sale.companyId?._id ?? sale.companyId, po.companyId)
+  }));
+  throw new AppError(409, 'POSSIBLE_DUPLICATE', 'This delivery looks like one that is already saved', { matches });
+}
+
 /** Re-proves both ledgers for every material/pool the change touched. */
 async function assertLedgers(materialIds, pools, session) {
   for (const materialId of new Set(materialIds.map(String))) {
@@ -161,6 +203,7 @@ export const saleService = {
         quantityTons: data.quantityTons,
         session
       });
+      if (!data.allowDuplicate) await assertNotDuplicateSale({ po, ...data }, session);
 
       const { $set } = optionalFields(data);
       const sale = await saleRepository.create(
@@ -317,6 +360,50 @@ export const saleService = {
     const sale = await saleRepository.model.findById(id).populate(DISPLAY).lean();
     if (!sale) throw notFound();
     return sale;
+  },
+
+  /**
+   * Voids a delivery entered by mistake. The record moves to `voidedsales` (same _id, with who,
+   * when and why), so it stops counting in stock, supplier stock, its order and every report.
+   * Removing a delivery only ever raises stock, so no ledger can go negative; the order's lock is
+   * taken so a delivery saved at the same moment is counted correctly. Allowed on cancelled orders
+   * and inactive masters: that is exactly where mistakes need cleaning up.
+   */
+  async void(id, { reason }, userId) {
+    return withTransaction(async (session) => {
+      const sale = await saleRepository.findById(id, { session, lean: true });
+      if (!sale) throw notFound();
+      await salesPORepository.lock(sale.poId, { session });
+      await materialRepository.lock(sale.materialId, { session });
+
+      const [voided] = await VoidedSale.create(
+        [{ ...sale, voidedAt: new Date(), voidedBy: userId, voidReason: normalizeText(reason) }],
+        { session }
+      );
+      await saleRepository.model.deleteOne({ _id: sale._id }, { session });
+      return voided.toObject();
+    });
+  },
+
+  async listVoided(query) {
+    const { page, limit, skip } = pagination(query);
+    const filter = { ...dateFilter(query.from, query.to, 'saleDate') };
+    for (const key of ['companyId', 'sourceCompanyId', 'materialId', 'poId']) {
+      if (query[key]) filter[key] = query[key];
+    }
+    if (query.search)
+      filter.$or = [{ challanNumber: searchRegex(query.search) }, { vehicleNumber: searchRegex(query.search) }];
+
+    const [items, total] = await Promise.all([
+      VoidedSale.find(filter)
+        .sort({ voidedAt: -1, _id: -1 })
+        .skip(skip)
+        .limit(limit)
+        .populate([...DISPLAY, { path: 'voidedBy', select: 'name email' }])
+        .lean(),
+      VoidedSale.countDocuments(filter)
+    ]);
+    return { items, page, limit, total };
   },
 
   async list(query) {

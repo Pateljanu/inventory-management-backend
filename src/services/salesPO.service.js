@@ -2,7 +2,8 @@ import { AppError } from '../errors/AppError.js';
 import { amountFrom, D, d128, MONEY_SCALE, QTY_SCALE, RATE_SCALE } from '../utils/decimal.js';
 import { maxDeliverableTons, tolerancePercentOf } from '../utils/poTolerance.js';
 import { PO_LIFECYCLE } from '../constants/poStatus.js';
-import { dateFilter } from '../utils/date.js';
+import { dateFilter, toDateOnlyString } from '../utils/date.js';
+import { duplicateWindow } from '../utils/duplicates.js';
 import { normalizeCode, normalizeText, searchRegex } from '../utils/normalize.js';
 import { sameId, toObjectId } from '../utils/objectId.js';
 import { pagination } from '../utils/pagination.js';
@@ -31,10 +32,43 @@ function toSet(data) {
   };
 }
 
+// Open orders this many days either side of a new one are compared for a possible duplicate.
+const PO_DUPLICATE_DAYS = 7;
+
+/**
+ * An open order that looks like the new one: same buyer, material, tons and rate within a week
+ * (typically the same order typed twice under two PO numbers). Only a warning: the client may
+ * confirm and save anyway with `allowDuplicate: true`.
+ */
+async function assertNotDuplicatePO(data) {
+  const candidates = await salesPORepository.model
+    .find({
+      companyId: data.companyId,
+      materialId: data.materialId,
+      quantityTons: d128(data.quantityTons, QTY_SCALE),
+      ratePerTon: d128(data.ratePerTon, RATE_SCALE),
+      lifecycleStatus: PO_LIFECYCLE.ACTIVE,
+      poDate: duplicateWindow(data.poDate, PO_DUPLICATE_DAYS)
+    })
+    .sort({ poDate: -1 })
+    .limit(5)
+    .lean();
+  if (!candidates.length) return;
+  const matches = candidates.map((po) => ({
+    poId: String(po._id),
+    poNumber: po.poNumber,
+    poDate: toDateOnlyString(po.poDate),
+    quantityTons: D(po.quantityTons).toFixed(QTY_SCALE),
+    ratePerTon: D(po.ratePerTon).toFixed(RATE_SCALE)
+  }));
+  throw new AppError(409, 'POSSIBLE_DUPLICATE', 'This order looks like one that is already saved', { matches });
+}
+
 export const salesPOService = {
   async create(data, userId) {
     await assertSaleCompany(data.companyId);
     await assertActiveMaterial(data.materialId);
+    if (!data.allowDuplicate) await assertNotDuplicatePO(data);
     return salesPORepository.create({ ...toSet(data), createdBy: userId });
   },
 
@@ -76,6 +110,19 @@ export const salesPOService = {
           soldQuantityTons: sold.toFixed(3),
           maxDeliverableTons: maxTons.toFixed(3)
         });
+      }
+
+      // Cancelling would leave real deliveries hanging on a dead order (they still count as sales
+      // and stock). Short orders are closed with "settle"; deliveries made by mistake are voided.
+      const cancelling =
+        merged.lifecycleStatus === PO_LIFECYCLE.CANCELLED && existing.lifecycleStatus !== PO_LIFECYCLE.CANCELLED;
+      if (cancelling && sold.gt(0)) {
+        throw new AppError(
+          409,
+          'PO_HAS_DELIVERIES',
+          'This order has deliveries. Void deliveries made by mistake, or settle the order to close it at what was delivered.',
+          { poId: String(id), soldQuantityTons: sold.toFixed(3) }
+        );
       }
 
       const firstSaleDate = await saleRepository.earliestSaleDateForPO(existing._id, { session });

@@ -34,6 +34,8 @@ export function fixtures(client) {
           materialId: material._id,
           quantityTons: qty,
           ratePerTon: rate,
+          // Scenario builders create look-alike orders on purpose; duplicate warnings have their own tests.
+          allowDuplicate: true,
           ...extra
         })
         .then((r) => unwrap(r)),
@@ -44,6 +46,7 @@ export function fixtures(client) {
         poId: po._id,
         sourceCompanyId: source._id,
         quantityTons: qty,
+        allowDuplicate: true,
         ...extra
       }),
     saleOk: (args) =>

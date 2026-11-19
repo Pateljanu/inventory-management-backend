@@ -2,6 +2,7 @@ import { AppError } from '../errors/AppError.js';
 import { PURCHASE_COMPANY_TYPES } from '../constants/companyTypes.js';
 import { amountFrom, D } from '../utils/decimal.js';
 import { maxDeliverableTons } from '../utils/poTolerance.js';
+import { PO_LIFECYCLE } from '../constants/poStatus.js';
 import { Company, Material, Purchase, SalesPO, Sale } from '../models/index.js';
 import { stockService } from './stock.service.js';
 
@@ -54,6 +55,7 @@ async function checkPOs(issues) {
         materialId: 1,
         quantityTons: 1,
         tolerancePercent: 1,
+        lifecycleStatus: 1,
         sold: { $sum: '$sales.quantityTons' },
         mismatched: {
           $filter: {
@@ -71,6 +73,16 @@ async function checkPOs(issues) {
         poId: String(po._id),
         poNumber: po.poNumber,
         quantityTons: D(po.quantityTons).toFixed(3),
+        soldTons: D(po.sold).toFixed(3)
+      });
+    }
+    // Orders can no longer be cancelled with deliveries; older ones need their mistaken
+    // deliveries voided (or the order reopened and settled).
+    if (po.lifecycleStatus === PO_LIFECYCLE.CANCELLED && D(po.sold).gt(0)) {
+      issues.push({
+        type: 'CANCELLED_PO_WITH_DELIVERIES',
+        poId: String(po._id),
+        poNumber: po.poNumber,
         soldTons: D(po.sold).toFixed(3)
       });
     }

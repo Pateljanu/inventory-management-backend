@@ -4,5 +4,6 @@ export { Material } from './Material.js';
 export { Purchase } from './Purchase.js';
 export { SalesPO } from './SalesPO.js';
 export { Sale } from './Sale.js';
+export { VoidedSale } from './VoidedSale.js';
 export { User } from './User.js';
 export { RefreshSession } from './RefreshSession.js';

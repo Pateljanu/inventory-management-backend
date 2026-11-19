@@ -4,6 +4,7 @@ import { authedClient } from '../helpers/api.js';
 import { fixtures, unwrap } from '../helpers/fixtures.js';
 import { ROLES } from '../../src/constants/roles.js';
 import { reconciliationService } from '../../src/services/reconciliation.service.js';
+import { SalesPO } from '../../src/models/SalesPO.js';
 
 const clearDatabase = useTestDatabase();
 let owner;
@@ -136,7 +137,8 @@ describe('settle a sales order', () => {
 
     const cancelled = await f.po({ customer, material, qty: '10' });
     await f.saleOk({ po: cancelled, source: supplier, qty: '4' });
-    await owner.patch(`/api/v1/sales-pos/${cancelled._id}`, { lifecycleStatus: 'CANCELLED' });
+    // Orders with deliveries can no longer be cancelled; older data may still hold such orders.
+    await SalesPO.updateOne({ _id: cancelled._id }, { lifecycleStatus: 'CANCELLED' });
     const res = await owner.post(`/api/v1/sales-pos/${cancelled._id}/settle`);
     expect(res.status).toBe(422);
     expect(res.body.error.code).toBe('PO_NOT_AVAILABLE');
